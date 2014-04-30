@@ -12,6 +12,10 @@
     "API",
     "SDK"
   ],
+  "dependencies": {
+    "pagar-me" : "https://pagar.me/assets/pagarme.js",
+    "crypto-js": "http://crypto-js.googlecode.com/files/CryptoJS%20v3.1.2.zip"
+  },
   "license": "MIT",
   "ignore": [
     "**/.*",
