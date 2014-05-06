@@ -1,6 +1,10 @@
-var ingresseAPI = angular.module('ingresseSDK',[]);
+var ingresseAPI = {
+	loginCallback: function(data){
+		angular.element(document.body).scope().$broadcast('ingresseAPI.userHasLogged',data);
+	}
+}
 
-ingresseAPI.provider('ingresseAPI',function() {
+angular.module('ingresseSDK',[]).provider('ingresseAPI',function() {
 	var publickey;
 	var privatekey;
 	PagarMe.encryption_key = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ"; 
@@ -15,7 +19,7 @@ ingresseAPI.provider('ingresseAPI',function() {
 		setPrivateKey: function(key){
 		  privatekey = key;
 		},
-		$get: function($http,$rootScope,ezfb){
+		$get: function($http,$rootScope){
 			return {
 				publickey: publickey,
 				privatekey: privatekey,
@@ -92,19 +96,15 @@ ingresseAPI.provider('ingresseAPI',function() {
 				},
 				login: function(email, password){
 					var url = 'https://api.ingresse.com/authorize/' + this.generateAuthKey();
-					var data = {
-						email: email,
-						password: password
+					if(email && password){
+						var data = {
+							email: email,
+							password: password
+						}
+						return $http.post(url,data);
+					}else{
+						return window.open(url,"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=800,height=600');
 					}
-					return $http.post(url,data);
-				},
-				facebookLogin: function(facebookid, email){
-					var url = 'https://api.ingresse.com/login/facebook' + this.generateAuthKey();
-					var data = {
-						fbUserId: facebookid,
-						email: email
-					}
-					return $http.post(url,data);
 				},
 				ticketReservation: function(eventId, userId, token, tickets){
 					var url = 'https://api.ingresse.com/shop/' + this.generateAuthKey() + '&usertoken=' + token;
@@ -157,12 +157,8 @@ ingresseAPI.provider('ingresseAPI',function() {
 						}
 					}
 
-					// var url = 'https://api.ingresse.com/shop/' + this.generateAuthKey() + '&usertoken=' + token;
-					// return $http.post(url,transactionDTO);
-
-					var url = 'https://api.ingresse.com/shop/' + transactionId + this.generateAuthKey() + '&usertoken=' + token;
-					return $http.get(url);
-
+					var url = 'https://api.ingresse.com/shop/' + this.generateAuthKey() + '&usertoken=' + token;
+					return $http.post(url,transactionDTO);
 				}
 			}
 		}
