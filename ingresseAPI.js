@@ -23,6 +23,8 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI',function() {
 			return {
 				publickey: publickey,
 				privatekey: privatekey,
+				host: 'https://api.ingresse.com',
+				// host: 'https://dev-api.ingresse.com',
 				generateAuthKey : function(){
 					var urlencode = function(str){
 						str = (str + '')
@@ -80,22 +82,22 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI',function() {
 					return ticketListDTO;
 				},
 				getEvent: function(eventId){
-					var url = 'https://api.ingresse.com/event/' + eventId + this.generateAuthKey();
+					var url = this.host + '/event/' + eventId + this.generateAuthKey();
 					return $http.get(url);
 				},
 				getEventTickets: function(eventId){
-					var url = 'https://api.ingresse.com/event/' + eventId + '/tickets/' + this.generateAuthKey();
+					var url = this.host + '/event/' + eventId + '/tickets/' + this.generateAuthKey();
 					return $http.get(url);
 				},
-				getUser: function(userid){
-					var url = 'https://api.ingresse.com/user/'+ userid + this.generateAuthKey();
+				getUser: function(userid, token){
+					var url = this.host + '/user/'+ userid + this.generateAuthKey() + '&usertoken=' + token + '&fields=id,name,lastname,username,email,cellphone,phone,token,zip,number,complement';
 					return $http.get(url);
 				},
 				getUserPhotoUrl: function(userid){
-					return 'https://api.ingresse.com/user/'+ userid +'/picture/' + this.generateAuthKey();
+					return this.host + '/user/'+ userid +'/picture/' + this.generateAuthKey();
 				},
 				login: function(email, password){
-					var url = 'https://api.ingresse.com/authorize/' + this.generateAuthKey();
+					var url = this.host + '/authorize/' + this.generateAuthKey();
 					if(email && password){
 						var data = {
 							email: email,
@@ -103,11 +105,13 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI',function() {
 						}
 						return $http.post(url,data);
 					}else{
-						return window.open(url,"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=800,height=600');
+						return window.open('testeLogin.html',"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=800,height=600');
+						//window.location = url;
+						// return window.open(url,"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=800,height=600');
 					}
 				},
 				ticketReservation: function(eventId, userId, token, tickets){
-					var url = 'https://api.ingresse.com/shop/' + this.generateAuthKey() + '&usertoken=' + token;
+					var url = this.host + '/shop/' + this.generateAuthKey() + '&usertoken=' + token;
 
 					var reservation = {
 						eventId: eventId,
@@ -157,7 +161,7 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI',function() {
 						}
 					}
 
-					var url = 'https://api.ingresse.com/shop/' + this.generateAuthKey() + '&usertoken=' + token;
+					var url = this.host + '/shop/' + this.generateAuthKey() + '&usertoken=' + token;
 					return $http.post(url,transactionDTO);
 				}
 			}
