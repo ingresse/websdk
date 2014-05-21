@@ -115,55 +115,74 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
 				// GET EVENT
 				getEvent: function(eventId){
+					var deferred = $q.defer();
+
 					var url = this.host + '/event/' + eventId + this.generateAuthKey();
 					if(!VenusActivityIndicatorService.startActivity('Carregando dados do evento...')){
 						return;
 					};
 
-					return $http.get(url)
+					$http.get(url)
+					.success(function(response){
+						deferred.resolve(response);
+					})
 					.error(function(error){
 						VenusActivityIndicatorService.error('Não foi possível carregar os dados do evento...');
+						deferred.reject();
 					})
-					.finally(function(error){
+					.finally(function(){
 						VenusActivityIndicatorService.stopActivity('Carregando dados do evento...');
 					});
+
+					return deferred.promise;
 				},
 
 
 				// GET TICKETS OF EVENT
 				getEventTickets: function(eventId){
+					var deferred = $q.defer();
+
 					var url = this.host + '/event/' + eventId + '/tickets/' + this.generateAuthKey();
 					if(!VenusActivityIndicatorService.startActivity("Carregando ingressos...")){
-						return;
+						deferred.reject();
 					};
 
-					return $http.get(url)
+					$http.get(url)
+					.success(function(response){
+						deferred.resolve(response);
+					})
 					.catch(function(error){
 						VenusActivityIndicatorService.error('Não foi possível carregar os ingressos do evento...');
+						deferred.reject();
 					})
 					.finally(function(){
 						VenusActivityIndicatorService.stopActivity("Carregando ingressos...");
 					});
+
+					return deferred.promise;
 				},
 
 				// GET USER INFO
 				getUser: function(userid, token){
+					var deferred = $q.defer();
+
 					var url = this.host + '/user/'+ userid + this.generateAuthKey() + '&usertoken=' + token + '&fields=id,name,lastname,username,email,cellphone,phone,token,street,district,city,state,zip,number,complement';
 
 					if(!VenusActivityIndicatorService.startActivity('Carregando dados do usuário...')){
-						return;
+						deferred.reject();
 					};
 
-					return $http.get(url).then(function(result) {
+					$http.get(url)
+					.success(function(result) {
 						VenusActivityIndicatorService.stopActivity('Carregando dados do usuário...');
-
-						if(result.status != 200){
-							VenusActivityIndicatorService.error('Erro ao carregar dados do usuário...',result.statusText);
-							return;
-						}
-
-						return result.data;
+						deferred.resolve(result);
+					})
+					.error(function(error){
+						VenusActivityIndicatorService.error('Erro ao carregar dados do usuário...',error);
+						deferred.reject();
 					});
+
+					return deferred.promise;
 				},
 
 
@@ -184,26 +203,30 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					}
 				*/
 				updateUserInfo: function(userid, token, userObj){
+					var deferred = $q.defer();
+
 					var url = this.host + '/user/' + userid + this.generateAuthKey() + '&usertoken=' + token + '&method=update';
 					if(!VenusActivityIndicatorService.startActivity('Salvando seu cadastro...')){
-						return;
+						deferred.reject();
 					};
-					return $http.post(url,userObj).then(function(response){
+					$http.post(url,userObj).then(function(response){
 						VenusActivityIndicatorService.stopActivity('Salvando seu cadastro...');
 						if(response.status != 200){
 							VenusActivityIndicatorService.error('Houve um problema ao tentar salvar o endereço, tente novamente.',response.statusText);
-							return false;
+							deferred.reject();
 						}
 
-						return true;
+						deferred.resolve(true);
 					});
+
+					return deferred.promise;
 				},
 
 				getUserPhotoUrl: function(userid){
 					return this.host + '/user/'+ userid +'/picture/' + this.generateAuthKey();
 				},
 
-				login: function(email, password){
+				login: function(){
 					VenusActivityIndicatorService.startActivity('Aguardando retorno do login...');
 
 					var url = this.host + '/authorize/' + this.generateAuthKey();
@@ -282,41 +305,6 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						return transaction;
 					}
 				},
-				postTransaction: function(transaction){
-					if(!VenusActivityIndicatorService.startActivity('Realizando o pagamento...')){
-						return;
-					};
-					var url = this.host + '/shop/' + this.generateAuthKey() + '&usertoken=' + token;
-
-					return $http.post(url,transactionDTO)
-						.then(function(response){
-
-							VenusActivityIndicatorService.stopActivity('Realizando o pagamento...');
-
-							// NETWORK ERROR
-							if(response.status != 200){
-								VenusActivityIndicatorService.error('Erro ao tentar realizar o pagamento, tente novamente.',response.statusText);
-								deferred.reject();
-							}
-
-							// BUSINESS ERROR
-							if(!response.data.responseData.data){
-								VenusActivityIndicatorService.error('Erro ao tentar realizar o pagamento, tente novamente.',response.responseData);
-								deferred.reject();
-							}
-
-							// PAGAR.ME ERROR
-							if(response.data.responseData.data.status == 'declined'){
-								VenusActivityIndicatorService.error('Desculpe, por algum motivo seu cartão foi recusado, tente novamente utilizando outro cartão.',response);
-								deferred.reject();
-							}
-
-							// LIFE IS GOOD, CREDIT IS GOOD!
-							if(response.responseData.data.status == 'approved'){
-								deferred.resolve(response.data);
-							}
-						});
-				},
 
 				payReservation: function(eventId, userId, token, tickets, creditCardCpf, transactionId, paymentMethod, creditCardNumber, creditCardHolderName, creditCardExpirationYear, creditCardExpirationMonth, creditCardCVV, discountCode) {
 
@@ -346,10 +334,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					if(!transactionDTO){
 						deferred.reject();
 						return deferred.promise;
-					}
-
-					if(!VenusActivityIndicatorService.startActivity('Criptografando dados do cartão...')){
-						return;
+					}else if(!VenusActivityIndicatorService.startActivity('Criptografando dados do cartão...')){
+						deferred.reject();
+						return deferred.promise;
 					};
 
 					transactionDTO.creditcard.pagarme.generateHash(function(hash){
@@ -360,33 +347,31 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						}
 
 						if(!VenusActivityIndicatorService.startActivity('Realizando o pagamento...')){
-							return;
+							deferred.reject();
 						};
 
 						var url = self.host + '/shop/' + self.generateAuthKey() + '&usertoken=' + token;
 
-						deferred.resolve($http.post(url,transactionDTO)
-							.then(function(response){
+						$http.post(url,transactionDTO)
+						.success(function(response){
 
-								VenusActivityIndicatorService.stopActivity('Realizando o pagamento...');
+							VenusActivityIndicatorService.stopActivity('Realizando o pagamento...');
 
-								// NETWORK ERROR
-								if(response.status != 200){
-									VenusActivityIndicatorService.error('Erro ao tentar realizar o pagamento, tente novamente.',response.statusText);
-									deferred.reject();
-								}
+							// PAGAR.ME ERROR
+							if(response.responseData.data.status == 'declined'){
+								VenusActivityIndicatorService.error('Desculpe, por algum motivo seu cartão foi recusado, tente novamente utilizando outro cartão.',response);
+								deferred.reject();
+							}
 
-								// PAGAR.ME ERROR
-								if(response.data.responseData.data.status == 'declined'){
-									VenusActivityIndicatorService.error('Desculpe, por algum motivo seu cartão foi recusado, tente novamente utilizando outro cartão.',response);
-									deferred.reject();
-								}
-
-								// LIFE IS GOOD, CREDIT IS GOOD!
-								if(response.data.responseData.data.status == 'approved'){
-									deferred.resolve(response.data);
-								}
-							}));
+							// LIFE IS GOOD, CREDIT IS GOOD!
+							if(response.responseData.data.status == 'approved'){
+								deferred.resolve(response.data);
+							}
+						})
+						.error(function(error){
+							VenusActivityIndicatorService.error('Erro ao tentar realizar o pagamento, tente novamente.',error);
+							deferred.reject();
+						});
 					});
 
 					return deferred.promise;
