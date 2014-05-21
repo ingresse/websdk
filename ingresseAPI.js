@@ -116,7 +116,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 				// GET EVENT
 				getEvent: function(eventId){
 					var url = this.host + '/event/' + eventId + this.generateAuthKey();
-					VenusActivityIndicatorService.startActivity('Carregando dados do evento...');
+					if(!VenusActivityIndicatorService.startActivity('Carregando dados do evento...')){
+						return;
+					};
 
 					return $http.get(url)
 					.error(function(error){
@@ -131,7 +133,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 				// GET TICKETS OF EVENT
 				getEventTickets: function(eventId){
 					var url = this.host + '/event/' + eventId + '/tickets/' + this.generateAuthKey();
-					VenusActivityIndicatorService.startActivity("Carregando ingressos...");
+					if(!VenusActivityIndicatorService.startActivity("Carregando ingressos...")){
+						return;
+					};
 
 					return $http.get(url)
 					.catch(function(error){
@@ -146,7 +150,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 				getUser: function(userid, token){
 					var url = this.host + '/user/'+ userid + this.generateAuthKey() + '&usertoken=' + token + '&fields=id,name,lastname,username,email,cellphone,phone,token,street,district,city,state,zip,number,complement';
 
-					VenusActivityIndicatorService.startActivity('Carregando dados do usuário...');
+					if(!VenusActivityIndicatorService.startActivity('Carregando dados do usuário...')){
+						return;
+					};
 
 					return $http.get(url).then(function(result) {
 						VenusActivityIndicatorService.stopActivity('Carregando dados do usuário...');
@@ -179,7 +185,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 				*/
 				updateUserInfo: function(userid, token, userObj){
 					var url = this.host + '/user/' + userid + this.generateAuthKey() + '&usertoken=' + token + '&method=update';
-					VenusActivityIndicatorService.startActivity('Salvando seu cadastro...');
+					if(!VenusActivityIndicatorService.startActivity('Salvando seu cadastro...')){
+						return;
+					};
 					return $http.post(url,userObj).then(function(response){
 						VenusActivityIndicatorService.stopActivity('Salvando seu cadastro...');
 						if(response.status != 200){
@@ -196,21 +204,22 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 				},
 
 				login: function(email, password){
+					VenusActivityIndicatorService.startActivity('Aguardando retorno do login...');
+
 					var url = this.host + '/authorize/' + this.generateAuthKey();
-					if(email && password){
-						var data = {
-							email: email,
-							password: password
-						}
-						return $http.post(url,data);
-					}else{
-						return window.open(url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=800,height=600');
-					}
+
+					// PRODUCTION
+					return window.open(url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=800,height=600');
+
+					// HOMOLOG
+					return window.open(url + '&returnurl=' + this.urlencode('testeLogin.html'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=800,height=600');
 				},
 
 				ticketReservation: function(eventId, userId, token, tickets, discountCode){
+					var deferred = $q.defer();
+
 					if(!VenusActivityIndicatorService.startActivity('Reservando Ingressos...')){
-						return;
+						deferred.reject();
 					}
 
 					var url = this.host + '/shop/' + this.generateAuthKey() + '&usertoken=' + token;
@@ -222,22 +231,24 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						discountCode: discountCode
 					}
 
-					return $http.post(url,reservation)
+					$http.post(url,reservation)
 						.then(function(response){
 							if(response.status != 200){
 								VenusActivityIndicatorService.error('Erro ao reservar ingressos. ' + response.statusText);
-								return response;
+								deferred.reject(response);
 							}
 
 							if(response.data.responseData.data.status == 'declined'){
 								VenusActivityIndicatorService.error('Erro ao reservar ingressos. ' + response.responseData.message);
-								return response;
+								deferred.reject(response);
 							}
-							return response;
+							deferred.resolve(response);
 						})
 						.finally(function(){
 							VenusActivityIndicatorService.stopActivity('Reservando Ingressos...');
 						});
+
+					return deferred.promise;
 				},
 
 				createPagarmeCard: function(transaction){
@@ -272,7 +283,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					}
 				},
 				postTransaction: function(transaction){
-					VenusActivityIndicatorService.startActivity('Realizando o pagamento...');
+					if(!VenusActivityIndicatorService.startActivity('Realizando o pagamento...')){
+						return;
+					};
 					var url = this.host + '/shop/' + this.generateAuthKey() + '&usertoken=' + token;
 
 					return $http.post(url,transactionDTO)
@@ -335,7 +348,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						return deferred.promise;
 					}
 
-					VenusActivityIndicatorService.startActivity('Criptografando dados do cartão...');
+					if(!VenusActivityIndicatorService.startActivity('Criptografando dados do cartão...')){
+						return;
+					};
 
 					transactionDTO.creditcard.pagarme.generateHash(function(hash){
 						VenusActivityIndicatorService.stopActivity('Criptografando dados do cartão...');
@@ -344,7 +359,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 							cpf: transactionDTO.creditcard.cpf
 						}
 
-						VenusActivityIndicatorService.startActivity('Realizando o pagamento...');
+						if(!VenusActivityIndicatorService.startActivity('Realizando o pagamento...')){
+							return;
+						};
 
 						var url = self.host + '/shop/' + self.generateAuthKey() + '&usertoken=' + token;
 
