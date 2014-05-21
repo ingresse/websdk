@@ -8,7 +8,7 @@ Nosso SDK é um módulo do angular, basta baixar o sdk, adicionar a referência 
 ## Instalando ##
 O ingresse-websdk esta disponível no bower
     
-    bower install ingresse-webskd -S
+    bower install ingresse-websdk -S
 
 ## Utilização ##
 
