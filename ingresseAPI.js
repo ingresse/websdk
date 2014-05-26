@@ -118,21 +118,22 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					var deferred = $q.defer();
 
 					var url = this.host + '/event/' + eventId + this.generateAuthKey();
-					if(!VenusActivityIndicatorService.startActivity('Carregando dados do evento...')){
-						return;
-					};
+					// if(!VenusActivityIndicatorService.startActivity('Carregando dados do evento...')){
+					// 	return;
+					// };
 
 					$http.get(url)
 					.success(function(response){
 						deferred.resolve(response);
 					})
 					.error(function(error){
-						VenusActivityIndicatorService.error('Não foi possível carregar os dados do evento...');
+						// VenusActivityIndicatorService.error('Não foi possível carregar os dados do evento...');
+						VenusActivityIndicatorService.error(error.responseDetails);
 						deferred.reject();
-					})
-					.finally(function(){
-						VenusActivityIndicatorService.stopActivity('Carregando dados do evento...');
 					});
+					// .finally(function(){
+					// 	VenusActivityIndicatorService.stopActivity('Carregando dados do evento...');
+					// });
 
 					return deferred.promise;
 				},
@@ -149,10 +150,15 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
 					$http.get(url)
 					.success(function(response){
-						deferred.resolve(response);
+						if(typeof response.responseData != "object"){
+							VenusActivityIndicatorService.error(response.responseData, error);
+							deferred.reject(response.responseData);
+						}else{
+							deferred.resolve(response);
+						}
 					})
 					.catch(function(error){
-						VenusActivityIndicatorService.error('Não foi possível carregar os ingressos do evento...');
+						VenusActivityIndicatorService.error(error.responseData, error);
 						deferred.reject();
 					})
 					.finally(function(){
@@ -178,7 +184,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						deferred.resolve(result);
 					})
 					.error(function(error){
-						VenusActivityIndicatorService.error('Erro ao carregar dados do usuário...',error);
+						VenusActivityIndicatorService.error(error.responseData);
 						deferred.reject();
 					});
 
@@ -255,17 +261,15 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					}
 
 					$http.post(url,reservation)
-						.then(function(response){
-							if(response.status != 200){
-								VenusActivityIndicatorService.error('Erro ao reservar ingressos. ' + response.statusText);
-								deferred.reject(response);
-							}
-
-							if(response.data.responseData.data.status == 'declined'){
+						.success(function(response){
+							if(response.responseData.data.status == 'declined'){
 								VenusActivityIndicatorService.error('Erro ao reservar ingressos. ' + response.responseData.message);
 								deferred.reject(response);
 							}
 							deferred.resolve(response);
+						})
+						.error(function(error){
+							VenusActivityIndicatorService.error(error.responseData);
 						})
 						.finally(function(){
 							VenusActivityIndicatorService.stopActivity('Reservando Ingressos...');
