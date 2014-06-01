@@ -99,7 +99,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					for (var i = tickets.length - 1; i >= 0; i--) {
 						var ticketDTO = {
 							session:{
-								date: tickets[i].validTo.format('DD/M/YYYY'),
+								date: tickets[i].validTo.format('DD/MM/YYYY'),
 								time: tickets[i].validTo.format('HH:MM:SS')
 							},
 							ticketTypeId: tickets[i].id,
