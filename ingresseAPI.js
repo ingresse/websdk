@@ -151,7 +151,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					$http.get(url)
 					.success(function(response){
 						if(typeof response.responseData != "object"){
-							VenusActivityIndicatorService.error(response.responseData, error);
+							VenusActivityIndicatorService.error(response.responseData);
 							deferred.reject(response.responseData);
 						}else{
 							deferred.resolve(response);
@@ -215,6 +215,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					if(!VenusActivityIndicatorService.startActivity('Salvando seu cadastro...')){
 						deferred.reject();
 					};
+					console.log('Salvando dados do usuário',userObj);
 					$http.post(url,userObj).then(function(response){
 						VenusActivityIndicatorService.stopActivity('Salvando seu cadastro...');
 						if(response.status != 200){
@@ -241,7 +242,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					return window.open(url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=400,height=600');
 
 					// HOMOLOG
-					return window.open(url + '&returnurl=' + this.urlencode('testeLogin.html'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=400,height=600');
+					// return window.open(url + '&returnurl=' + this.urlencode('testeLogin.html'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=400,height=600');
 				},
 
 				ticketReservation: function(eventId, userId, token, tickets, discountCode){
@@ -363,7 +364,11 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
 							// PAGAR.ME ERROR
 							if(response.responseData.data.status == 'declined'){
-								VenusActivityIndicatorService.error('Desculpe, por algum motivo seu cartão foi recusado, tente novamente utilizando outro cartão.',response);
+								if(response.responseData.data.message){
+									VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado: ' + response.responseData.data.message,response);
+								}else{
+									VenusActivityIndicatorService.error('Desculpe, por algum motivo seu cartão foi recusado, tente novamente utilizando outro cartão.',response);
+								}
 								deferred.reject();
 							}
 
