@@ -14,7 +14,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 	var publickey;
 	var privatekey;
 	PagarMe.encryption_key = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
-	//PagarMe.encryption_key = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
+	// PagarMe.encryption_key = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
 
 	return{
 		publickey: publickey,
@@ -30,7 +30,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 				publickey: publickey,
 				privatekey: privatekey,
 				host: 'https://api.ingresse.com',
-				//host: 'http://ingresse-api.dev',
+				// host: 'http://apibeta.ingresse.com',
 
 				// ENCODE ANY STRING TO BE USED IN URLS
 				urlencode: function(str){
@@ -311,12 +311,47 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					}
 				},
 
-				payReservation: function(eventId, userId, token, tickets, creditCardCpf, transactionId, paymentMethod, creditCardNumber, creditCardHolderName, creditCardExpirationYear, creditCardExpirationMonth, creditCardCVV, discountCode) {
+				payReservation: function(eventId, userId, token, tickets, creditCardCpf, transactionId, paymentMethod, discountCode, creditCardNumber, creditCardHolderName, creditCardExpirationYear, creditCardExpirationMonth, creditCardCVV) {
 
 					var deferred = $q.defer();
 
 					var self = this;
 
+					if(paymentMethod == 'BoletoBancario'){
+						var currentTransaction = {
+							transactionId: transactionId,
+							userId: userId,
+							eventId: eventId,
+							tickets: this.ticketToDTO(tickets),
+							paymentMethod: paymentMethod,
+							discountCode: discountCode,
+						}
+
+						if(!VenusActivityIndicatorService.startActivity('Gerando Boleto...')){
+							deferred.reject();
+						};
+
+						var url = self.host + '/shop/' + self.generateAuthKey() + '&usertoken=' + token;
+
+						$http.post(url,currentTransaction)
+						.success(function(response){
+							VenusActivityIndicatorService.stopActivity('Gerando Boleto...');
+							if(response.responseData.data){
+								deferred.resolve(response.responseData.data);
+							}else{
+								VenusActivityIndicatorService.error('Houve um erro ao gerar o boleto, tente novamente.',response);
+								deferred.reject(response.responseData.data);
+							}
+						})
+						.error(function(error){
+							VenusActivityIndicatorService.error('Erro ao gerar boleto, tente novamente.',error);
+							deferred.reject();
+						});
+
+						return deferred.promise;
+					}
+
+					// Pagamento com Cartão de Crédito.
 					var currentTransaction = {
 						transactionId: transactionId,
 						userId: userId,
@@ -365,7 +400,11 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 							// PAGAR.ME ERROR
 							if(response.responseData.data.status == 'declined'){
 								if(response.responseData.data.message){
-									VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado: ' + response.responseData.data.message,response);
+									if(response.responseData.data.message == 'acquirer'){
+										VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado. Tente novamente com outro cartão ou pague via boleto.',response);
+									}else{
+										VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado: ' + response.responseData.data.message,response);
+									}
 								}else{
 									VenusActivityIndicatorService.error('Desculpe, por algum motivo seu cartão foi recusado, tente novamente utilizando outro cartão.',response);
 								}
