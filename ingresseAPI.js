@@ -31,6 +31,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 				privatekey: privatekey,
 				host: 'https://api.ingresse.com',
 				// host: 'http://apibeta.ingresse.com',
+				// host: 'http://ingresse-api.dev',
 
 				// ENCODE ANY STRING TO BE USED IN URLS
 				urlencode: function(str){
@@ -118,9 +119,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					var deferred = $q.defer();
 
 					var url = this.host + '/event/' + eventId + this.generateAuthKey();
-					// if(!VenusActivityIndicatorService.startActivity('Carregando dados do evento...')){
-					// 	return;
-					// };
+					if(!VenusActivityIndicatorService.startActivity('Carregando dados do evento...')){
+						return;
+					};
 
 					$http.get(url)
 					.success(function(response){
@@ -130,10 +131,10 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						// VenusActivityIndicatorService.error('Não foi possível carregar os dados do evento...');
 						VenusActivityIndicatorService.error(error.responseDetails);
 						deferred.reject();
+					})
+					.finally(function(){
+						VenusActivityIndicatorService.stopActivity('Carregando dados do evento...');
 					});
-					// .finally(function(){
-					// 	VenusActivityIndicatorService.stopActivity('Carregando dados do evento...');
-					// });
 
 					return deferred.promise;
 				},
@@ -395,8 +396,6 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						$http.post(url,transactionDTO)
 						.success(function(response){
 
-							VenusActivityIndicatorService.stopActivity('Realizando o pagamento...');
-
 							// PAGAR.ME ERROR
 							if(response.responseData.data.status == 'declined'){
 								if(response.responseData.data.message){
@@ -419,6 +418,9 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						.error(function(error){
 							VenusActivityIndicatorService.error('Erro ao tentar realizar o pagamento, tente novamente.',error);
 							deferred.reject();
+						})
+						.finally(function(response){
+							VenusActivityIndicatorService.stopActivity('Realizando o pagamento...');
 						});
 					});
 
