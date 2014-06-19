@@ -129,7 +129,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					})
 					.error(function(error){
 						// VenusActivityIndicatorService.error('Não foi possível carregar os dados do evento...');
-						VenusActivityIndicatorService.error(error.responseDetails);
+						// VenusActivityIndicatorService.error(error.responseDetails);
 						deferred.reject();
 					})
 					.finally(function(){
@@ -235,14 +235,15 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 				},
 
 				login: function(){
-					VenusActivityIndicatorService.startActivity('Aguardando retorno do login...');
-
 					var url = this.host + '/authorize/' + this.generateAuthKey();
 
+					// return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+
 					// PRODUCTION
-					return window.open(url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=400,height=600');
+					return window.open(url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=800,height=600');
 
 					// HOMOLOG
+					//return window.open(url + '&returnurl=' + this.urlencode('http://local.ingresse.com:9000/showcase/testeLogin.html'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=400,height=600');
 					// return window.open(url + '&returnurl=' + this.urlencode('testeLogin.html'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=400,height=600');
 				},
 
