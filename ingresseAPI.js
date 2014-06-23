@@ -247,6 +247,11 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					// return window.open(url + '&returnurl=' + this.urlencode('testeLogin.html'),"",'toolbar=no,location=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=yes,width=400,height=600');
 				},
 
+				facebookLogin: function(){
+					var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+					return url;
+				},
+
 				ticketReservation: function(eventId, userId, token, tickets, discountCode){
 					var deferred = $q.defer();
 
