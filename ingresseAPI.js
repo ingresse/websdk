@@ -239,8 +239,13 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
 				},
 
-				facebookLogin: function(){
+				getLoginWithFacebookUrl: function(){
 					var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+					return url;
+				},
+
+				getRegisterWithFacebookUrl: function(){
+					var url = this.host + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
 					return url;
 				},
 
