@@ -128,8 +128,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						deferred.resolve(response);
 					})
 					.error(function(error){
-						// VenusActivityIndicatorService.error('Não foi possível carregar os dados do evento...');
-						// VenusActivityIndicatorService.error(error.responseDetails);
+						VenusActivityIndicatorService.error('Houve um problema de comunicação com nossos servidores, por favor, tente novamente.',error);
 						deferred.reject();
 					})
 					.finally(function(){
@@ -266,13 +265,13 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					$http.post(url,reservation)
 						.success(function(response){
 							if(response.responseData.data.status == 'declined'){
-								VenusActivityIndicatorService.error('Erro ao reservar ingressos. ' + response.responseData.message);
+								VenusActivityIndicatorService.error('Erro ao reservar ingressos. Entre em contato através do e-mail contato@ingresse.com',response);
 								deferred.reject(response);
 							}
 							deferred.resolve(response);
 						})
 						.error(function(error){
-							VenusActivityIndicatorService.error(error.responseData);
+							VenusActivityIndicatorService.error('Erro de comunicação com o servidor, tente novamente...',error.responseData);
 						})
 						.finally(function(){
 							VenusActivityIndicatorService.stopActivity('Reservando Ingressos...');
@@ -341,12 +340,12 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 							if(response.responseData.data){
 								deferred.resolve(response.responseData.data);
 							}else{
-								VenusActivityIndicatorService.error('Houve um erro ao gerar o boleto, tente novamente.',response);
+								VenusActivityIndicatorService.error('Houve um erro ao gerar o boleto, tente novamente, se o erro persistir entre em contato com contato@ingresse.com',response);
 								deferred.reject(response.responseData.data);
 							}
 						})
 						.error(function(error){
-							VenusActivityIndicatorService.error('Erro ao gerar boleto, tente novamente.',error);
+							VenusActivityIndicatorService.error('Houve um erro na comunicação com nossos servidores, por favor, tente novamente. Caso o erro persista entre em contato no contato@ingresse.com',error);
 							deferred.reject();
 						});
 
@@ -399,15 +398,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
 							// PAGAR.ME ERROR
 							if(response.responseData.data.status == 'declined'){
-								if(response.responseData.data.message){
-									if(response.responseData.data.message == 'acquirer'){
-										VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado. Tente novamente com outro cartão ou pague via boleto.',response);
-									}else{
-										VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado: ' + response.responseData.data.message,response);
-									}
-								}else{
-									VenusActivityIndicatorService.error('Desculpe, por algum motivo seu cartão foi recusado, tente novamente utilizando outro cartão.',response);
-								}
+								VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado. Tente novamente com outro cartão ou pague via boleto.',response);
 								deferred.reject();
 							}
 
@@ -417,7 +408,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 							}
 						})
 						.error(function(error){
-							VenusActivityIndicatorService.error('Erro ao tentar realizar o pagamento, tente novamente.',error);
+							VenusActivityIndicatorService.error('Houve um erro de comunicação com nossos servidores, por favor, tente novamente.',error);
 							deferred.reject();
 						})
 						.finally(function(response){
