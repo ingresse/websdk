@@ -238,6 +238,32 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
 				},
 
+                logout: function(){
+                    var url = this.host + '/logout' + this.generateAuthKey();
+
+                    var deferred = $q.defer();
+
+                    VenusActivityIndicatorService.startActivity('Saindo...');
+
+                    $http.get(url)
+                    .success(function(response){
+                        deferred.resolve(response.responseData);
+                    })
+                    .error(function(response){
+                        VenusActivityIndicatorService.error('Houve um problema ao tentar sair de sua conta, por favor, tente novamente.');
+                    })
+                    .finally(function(){
+                        VenusActivityIndicatorService.stopActivity('Saindo...');
+                    });
+
+                    return deferred.promise;
+                },
+
+                register: function(){
+                    var url = this.host + '/register' + this.generateAuthKey();
+                    return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+                },
+
 				getLoginWithFacebookUrl: function(){
 					var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
 					return url;
