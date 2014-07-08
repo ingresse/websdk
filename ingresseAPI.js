@@ -115,10 +115,14 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 				},
 
 				// GET EVENT
-				getEvent: function(eventId){
+				getEvent: function(eventId, fields){
 					var deferred = $q.defer();
+                    var url = this.host + '/event/' + eventId + this.generateAuthKey();
 
-					var url = this.host + '/event/' + eventId + this.generateAuthKey();
+                    if(fields){
+                        url += '&fields=' + fields.toString();
+                    }
+
 					if(!VenusActivityIndicatorService.startActivity('Carregando dados do evento...')){
 						return;
 					};
