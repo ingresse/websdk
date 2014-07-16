@@ -344,7 +344,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
                     }
                 },
 
-                payReservation: function(eventId, userId, token, tickets, creditCardCpf, transactionId, paymentMethod, discountCode, creditCardNumber, creditCardHolderName, creditCardExpirationYear, creditCardExpirationMonth, creditCardCVV) {
+                payReservation: function(eventId, userId, token, tickets, creditCardCpf, transactionId, paymentMethod, discountCode, creditCardNumber, creditCardHolderName, creditCardExpirationYear, creditCardExpirationMonth, creditCardCVV, installments) {
 
                     var deferred = $q.defer();
 
@@ -403,6 +403,10 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
                             month: creditCardExpirationMonth,
                             cvv: creditCardCVV
                         }
+                    }
+
+                    if(installments){
+                        currentTransaction.installments = installments;
                     }
 
                     var transactionDTO = this.createPagarmeCard(currentTransaction);
