@@ -272,6 +272,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 						})
 						.error(function(error){
 							VenusActivityIndicatorService.error('Erro de comunicação com o servidor, tente novamente...',error.responseData);
+                            deferred.reject(error);
 						})
 						.finally(function(){
 							VenusActivityIndicatorService.stopActivity('Reservando Ingressos...');
@@ -312,7 +313,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 					}
 				},
 
-				payReservation: function(eventId, userId, token, tickets, creditCardCpf, transactionId, paymentMethod, discountCode, creditCardNumber, creditCardHolderName, creditCardExpirationYear, creditCardExpirationMonth, creditCardCVV) {
+				payReservation: function(eventId, userId, token, tickets, creditCardCpf, transactionId, paymentMethod, discountCode, creditCardNumber, creditCardHolderName, creditCardExpirationYear, creditCardExpirationMonth, creditCardCVV, installments) {
 
 					var deferred = $q.defer();
 
@@ -325,7 +326,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 							eventId: eventId,
 							tickets: this.ticketToDTO(tickets),
 							paymentMethod: paymentMethod,
-							discountCode: discountCode,
+							discountCode: discountCode
 						}
 
 						if(!VenusActivityIndicatorService.startActivity('Gerando Boleto...')){
@@ -369,6 +370,10 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 							cvv: creditCardCVV
 						}
 					}
+
+                    if(installments){
+                        currentTransaction.installments = installments;
+                    }
 
 					var transactionDTO = this.createPagarmeCard(currentTransaction);
 
