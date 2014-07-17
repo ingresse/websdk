@@ -117,7 +117,11 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
                 // GET EVENT
                 getEvent: function(eventId, fields){
                     var deferred = $q.defer();
-                    var url = this.host + '/event/' + eventId + this.generateAuthKey();
+                    if(angular.isNumber(parseInt(eventId)) && !isNaN(eventId)){
+                        var url = this.host + '/event/' + eventId + this.generateAuthKey();
+                    }else{
+                        var url = this.host + '/event/' + this.generateAuthKey() + '&method=identify&link=' + eventId;
+                    }
 
                     if(fields){
                         url += '&fields=' + fields.toString();
