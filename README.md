@@ -34,13 +34,14 @@ Ai é só injetar nas suas controllers
 ### Get Event ###
 
 #### Parâmetros ####
-    eventid: (number) //numero do identificador do evento
+    eventid: (number) or (string) //numero do identificador do evento ou link.
+    fields: [(string) array] // Informações que devem ser retornadas do evento.
 
 #### Retorno ####
 [Veja no doc](http://dev.ingresse.com/#/references/event/get-unique-event "Title")
 
 #### Exemplo: ####
-    ingresseAPI.getEvent(eventId).then(function(response){
+    ingresseAPI.getEvent(eventId, fields).then(function(response){
         if(!result){
 			return;
 		}
