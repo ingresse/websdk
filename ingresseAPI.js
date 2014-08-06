@@ -2,7 +2,7 @@ window.addEventListener("message", receiveMessage, false);
 
 function receiveMessage(event)
 {
-  if (event.origin !== "http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com"){
+  if (event.origin !== "https://dk57nqppwurwj.cloudfront.net"){
     return;
   }
 
@@ -30,6 +30,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
                 publickey: publickey,
                 privatekey: privatekey,
                 host: 'https://api.ingresse.com',
+                // host: 'https://apirc.ingresse.com',
                 // host: 'http://apibeta.ingresse.com',
                 // host: 'http://ingresse-api.dev',
 
@@ -243,7 +244,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                 login: function(){
                     var url = this.host + '/authorize/' + this.generateAuthKey();
-                    return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+                    return url + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
                 },
 
                 logout: function(){
@@ -269,16 +270,16 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                 register: function(){
                     var url = this.host + '/register' + this.generateAuthKey();
-                    return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+                    return url + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
                 },
 
                 getLoginWithFacebookUrl: function(){
-                    var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+                    var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
                     return url;
                 },
 
                 getRegisterWithFacebookUrl: function(){
-                    var url = this.host + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+                    var url = this.host + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
                     return url;
                 },
 
@@ -413,55 +414,55 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
                         currentTransaction.installments = installments;
                     }
 
-					var transactionDTO = this.createPagarmeCard(currentTransaction);
+                    var transactionDTO = this.createPagarmeCard(currentTransaction);
 
-					if(!transactionDTO){
-						deferred.reject();
-						return deferred.promise;
-					}else if(!VenusActivityIndicatorService.startActivity('Criptografando dados do cartão...')){
-						deferred.reject();
-						return deferred.promise;
-					};
+                    if(!transactionDTO){
+                        deferred.reject();
+                        return deferred.promise;
+                    }else if(!VenusActivityIndicatorService.startActivity('Criptografando dados do cartão...')){
+                        deferred.reject();
+                        return deferred.promise;
+                    };
 
-					transactionDTO.creditcard.pagarme.generateHash(function(hash){
-						VenusActivityIndicatorService.stopActivity('Criptografando dados do cartão...');
-						transactionDTO.creditcard = {
-							cardHash: hash,
-							cpf: transactionDTO.creditcard.cpf
-						}
+                    transactionDTO.creditcard.pagarme.generateHash(function(hash){
+                        VenusActivityIndicatorService.stopActivity('Criptografando dados do cartão...');
+                        transactionDTO.creditcard = {
+                            cardHash: hash,
+                            cpf: transactionDTO.creditcard.cpf
+                        }
 
-						if(!VenusActivityIndicatorService.startActivity('Realizando o pagamento...')){
-							deferred.reject();
-						};
+                        if(!VenusActivityIndicatorService.startActivity('Realizando o pagamento...')){
+                            deferred.reject();
+                        };
 
-						var url = self.host + '/shop/' + self.generateAuthKey() + '&usertoken=' + token;
+                        var url = self.host + '/shop/' + self.generateAuthKey() + '&usertoken=' + token;
 
-						$http.post(url,transactionDTO)
-						.success(function(response){
+                        $http.post(url,transactionDTO)
+                        .success(function(response){
 
-							// PAGAR.ME ERROR
-							if(response.responseData.data.status == 'declined'){
-								VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado. Tente novamente com outro cartão ou pague via boleto.',response);
-								deferred.resolve(response.responseData.data);
-							}
+                            // PAGAR.ME ERROR
+                            if(response.responseData.data.status == 'declined'){
+                                VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado. Tente novamente com outro cartão ou pague via boleto.',response);
+                                deferred.resolve(response.responseData.data);
+                            }
 
-							// LIFE IS GOOD, CREDIT IS GOOD!
-							if(response.responseData.data.status == 'approved'){
-								deferred.resolve(response.responseData.data);
-							}
-						})
-						.error(function(error){
-							VenusActivityIndicatorService.error('Houve um erro de comunicação com nossos servidores, por favor, tente novamente.',error);
-							deferred.reject();
-						})
-						.finally(function(response){
-							VenusActivityIndicatorService.stopActivity('Realizando o pagamento...');
-						});
-					});
+                            // LIFE IS GOOD, CREDIT IS GOOD!
+                            if(response.responseData.data.status == 'approved'){
+                                deferred.resolve(response.responseData.data);
+                            }
+                        })
+                        .error(function(error){
+                            VenusActivityIndicatorService.error('Houve um erro de comunicação com nossos servidores, por favor, tente novamente.',error);
+                            deferred.reject();
+                        })
+                        .finally(function(response){
+                            VenusActivityIndicatorService.stopActivity('Realizando o pagamento...');
+                        });
+                    });
 
-					return deferred.promise;
-				}
-			}
-		}
-	}
+                    return deferred.promise;
+                }
+            }
+        }
+    }
 });
