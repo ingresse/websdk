@@ -134,7 +134,12 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                     $http.get(url)
                     .success(function(response){
-                        deferred.resolve(response);
+                        if(angular.isObject(response.responseData)){
+                            deferred.resolve(response.responseData);
+                        }else{
+                            VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar carregar o evento, por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
+                            deferred.reject();
+                        }
                     })
                     .error(function(error){
                         VenusActivityIndicatorService.error('Houve um problema de comunicação com nossos servidores, por favor, tente novamente.',error);
@@ -159,11 +164,11 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                     $http.get(url)
                     .success(function(response){
-                        if(typeof response.responseData != "object"){
-                            VenusActivityIndicatorService.error("Desculpe, houve um erro ao tentar carregar os ingressos disponíveis, por favor entre em contato com a ingresse pelo número (11) 4264-0718.",response.responseData);
-                            deferred.reject(response.responseData);
+                        if(angular.isObject(response.responseData)){
+                            deferred.resolve(response.responseData);
                         }else{
-                            deferred.resolve(response);
+                            VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar carregar os ingressos disponíveis, por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
+                            deferred.reject();
                         }
                     })
                     .error(function(error){
@@ -188,13 +193,20 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
                     };
 
                     $http.get(url)
-                    .success(function(result) {
-                        VenusActivityIndicatorService.stopActivity('Carregando dados do usuário...');
-                        deferred.resolve(result);
+                    .success(function(response){
+                        if(angular.isObject(response.responseData)){
+                            deferred.resolve(response.responseData);
+                        }else{
+                            VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar os dados do usuário por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
+                            deferred.reject();
+                        }
                     })
                     .error(function(error){
                         VenusActivityIndicatorService.error("Houve um problema de comunicação com nossos servidores, por favor, tente novamente.",error.responseData);
                         deferred.reject();
+                    })
+                    .finally(function(){
+                        VenusActivityIndicatorService.stopActivity('Carregando dados do usuário...');
                     });
 
                     return deferred.promise;
@@ -224,15 +236,22 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
                     if(!VenusActivityIndicatorService.startActivity('Salvando seu cadastro...')){
                         deferred.reject();
                     };
-                    console.log('Salvando dados do usuário',userObj);
-                    $http.post(url,userObj).then(function(response){
-                        VenusActivityIndicatorService.stopActivity('Salvando seu cadastro...');
-                        if(response.status != 200){
-                            VenusActivityIndicatorService.error('Houve um problema ao tentar salvar o endereço, tente novamente.',response.statusText);
+
+                    $http.post(url,userObj)
+                    .success(function(response){
+                        if(angular.isObject(response.responseData)){
+                            deferred.resolve(true);
+                        }else{
+                            VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar salvar os dados do usuário por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
                             deferred.reject();
                         }
-
-                        deferred.resolve(true);
+                    })
+                    .error(function(error){
+                        VenusActivityIndicatorService.error("Houve um problema de comunicação com nossos servidores, por favor, tente novamente.",error.responseData);
+                        deferred.reject();
+                    })
+                    .finally(function(){
+                        VenusActivityIndicatorService.stopActivity('Salvando seu cadastro...');
                     });
 
                     return deferred.promise;
@@ -244,7 +263,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                 login: function(){
                     var url = this.host + '/authorize/' + this.generateAuthKey();
-                    return url + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
+                    return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
                 },
 
                 logout: function(){
@@ -256,10 +275,16 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                     $http.get(url)
                     .success(function(response){
-                        deferred.resolve(response.responseData);
+                        if(angular.isObject(response.responseData)){
+                            deferred.resolve(true);
+                        }else{
+                            VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar finalizar a sessão do usuário. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
+                            deferred.reject();
+                        }
                     })
-                    .error(function(response){
-                        VenusActivityIndicatorService.error('Houve um problema ao tentar sair de sua conta, por favor, tente novamente.');
+                    .error(function(error){
+                        VenusActivityIndicatorService.error("Houve um problema de comunicação com nossos servidores, por favor, tente novamente.",error.responseData);
+                        deferred.reject();
                     })
                     .finally(function(){
                         VenusActivityIndicatorService.stopActivity('Saindo...');
@@ -270,16 +295,16 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                 register: function(){
                     var url = this.host + '/register' + this.generateAuthKey();
-                    return url + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
+                    return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
                 },
 
                 getLoginWithFacebookUrl: function(){
-                    var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
+                    var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
                     return url;
                 },
 
                 getRegisterWithFacebookUrl: function(){
-                    var url = this.host + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
+                    var url = this.host + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
                     return url;
                 },
 
@@ -300,19 +325,25 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
                     }
 
                     $http.post(url,reservation)
-                        .success(function(response){
+                    .success(function(response){
+                        if(angular.isObject(response.responseData)){
                             if(response.responseData.data.status == 'declined'){
-                                VenusActivityIndicatorService.error('Erro ao reservar ingressos. Entre em contato através do e-mail contato@ingresse.com',response);
+                                VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar reservar os ingressos. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response);
                                 deferred.reject(response);
                             }
-                            deferred.resolve(response);
-                        })
-                        .error(function(error){
-                            VenusActivityIndicatorService.error('Erro de comunicação com o servidor, tente novamente...',error.responseData);
-                        })
-                        .finally(function(){
-                            VenusActivityIndicatorService.stopActivity('Reservando Ingressos...');
-                        });
+                            deferred.resolve(response.responseData);
+                        }else{
+                            VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar reservar os ingressos. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
+                            deferred.reject();
+                        }
+                    })
+                    .error(function(error){
+                        VenusActivityIndicatorService.error("Houve um problema de comunicação com nossos servidores, por favor, tente novamente.",error.responseData);
+                        deferred.reject();
+                    })
+                    .finally(function(){
+                        VenusActivityIndicatorService.stopActivity('Reservando Ingressos...');
+                    });
 
                     return deferred.promise;
                 },
@@ -373,16 +404,15 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                         $http.post(url,currentTransaction)
                         .success(function(response){
-                            VenusActivityIndicatorService.stopActivity('Gerando Boleto...');
-                            if(response.responseData.data){
-                                deferred.resolve(response.responseData.data);
+                            if(angular.isObject(response.responseData)){
+                                deferred.resolve(response.responseData);
                             }else{
-                                VenusActivityIndicatorService.error('Houve um erro ao gerar o boleto, tente novamente, se o erro persistir entre em contato com contato@ingresse.com',response);
-                                deferred.reject(response.responseData.data);
+                                VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar gerar o boleto. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
+                                deferred.reject();
                             }
                         })
                         .error(function(error){
-                            VenusActivityIndicatorService.error('Houve um erro na comunicação com nossos servidores, por favor, tente novamente. Caso o erro persista entre em contato no contato@ingresse.com',error);
+                            VenusActivityIndicatorService.error("Houve um problema de comunicação com nossos servidores, por favor, tente novamente.",error.responseData);
                             deferred.reject();
                         })
                         .finally(function(){
@@ -439,23 +469,28 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                         $http.post(url,transactionDTO)
                         .success(function(response){
+                            if(angular.isObject(response.responseData)){
+                                // PAGAR.ME ERROR
+                                if(response.responseData.data.status == 'declined'){
+                                    VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado. Tente novamente com outro cartão ou pague via boleto.',response);
+                                    deferred.reject();
+                                }
 
-                            // PAGAR.ME ERROR
-                            if(response.responseData.data.status == 'declined'){
-                                VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado. Tente novamente com outro cartão ou pague via boleto.',response);
-                                deferred.resolve(response.responseData.data);
-                            }
+                                // LIFE IS GOOD, CREDIT IS GOOD!
+                                if(response.responseData.data.status == 'approved'){
+                                    deferred.resolve(response.responseData.data);
+                                }
 
-                            // LIFE IS GOOD, CREDIT IS GOOD!
-                            if(response.responseData.data.status == 'approved'){
-                                deferred.resolve(response.responseData.data);
+                            }else{
+                                VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar realizar o pagamento. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
+                                deferred.reject();
                             }
                         })
                         .error(function(error){
-                            VenusActivityIndicatorService.error('Houve um erro de comunicação com nossos servidores, por favor, tente novamente.',error);
+                            VenusActivityIndicatorService.error("Houve um problema de comunicação com nossos servidores, por favor, tente novamente.",error.responseData);
                             deferred.reject();
                         })
-                        .finally(function(response){
+                        .finally(function(){
                             VenusActivityIndicatorService.stopActivity('Realizando o pagamento...');
                         });
                     });
