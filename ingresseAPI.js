@@ -263,7 +263,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                 login: function(){
                     var url = this.host + '/authorize/' + this.generateAuthKey();
-                    return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+                    return url + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
                 },
 
                 logout: function(){
@@ -295,16 +295,16 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                 register: function(){
                     var url = this.host + '/register' + this.generateAuthKey();
-                    return url + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+                    return url + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
                 },
 
                 getLoginWithFacebookUrl: function(){
-                    var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+                    var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
                     return url;
                 },
 
                 getRegisterWithFacebookUrl: function(){
-                    var url = this.host + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('http://closepopup.ingresse.com.s3-website-us-east-1.amazonaws.com');
+                    var url = this.host + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
                     return url;
                 },
 
