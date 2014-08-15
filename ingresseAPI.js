@@ -1,3 +1,43 @@
+function isThisLocation(url){
+    if(window.location.href.indexOf(url) >= 0){
+        return true;
+    }
+    return false;
+}
+
+var hosts = {
+    secureProductionBucket: 'dk57nqppwurwj.cloudfront.net',
+    secureHomologationBucket: 'di7sot6oypu2g.cloudfront.net',
+    productionBucket: 'embedstore.ingresse.com.s3-website-us-east-1.amazonaws.com',
+    homologationBucket: 'embedstore-homolog.ingresse.com.s3-website-us-east-1.amazonaws.com'
+}
+
+var host = null;
+var pagarmeKey = null;
+
+if(isThisLocation(hosts.productionBucket)){
+    
+}else if(isThisLocation(hosts.homologationBucket)){
+    host = 'http://apirc.ingresse.com';
+    pagarmeKey = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
+}else if(isThisLocation(hosts.secureHomologationBucket)){
+    host = 'https://apirc.ingresse.com';
+    pagarmeKey = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
+}else if(isThisLocation(hosts.productionBucket)){
+    host = 'http://api.ingresse.com';
+    pagarmeKey = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
+}else if(isThisLocation(hosts.secureProductionBucket)){
+    host = 'https://api.ingresse.com';
+    pagarmeKey = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
+}else{
+    if(console){
+        console.warn('A url em que este SDK esta sendo executado não foi reconhecida. Todas as chamadas serão efetuadas para a api de produção.');
+    }
+    pagarmeKey = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
+    host = 'http://api.ingresse.com';
+}
+
+
 window.addEventListener("message", receiveMessage, false);
 
 function receiveMessage(event)
@@ -13,8 +53,7 @@ function receiveMessage(event)
 angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
     var publickey;
     var privatekey;
-    PagarMe.encryption_key = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
-    // PagarMe.encryption_key = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
+    PagarMe.encryption_key = pagarmeKey;
 
     return{
         publickey: publickey,
@@ -29,10 +68,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
             return {
                 publickey: publickey,
                 privatekey: privatekey,
-                host: 'https://api.ingresse.com',
-                // host: 'https://apirc.ingresse.com',
-                // host: 'http://apibeta.ingresse.com',
-                // host: 'http://ingresse-api.dev',
+                host: host,
 
                 // ENCODE ANY STRING TO BE USED IN URLS
                 urlencode: function(str){
