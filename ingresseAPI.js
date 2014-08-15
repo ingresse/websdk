@@ -15,18 +15,10 @@ var hosts = {
 var host = null;
 var pagarmeKey = null;
 
-if(isThisLocation(hosts.productionBucket)){
-    
-}else if(isThisLocation(hosts.homologationBucket)){
-    host = 'http://apirc.ingresse.com';
-    pagarmeKey = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
-}else if(isThisLocation(hosts.secureHomologationBucket)){
+if(isThisLocation(hosts.homologationBucket) || isThisLocation(hosts.secureHomologationBucket)){
     host = 'https://apirc.ingresse.com';
     pagarmeKey = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
-}else if(isThisLocation(hosts.productionBucket)){
-    host = 'http://api.ingresse.com';
-    pagarmeKey = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
-}else if(isThisLocation(hosts.secureProductionBucket)){
+}else if(isThisLocation(hosts.productionBucket) || isThisLocation(hosts.secureProductionBucket)){
     host = 'https://api.ingresse.com';
     pagarmeKey = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
 }else{
@@ -34,7 +26,7 @@ if(isThisLocation(hosts.productionBucket)){
         console.warn('A url em que este SDK esta sendo executado não foi reconhecida. Todas as chamadas serão efetuadas para a api de produção.');
     }
     pagarmeKey = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
-    host = 'http://api.ingresse.com';
+    host = 'https://api.ingresse.com';
 }
 
 
