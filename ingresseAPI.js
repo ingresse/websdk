@@ -501,7 +501,8 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
                                 // PAGAR.ME ERROR
                                 if(response.responseData.data.status == 'declined'){
                                     VenusActivityIndicatorService.error('Desculpe, seu cartão foi recusado. Tente novamente com outro cartão ou pague via boleto.',response);
-                                    deferred.reject();
+                                    deferred.resolve(response.responseData.data);
+
                                 }
 
                                 // LIFE IS GOOD, CREDIT IS GOOD!
