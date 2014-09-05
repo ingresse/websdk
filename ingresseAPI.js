@@ -12,14 +12,12 @@ var hosts = {
     homologationBucket: 'embedstore-homolog.ingresse.com.s3-website-us-east-1.amazonaws.com'
 }
 
-var host = null;
+var host = 'https://api.ingresse.com';
 var pagarmeKey = null;
 
 if(isThisLocation(hosts.homologationBucket) || isThisLocation(hosts.secureHomologationBucket)){
-    host = 'https://apirc.ingresse.com';
     pagarmeKey = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
 }else if(isThisLocation(hosts.productionBucket) || isThisLocation(hosts.secureProductionBucket)){
-    host = 'https://api.ingresse.com';
     pagarmeKey = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
 }else{
     if(console){
