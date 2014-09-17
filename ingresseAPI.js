@@ -1,33 +1,3 @@
-function isThisLocation(url){
-    if(window.location.href.indexOf(url) >= 0){
-        return true;
-    }
-    return false;
-}
-
-var hosts = {
-    secureProductionBucket: 'dk57nqppwurwj.cloudfront.net',
-    secureHomologationBucket: 'di7sot6oypu2g.cloudfront.net',
-    productionBucket: 'embedstore.ingresse.com.s3-website-us-east-1.amazonaws.com',
-    homologationBucket: 'embedstore-homolog.ingresse.com.s3-website-us-east-1.amazonaws.com'
-}
-
-var host = 'https://api.ingresse.com';
-var pagarmeKey = null;
-
-if(isThisLocation(hosts.homologationBucket) || isThisLocation(hosts.secureHomologationBucket)){
-    pagarmeKey = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
-}else if(isThisLocation(hosts.productionBucket) || isThisLocation(hosts.secureProductionBucket)){
-    pagarmeKey = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
-}else{
-    if(console){
-        console.warn('A url em que este SDK esta sendo executado não foi reconhecida. Todas as chamadas serão efetuadas para a api de produção.');
-    }
-    pagarmeKey = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
-    host = 'https://api.ingresse.com';
-}
-
-
 window.addEventListener("message", receiveMessage, false);
 
 function receiveMessage(event)
@@ -43,7 +13,7 @@ function receiveMessage(event)
 angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
     var publickey;
     var privatekey;
-    PagarMe.encryption_key = pagarmeKey;
+    PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
 
     return{
         publickey: publickey,
@@ -58,7 +28,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
             return {
                 publickey: publickey,
                 privatekey: privatekey,
-                host: host,
+                host: 'https://api.ingresse.com',
 
                 // ENCODE ANY STRING TO BE USED IN URLS
                 urlencode: function(str){
@@ -430,11 +400,11 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                         $http.post(url,currentTransaction)
                         .success(function(response){
-                            if(angular.isObject(response.responseData)){
-                                deferred.resolve(response.responseData);
+                            if(response.responseData.data){
+                                deferred.resolve(response.responseData.data);
                             }else{
                                 VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar gerar o boleto. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
-                                deferred.reject();
+                                deferred.reject(response.responseData);
                             }
                         })
                         .error(function(error){
@@ -510,7 +480,7 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
                             }else{
                                 VenusActivityIndicatorService.error('Desculpe, houve um erro ao tentar realizar o pagamento. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.',response.responseData);
-                                deferred.reject();
+                                deferred.reject(response.responseData);
                             }
                         })
                         .error(function(error){
