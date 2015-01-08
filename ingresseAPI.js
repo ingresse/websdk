@@ -10,11 +10,9 @@ function receiveMessage(event)
   angular.element(document.body).scope().$broadcast('ingresseAPI.userHasLogged',obj);
 }
 
-angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
+angular.module('ingresseSDK').provider('ingresseAPI',function () {
   var publickey;
   var privatekey;
-  PagarMe.encryption_key = "ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ";
-  // PagarMe.encryption_key = "ek_test_8vbegf4Jw85RB12xPlACofJGcqIabb";
 
   return{
     publickey: publickey,
@@ -25,14 +23,11 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
     setPrivateKey: function(key){
       privatekey = key;
     },
-    $get: function($http,$rootScope, $q){
+    $get: function($http, $rootScope, $q, Preferences) {
       return {
         publickey: publickey,
         privatekey: privatekey,
-        host: 'https://api.ingresse.com',
-        // host: 'https://apirc.ingresse.com',
-        // host: 'http://apibeta.ingresse.com',
-        // host: 'http://ingresse-api.dev',
+        host: Preferences.getHost(),
 
         // ENCODE ANY STRING TO BE USED IN URLS
         urlencode: function(str){
@@ -229,41 +224,26 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
         login: function(){
           var url = this.host + '/authorize/' + this.generateAuthKey();
-          return url + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
+          return url + '&returnurl=' + this.urlencode(Preferences.login_return_url);;
         },
 
         logout: function(){
           var url = this.host + '/logout' + this.generateAuthKey();
-
-          var deferred = $q.defer();
-
-          $http.get(url)
-          .success(function(response){
-            if(angular.isObject(response.responseData)){
-              deferred.resolve(true);
-            }else{
-              deferred.reject();
-            }
-          })
-          .error(function(error){
-            deferred.reject();
-          });
-
-          return deferred.promise;
+          return url + '&returnurl=' + this.urlencode(Preferences.login_return_url);;
         },
 
         register: function(){
           var url = this.host + '/register' + this.generateAuthKey();
-          return url + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
+          return url + '&returnurl=' + this.urlencode(Preferences.login_return_url);;
         },
 
         getLoginWithFacebookUrl: function(){
-          var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
+          var url = this.host + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode(Preferences.login_return_url);;
           return url;
         },
 
         getRegisterWithFacebookUrl: function(){
-          var url = this.host + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode('https://dk57nqppwurwj.cloudfront.net/parseResponse.html');
+          var url = this.host + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode(Preferences.login_return_url);;
           return url;
         },
 
@@ -281,14 +261,12 @@ angular.module('ingresseSDK',['venusUI']).provider('ingresseAPI',function() {
 
           $http.post(url,reservation)
           .success(function(response){
-            if(angular.isObject(response.responseData)){
-              if(response.responseData.data.status == 'declined'){
-                deferred.reject(response);
-              }
-              deferred.resolve(response.responseData);
-            }else{
-              deferred.reject();
+            if(response.responseError){
+              deferred.reject(response);
+              return;
             }
+
+            deferred.resolve(response.responseData);
           })
           .error(function(error){
             deferred.reject();
