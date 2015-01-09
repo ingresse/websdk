@@ -10,9 +10,88 @@ function receiveMessage(event)
   angular.element(document.body).scope().$broadcast('ingresseAPI.userHasLogged',obj);
 }
 
-angular.module('ingresseSDK').provider('ingresseAPI',function () {
+angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
   var publickey;
   var privatekey;
+  $httpProvider.interceptors.push(function($q) {
+    return {
+      'response': function(response) {
+         // do something on error
+        if(!response.data.responseError){
+          return response;
+        }
+
+        var error = response.data.responseError;
+        var errorMessage = "";
+
+        if(error.code === 1005) {
+         errorMessage = Error("O usuário informado é diferente do usuário que gerou a transação. Você trocou de login no meio do processo? Por favor, recomeçe a operação.");
+        }
+
+        if(error.code === 1006) {
+         errorMessage = Error("O campo e-mail não foi preenchido.");
+        }
+
+        if(error.code === 1007) {
+         errorMessage = Error("O endereço de e-mail informado não é valido.");
+        }
+
+        if(error.code === 1013 || error.code === 1014) {
+         errorMessage = Error("O número de parcelas não esta correto.");
+        }
+
+        if(error.code === 1029 || error.code === 1030) {
+         errorMessage = Error("O código de desconto inforado não esta correto.");
+        }
+
+        if(error.code === 1031) {
+         errorMessage = Error("Esta faltando alguma informação do cartão de crédito, verifique se você não esqueceu de preencher algo.");
+        }
+
+        if(error.code === 1032) {
+         errorMessage = Error("Você esqueceu de preencher o campo CPF.");
+        }
+
+        if(error.code === 1032) {
+         errorMessage = Error("Você esqueceu de preencher o campo CPF.");
+        }
+
+        if(error.code === 2001 || error.code === 2011) {
+          errorMessage = Error("Parece que seu login expirou, por favor, faça o login novamente.");
+        }
+
+        if(error.code === 2011) {
+          errorMessage = Error("Parece que seu login expirou, por favor, faça o login novamente.");
+        }
+
+        if(error.code === 2012) {
+          errorMessage = Error("Acesso não autorizado: O usuário logado não é o dono do evento.");
+        }
+
+        if(error.code === 2013) {
+          errorMessage = Error("Parece que a solicitação expirou. Por favor tente novamente.");
+        }
+
+        if(error.code === 2028) {
+          errorMessage = Error("Desculpe, mas este usuário não possui permissão de venda para este evento.");
+        }
+
+        if(error.code === 5001) {
+          errorMessage = Error("Não conseguimos nos conectar ao seu facebook... Por favor, faça o login no seu facebook e tente novamente.");
+        }
+
+        if(error.code === 5002) {
+          errorMessage = Error("Houve um problema de comunicação com nosso gateway de pagamento. Por favor tente novamente.");
+        }
+
+        if(errorMessage == "") {
+          errorMessage = Error("Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código: " + error.code);
+        }
+
+        return $q.reject(errorMessage);
+      }
+    };
+  });
 
   return{
     publickey: publickey,
@@ -125,14 +204,10 @@ angular.module('ingresseSDK').provider('ingresseAPI',function () {
 
           $http.get(url)
           .success(function(response){
-            if(angular.isObject(response.responseData)){
-              deferred.resolve(response.responseData);
-            }else{
-              deferred.reject();
-            }
+            deferred.resolve(response.responseData);
           })
-          .error(function(error){
-            deferred.reject();
+          .catch(function(error){
+            deferred.reject(error.message);
           });
 
           return deferred.promise;
@@ -147,14 +222,10 @@ angular.module('ingresseSDK').provider('ingresseAPI',function () {
 
           $http.get(url)
           .success(function(response){
-            if(angular.isObject(response.responseData)){
-              deferred.resolve(response.responseData);
-            }else{
-              deferred.reject();
-            }
+            deferred.resolve(response.responseData);
           })
-          .error(function(error){
-            deferred.reject();
+          .catch(function(error){
+            deferred.reject(error.message);
           });
 
           return deferred.promise;
@@ -168,14 +239,10 @@ angular.module('ingresseSDK').provider('ingresseAPI',function () {
 
           $http.get(url)
           .success(function(response){
-            if(angular.isObject(response.responseData)){
-              deferred.resolve(response.responseData);
-            }else{
-              deferred.reject();
-            }
+            deferred.resolve(response.responseData);
           })
-          .error(function(error){
-            deferred.reject();
+          .catch(function(error){
+            deferred.reject(error.message);
           });
 
           return deferred.promise;
@@ -261,15 +328,10 @@ angular.module('ingresseSDK').provider('ingresseAPI',function () {
 
           $http.post(url,reservation)
           .success(function(response){
-            if(response.responseError){
-              deferred.reject(response);
-              return;
-            }
-
             deferred.resolve(response.responseData);
           })
-          .error(function(error){
-            deferred.reject();
+          .catch(function(error){
+            deferred.reject(error.message);
           });
 
           return deferred.promise;
@@ -312,7 +374,7 @@ angular.module('ingresseSDK').provider('ingresseAPI',function () {
 
           var self = this;
 
-          if(paymentMethod == 'BoletoBancario'){
+          if(paymentMethod === 'BoletoBancario'){
             var currentTransaction = {
               transactionId: transactionId,
               userId: userId,
@@ -326,14 +388,10 @@ angular.module('ingresseSDK').provider('ingresseAPI',function () {
 
             $http.post(url,currentTransaction)
             .success(function(response){
-              if(angular.isObject(response.responseData)){
-                deferred.resolve(response.responseData);
-              }else{
-                deferred.reject();
-              }
+              deferred.resolve(response.responseData);
             })
-            .error(function(error){
-              deferred.reject();
+            .catch(function(error){
+              deferred.reject(error.message);
             });
 
             return deferred.promise;
@@ -378,23 +436,19 @@ angular.module('ingresseSDK').provider('ingresseAPI',function () {
 
             $http.post(url,transactionDTO)
             .success(function(response){
-              if(angular.isObject(response.responseData)){
-                // PAGAR.ME ERROR
-                if(response.responseData.data.status == 'declined'){
-                  deferred.reject();
-                }
-
-                // LIFE IS GOOD, CREDIT IS GOOD!
-                if(response.responseData.data.status == 'approved'){
-                  deferred.resolve(response.responseData.data);
-                }
-
-              }else{
+              if(response.responseData.data.status === 'declined'){
                 deferred.reject();
               }
+
+              // LIFE IS GOOD, CREDIT IS GOOD!
+              if(response.responseData.data.status === 'approved'){
+                deferred.resolve(response.responseData.data);
+              }
+
+              deferred.reject(new Error('Houve um erro com sua transação, o status recebido é: ' + response.responseData.data.status + ', entre em contato com a ingresse informando este erro.'));
             })
-            .error(function(error){
-              deferred.reject();
+            .catch(function(error){
+              deferred.reject(error.message);
             });
           });
 
