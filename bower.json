@@ -6,7 +6,7 @@
     "Daniel Borlino de Oliveira <daniel.borlino@ingresse.com>"
   ],
   "description": "SDK da API do ingresse.com em angular.js",
-  "main": ["ingresseAPI.js","services/preferences.js","directives/ingresse-login.js"],
+  "main": ["services/preferences.js","ingresseAPI.js","directives/ingresse-login.js"],
   "keywords": [
     "ingresse.com",
     "API",
