@@ -1,12 +1,19 @@
 {
   "name": "ingresse-websdk",
-  "version": "2.0.1",
+  "version": "4.0.0",
   "homepage": "https://github.com/ingresse/ingresse-websdk",
   "authors": [
     "Daniel Borlino de Oliveira <daniel.borlino@ingresse.com>"
   ],
   "description": "SDK da API do ingresse.com em angular.js",
-  "main": ["services/preferences.js","ingresseAPI.js","directives/ingresse-login.js"],
+  "main": [
+    "bower_components/ingresse-websdk/services/IngresseAPI.Preferences.js",
+    "bower_components/ingresse-websdk/services/IngresseAPI.UserService.js",
+    "bower_components/ingresse-websdk/services/IngresseAPI.js",
+    "bower_components/ingresse-websdk/directives/ingresse-login.js",
+    "bower_components/ingresse-websdk/directives/ingresse-login.css",
+    "bower_components/ingresse-websdk/directives/ingresse-user.js"
+  ],
   "keywords": [
     "ingresse.com",
     "API",
@@ -14,15 +21,28 @@
   ],
   "dependencies": {
     "pagar-me": "https://pagar.me/assets/pagarme.js",
+    "angular": "~1.3.0",
+    "json3": "~3.3.1",
+    "es5-shim": "~3.1.0",
+    "angular-resource": "~1.3.0",
+    "angular-cookies": "~1.3.0",
+    "angular-sanitize": "~1.3.0",
+    "angular-animate": "~1.3.0",
+    "angular-touch": "~1.3.0",
+    "angular-route": "~1.3.0",
     "crypto-js": "http://crypto-js.googlecode.com/files/CryptoJS%20v3.1.2.zip",
-    "venus": "~1.9.9"
+    "venus": "~1.9.9",
+    "ng-json-explorer": "*"
   },
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ]
+  "devDependencies": {
+    "angular-mocks": "~1.3.0",
+    "angular-scenario": "~1.3.0"
+  },
+  "appPath": "app",
+  "resolutions": {
+    "json3": "~3.2.6",
+    "es5-shim": "~2.1.0",
+    "angular": "~1.3.0",
+    "angular-route": "~1.3.0"
+  }
 }

@@ -1,0 +1,28 @@
+{
+  "name": "ingresse-websdk",
+  "version": "0.2.2",
+  "homepage": "https://github.com/ingresse/ingresse-websdk",
+  "authors": [
+    "Daniel Borlino de Oliveira <daniel.borlino@ingresse.com>"
+  ],
+  "description": "SDK da API do ingresse.com em angular.js",
+  "main": "ingresseAPI.js",
+  "keywords": [
+    "ingresse.com",
+    "API",
+    "SDK"
+  ],
+  "dependencies": {
+    "pagar-me": "https://pagar.me/assets/pagarme.js",
+    "crypto-js": "http://crypto-js.googlecode.com/files/CryptoJS%20v3.1.2.zip",
+    "venus": "~1.*"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

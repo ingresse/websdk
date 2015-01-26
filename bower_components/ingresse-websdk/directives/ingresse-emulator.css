@@ -1,0 +1,84 @@
+.cloak1{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 9;
+    background: rgba(0,0,0,0.7);
+}
+
+.result {
+  background-image: url(https://s3.amazonaws.com/ingresse-static/ticket_b.png);
+  background-repeat: no-repeat;
+  background-position: 97% 14px;
+  background-size: 30px;
+  display: block;
+  padding: 20px;
+  background-color: #000;
+  border-radius: 5px;
+  box-shadow: 0 0 5px inset;
+  color: rgb(59,195,247);
+}
+
+.userCard {
+  padding: 20px;
+  border: 1px solid #D2D2D2;
+  box-shadow: 0 0 5px #ccc;
+  font-size: 13px;
+  font-weight: lighter;
+  overflow: auto;
+}
+
+.httpcalls {
+  padding: 10px;
+  background: #000;
+  color: rgb(59,195,247);
+  overflow: hidden;
+  position: relative;
+}
+
+.httpcalls .clear {
+  border: 2px solid;
+  padding: 5px;
+  border-radius: 5px;
+  line-height: 10px;
+  font-size: 14px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.httpcalls .calls {
+  max-height: 150px;
+  overflow: auto;
+}
+
+.httpcalls .call{
+  position: relative;
+  font-size: 10px;
+  font-family: monospace;
+  -webkit-animation: fadeInDown 1s;
+}
+
+.httpcalls .time{
+  display: block;
+  background: rgb(37, 97, 119);
+  height: 2px;
+  margin-top: 2px;
+}
+.userCard p{
+  margin: 0px 0px 6px 0px;
+}
+.userCard .userPhoto {
+  height: 136px;
+  float: left;
+  margin-right: 30px;
+  border: 1px solid #ABABAB;
+  border-radius: 100%;
+}
+
+
+.result .gd-ui-json-explorer .string, .gd-ui-json-explorer .null, .result .gd-ui-json-explorer .collapser, .result .gd-ui-json-explorer .num, .result .gd-ui-json-explorer .null, .result .gd-ui-json-explorer .bool {
+  color: rgb(0, 133, 161);
+}
