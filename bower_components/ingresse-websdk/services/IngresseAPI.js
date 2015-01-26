@@ -84,89 +84,111 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
 
         if(error.code === 1001) {
          errorMessage += "Desculpe, mas você precisa selecionar pelo menos um ingresso.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 1005) {
          errorMessage += "O usuário informado é diferente do usuário que gerou a transação. Você trocou de login no meio do processo? Por favor, recomeçe a operação.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 1006) {
          errorMessage += "O campo e-mail não foi preenchido.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 1007) {
          errorMessage += "O endereço de e-mail informado não é valido.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 1013 || error.code === 1014) {
          errorMessage += "O número de parcelas não esta correto.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 1029 || error.code === 1030) {
          errorMessage += "O código de desconto inforado não esta correto.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 1031) {
          errorMessage += "Esta faltando alguma informação do cartão de crédito, verifique se você não esqueceu de preencher algo.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 1032) {
          errorMessage += "Você esqueceu de preencher o campo CPF.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 1032) {
          errorMessage += "Você esqueceu de preencher o campo CPF.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 2001 || error.code === 2011) {
           errorMessage += "Parece que seu login expirou, por favor, faça o login novamente.";
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 2006) {
          errorMessage += "Desculpe, mas você precisa estar logado para acessar esta informação.";
+         return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 2011) {
           errorMessage += "Parece que seu login expirou, por favor, faça o login novamente.";
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 2012) {
           errorMessage += "Acesso não autorizado: O usuário logado não é o dono do evento.";
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 2013) {
           errorMessage += "Parece que a solicitação expirou. Por favor tente novamente.";
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 2016) {
           errorMessage += "Desculpe. Parece que a sua solicitação expirou. Por favor verifique se o horário em seu computador esta correto e tente novamente.";
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 2028) {
           errorMessage += "Desculpe, mas este usuário não possui permissão de venda para este evento.";
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 3002) {
           errorMessage += "Desculpe, mas o evento solicitado não existe em nosso banco de dados.";
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 3003) {
           errorMessage += "Desculpe, este usuário não existe.";
+          return $q.reject(Error(errorMessage));
+        }
+
+        if(error.code === 3020) {
+          errorMessage += "Desculpe, mas não há ingressos cadastrados para o evento solicitado.";
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 5001) {
           errorMessage += "Não conseguimos nos conectar ao seu facebook... Por favor, faça o login no seu facebook e tente novamente.";
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 5002) {
           errorMessage += "Houve um problema de comunicação com nosso gateway de pagamento. Por favor tente novamente.";
+          return $q.reject(Error(errorMessage));
         }
 
-        if(errorMessage == "") {
-          $log.error(error);
-          errorMessage += "Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código";
-        }
-
+        $log.error(error);
+        errorMessage += "Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código";
         return $q.reject(Error(errorMessage));
       }
     };
