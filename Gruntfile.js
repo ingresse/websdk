@@ -29,8 +29,8 @@ module.exports = function (grunt) {
 
     s3: {
       options: {
-          accessKeyId: "AKIAIHH6MTU3UB6WEK3Q",
-          secretAccessKey: "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"
+          accessKeyId: "-",
+          secretAccessKey: "-"
       },
       homolog: {
           options: {
