@@ -31,6 +31,7 @@
           <option value="updateUser">Atualizar Usuário</option>
           <option value="createTransaction">Criar Transação</option>
           <option value="payTransaction">Pagar Transação</option>
+          <option value="errorList">Erros</option>
         </select>
       </form>
 
@@ -341,6 +342,21 @@
         </div>
 
         <button class="venus button" type="submit" ng-disabled="!payTransactionForm.$valid">Enviar</button>
+      </form>
+
+      <form  class="venus" name="errorListForm" action="" ng-show="selectedMethod === 'errorList'" ng-submit="getError(errorClass)">
+        <label>Classe de error</label>
+        <select name="errorClass" ng-model="errorClass">
+          <option value="" selected>Nenhum</option>
+          <option value="1000">1000 - Usage Exception</option>
+          <option value="2000">2000 - Unauthorized Access Exception</option>
+          <option value="3000">3000 - Database Exception</option>
+          <option value="4000">4000 - Fatal Error Exception</option>
+          <option value="5000">5000 - External Error Exception</option>
+          <option value="6000">6000 - Context Exception</option>
+        </select>
+
+        <button class="venus button" type="submit">Enviar</button>
       </form>
     </div>
   </div>

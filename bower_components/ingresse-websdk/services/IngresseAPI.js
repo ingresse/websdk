@@ -278,6 +278,26 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
           return deferred.promise;
         },
 
+
+        getError: function (errorClass) {
+          var deferred = $q.defer();
+          if(errorClass){
+            var url = ingresseAPI_Preferences.getHost() + '/error/' + errorClass + this.generateAuthKey();
+          }else{
+            var url = ingresseAPI_Preferences.getHost() + '/error/' + this.generateAuthKey();
+          }
+
+          $http.get(url)
+          .success(function(response){
+            deferred.resolve(response.responseData);
+          })
+          .catch(function(error){
+            deferred.reject(error.message);
+          });
+
+          return deferred.promise;
+        },
+
         /*
           BUSCA UMA LISTA DE EVENTOS
           eventId: int

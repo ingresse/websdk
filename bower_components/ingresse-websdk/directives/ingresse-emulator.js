@@ -73,6 +73,21 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         });
       };
 
+      $scope.getError = function (errorClass) {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Carregando lista de erros...');
+        ingresseAPI.getError(errorClass)
+        .then(function(response){
+          $scope.result = response;
+        })
+        .catch( function (error) {
+          VenusActivityIndicatorService.error(error);
+        })
+        .finally(function(){
+          VenusActivityIndicatorService.stopActivity('Carregando lista de erros...');
+        });
+      }
+
       $scope.getEventList = function (form) {
         $scope.resetResponses();
         VenusActivityIndicatorService.startActivity('Carregando Eventos...');
