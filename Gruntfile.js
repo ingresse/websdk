@@ -27,24 +27,6 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
-    s3: {
-      options: {
-          accessKeyId: "-",
-          secretAccessKey: "-"
-      },
-      homolog: {
-          options: {
-              bucket: "emulador-api.ingresse.com",
-              headers: {
-                  CacheControl: 0,
-                  Expires: expireDate
-              }
-          },
-          cwd: "dist",
-          src: "**"
-      }
-    },
-
     // Project settings
     yeoman: appConfig,
 
@@ -415,11 +397,6 @@ module.exports = function (grunt) {
     'concurrent:dist',
     'copy:dist',
     'copy:bower'
-  ]);
-
-  grunt.registerTask('homolog',[
-      'build',
-      's3:homolog'
   ]);
 
   grunt.registerTask('default', [
