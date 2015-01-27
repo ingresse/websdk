@@ -1,7 +1,7 @@
 <div class="venus container transmute-grid" style="margin-top: 40px;">
   <div class="venus row">
     <div class="venus column eight">
-      <form class="venus" action="">
+      <form class="venus">
         <label>Domain</label>
         <input type="text" ng-model="domain" ng-change="setHost(domain)" />
         <label>Public Key</label>
@@ -16,7 +16,7 @@
     </div>
 
     <div class="venus column five offset-one">
-      <form action="" class="venus">
+      <form class="venus">
         <label>Método</label>
         <select ng-model='selectedMethod'>
           <option value="eventList">Buscar Eventos</option>
@@ -35,7 +35,7 @@
         </select>
       </form>
 
-      <form  class="venus" action="" name="eventListForm" ng-show="selectedMethod === 'eventList'" ng-submit="getEventList(eventListForm)">
+      <form  class="venus" novalidate name="eventListForm" ng-show="selectedMethod === 'eventList'" ng-submit="getEventList(eventListForm)">
         <label>User token</label>
         <input type="text" ng-model="user.token" disabled/>
 
@@ -69,7 +69,7 @@
         <button class="venus button" type="submit">Enviar</button>
       </form>
 
-      <form  class="venus" action="" name="eventForm" ng-show="selectedMethod === 'event'" ng-submit="getEvent(eventForm)">
+      <form  class="venus" novalidate name="eventForm" ng-show="selectedMethod === 'event'" ng-submit="getEvent(eventForm)">
         <label>User token</label>
         <input type="text" ng-model="user.token" disabled/>
 
@@ -82,7 +82,7 @@
         <button class="venus button" type="submit" ng-disabled="!eventForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" action="" name="eventTicketsForm" ng-show="selectedMethod === 'eventTickets'" ng-submit="getEventTickets(eventTicketsForm)">
+      <form  class="venus" novalidate name="eventTicketsForm" ng-show="selectedMethod === 'eventTickets'" ng-submit="getEventTickets(eventTicketsForm)">
         <label>User token</label>
         <input type="text" ng-model="user.token" disabled/>
 
@@ -92,7 +92,7 @@
         <button class="venus button" type="submit" ng-disabled="!eventTicketsForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" action="" name="userForm" ng-show="selectedMethod === 'user'" ng-submit="getUser(userForm)">
+      <form  class="venus" novalidate name="userForm" ng-show="selectedMethod === 'user'" ng-submit="getUser(userForm)">
         <label>User token</label>
         <input type="text" ng-model="user.token" disabled/>
 
@@ -105,7 +105,7 @@
         <button class="venus button" type="submit" ng-disabled="!userForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" action="" name="userTicketsForm" ng-show="selectedMethod === 'userTickets'" ng-submit="getUserTickets(userTicketsForm)">
+      <form  class="venus" novalidate name="userTicketsForm" ng-show="selectedMethod === 'userTickets'" ng-submit="getUserTickets(userTicketsForm)">
         <label>User token</label>
         <input type="text" ng-model="user.token" required disabled/>
 
@@ -124,7 +124,7 @@
         <button class="venus button" type="submit" ng-disabled="!userTicketsForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" action="" name="userEventsForm" ng-show="selectedMethod === 'userEvents'" ng-submit="getUserEvents(userEventsForm)">
+      <form  class="venus" novalidate name="userEventsForm" ng-show="selectedMethod === 'userEvents'" ng-submit="getUserEvents(userEventsForm)">
         <label>User token</label>
         <input type="text" ng-model="user.token" required disabled/>
 
@@ -149,7 +149,7 @@
         <button class="venus button" type="submit" ng-disabled="!userEventsForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" name="updateTicketStatusForm" action="" ng-show="selectedMethod === 'updateTicketStatus'" ng-submit="updateTicketStatus()">
+      <form  class="venus" novalidate name="updateTicketStatusForm" ng-show="selectedMethod === 'updateTicketStatus'" ng-submit="updateTicketStatus()">
         <label>User token</label>
         <input type="text" ng-model="user.token" required disabled/>
 
@@ -173,7 +173,7 @@
         <button class="venus button" type="submit" ng-disabled="!updateTicketStatusForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" name="checkinReportForm" action="" ng-show="selectedMethod === 'checkinReport'" ng-submit="getCheckinReport()">
+      <form  class="venus" novalidate name="checkinReportForm" ng-show="selectedMethod === 'checkinReport'" ng-submit="getCheckinReport()">
         <label>User token</label>
         <input type="text" ng-model="user.token" required disabled/>
 
@@ -183,7 +183,7 @@
         <button class="venus button" type="submit" ng-disabled="!checkinReportForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" name="transactionDataForm" action="" ng-show="selectedMethod === 'transactionData'" ng-submit="getTransactionData()">
+      <form  class="venus" novalidate name="transactionDataForm" ng-show="selectedMethod === 'transactionData'" ng-submit="getTransactionData()">
         <label>User token</label>
         <input type="text" ng-model="user.token" required disabled/>
 
@@ -196,7 +196,7 @@
         <button class="venus button" type="submit" ng-disabled="!transactionDataForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" name="updateUserForm" action="" ng-show="selectedMethod === 'updateUser'" ng-submit="updateUser(updateUserForm)">
+      <form  class="venus" novalidate name="updateUserForm" ng-show="selectedMethod === 'updateUser'" ng-submit="updateUser(updateUserForm)">
         <label>User token</label>
         <input type="text" ng-model="user.token" required disabled/>
 
@@ -236,7 +236,7 @@
         <button class="venus button" type="submit" ng-disabled="!updateUserForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" name="createTransactionForm" action="" ng-show="selectedMethod === 'createTransaction'" ng-submit="createTransaction()">
+      <form  class="venus" novalidate name="createTransactionForm" ng-show="selectedMethod === 'createTransaction'" ng-submit="createTransaction()">
         <label>User token</label>
         <input type="text" ng-model="user.token" required disabled/>
 
@@ -277,7 +277,7 @@
       </form>
 
 
-      <form  class="venus" name="payTransactionForm" action="" ng-show="selectedMethod === 'payTransaction'" ng-submit="payTransaction(payTransactionForm)">
+      <form  class="venus" novalidate name="payTransactionForm" ng-show="selectedMethod === 'payTransaction'" ng-submit="payTransaction(payTransactionForm)">
         <label>User token</label>
         <input type="text" ng-model="user.token" required disabled/>
 
@@ -344,9 +344,9 @@
         <button class="venus button" type="submit" ng-disabled="!payTransactionForm.$valid">Enviar</button>
       </form>
 
-      <form  class="venus" name="errorListForm" action="" ng-show="selectedMethod === 'errorList'" ng-submit="getError(errorClass)">
+      <form  class="venus" novalidate name="errorListForm" ng-show="selectedMethod === 'errorList'" ng-submit="getError(errorClass)">
         <label>Classe de error</label>
-        <select name="errorClass" ng-model="errorClass">
+        <select ng-model="errorClass">
           <option value="" selected>Nenhum</option>
           <option value="1000">1000 - Usage Exception</option>
           <option value="2000">2000 - Unauthorized Access Exception</option>
@@ -362,7 +362,7 @@
   </div>
   <div class="venus row" style="margin-top:40px;">
     <div class="venus eight centered">
-      <form class="venus" action="" style="margin-bottom:5px;" ng-submit="makeCall()">
+      <form class="venus" style="margin-bottom:5px;" ng-submit="makeCall()">
         <input id="check1" type="checkbox" name="check" value="check1" ng-model="collapsed">
         <label for="check1">Collapse Results</label>
       </form>
