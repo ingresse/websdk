@@ -31,7 +31,7 @@ angular.module('ingresseSDK').directive('ingresseLogin', function (ingresseAPI_P
             });
         },
         restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
-        templateUrl: '/bower_components/ingresse-websdk/directives/ingresse-login.html',
+        templateUrl: ingresseAPI_Preferences.templates_directory + 'ingresse-login.html',
         link: function($scope, iElm, iAttrs, controller) {
 
         }

@@ -8,7 +8,7 @@ var angular = angular;
 * Description
 */
 
-angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator', function () {
+angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator', function (ingresseAPI_Preferences) {
   // Runs during compile
   return {
     scope: {}, // {} = isolate, true = child, false/undefined = no change
@@ -334,6 +334,6 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
       $scope.publicKey = ingresseAPI_Preferences.publickey;
     },
     restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
-    templateUrl: 'bower_components/ingresse-websdk/directives/ingresse-emulator.html'
+    templateUrl: ingresseAPI_Preferences.templates_directory + 'ingresse-emulator.html'
   };
 });

@@ -24,6 +24,7 @@ var app = angular
   .config(function ($routeProvider, ingresseAPI_PreferencesProvider) {
     // ingresseAPI_PreferencesProvider.setPublicKey('yourkey');
     // ingresseAPI_PreferencesProvider.setPrivateKey('yourkey');
+    // ingresseAPI_PreferencesProvider.setTemplateDirectory('/bower_components/ingresse-websdk/directives/');
 
     $routeProvider
       .when('/', {

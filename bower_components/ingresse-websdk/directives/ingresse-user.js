@@ -1,6 +1,6 @@
-angular.module('ingresseSDK').directive('ingresseUser', function (ingresseAPI) {
+angular.module('ingresseSDK').directive('ingresseUser', function (ingresseAPI, ingresseAPI_Preferences) {
   return {
-    templateUrl: 'bower_components/ingresse-websdk/directives/ingresse-user.html',
+    templateUrl: ingresseAPI_Preferences.templates_directory + 'ingresse-user.html',
     restrict: 'A',
     scope: {
       user: '=',
