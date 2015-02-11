@@ -1,4 +1,4 @@
-angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserService($rootScope){
+angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserService($rootScope, $cookies){
     return {
         data: null,
         userId: null,
@@ -24,6 +24,18 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
             this.userId = userId;
             this.token = token;
             $rootScope.$broadcast('userSessionSaved');
+        },
+        saveLocation: function(location){
+            this.city = location;
+            document.cookie = "city=" + this.city + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+            $rootScope.$broadcast('user_service.location_saved');
+        },
+        getLocation: function(){
+            if(!this.city){
+                return $cookies.city;
+            }
+
+            return this.city;
         }
     }
 });
