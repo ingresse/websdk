@@ -599,13 +599,21 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
           return deferred.promise;
         },
 
-        getGuestList: function (eventId, token, fields, filters) {
+        getGuestList: function (eventId, token, fields, filters, page, pageSize) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/event/'+ eventId + '/guestlist' + this.generateAuthKey() + '&usertoken=' + token;
 
           if (fields) {
               url += '&fields=' + fields.toString();
+          }
+
+          if (page) {
+              url += '&page=' + page;
+          }
+
+          if (pageSize) {
+              url += '&pageSize=' + pageSize;
           }
 
           if (filters) {
