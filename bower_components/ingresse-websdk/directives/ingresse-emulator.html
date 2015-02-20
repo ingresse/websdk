@@ -26,6 +26,7 @@
           <option value="userEvents">Consultar Eventos do Usuário</option>
           <option value="userTickets">Consultar Ingressos do usuário</option>
           <option value="updateTicketStatus">Atualizar status de ingressos</option>
+          <option value="guestList">Consultar lista de convidados</option>
           <option value="checkinReport">Relatório de Checkin</option>
           <option value="transactionData">Consultar Transação</option>
           <option value="updateUser">Atualizar Usuário</option>
@@ -181,6 +182,38 @@
         <input type="number" ng-model="checkinReportForm.eventId" required/>
 
         <button class="venus button" type="submit" ng-disabled="!checkinReportForm.$valid">Enviar</button>
+      </form>
+
+      <form  class="venus" novalidate name="guestListForm" ng-show="selectedMethod === 'guestList'" ng-submit="getGuestList()">
+        <label>User token</label>
+        <input type="text" ng-model="user.token" required disabled/>
+
+        <label>Event ID</label>
+        <input type="number" ng-model="guestListForm.eventId" required/>
+
+        <label>Fields</label>
+        <input type="text" ng-model="guestListForm.fields"/>
+
+        <label>Status</label>
+        <select ng-model='guestListForm.filters.status'>
+          <option value="all" selected>all</option>
+          <option value="checked">checked</option>
+          <option value="unchecked">unchecked</option>
+        </select>
+
+        <label>Ticket Type ID</label>
+        <input type="number" ng-model="guestListForm.filters.tickettypeid"/>
+
+        <label>Session ID</label>
+        <input type="number" ng-model="guestListForm.filters.sessionid"/>
+
+        <label>Page</label>
+        <input type="number" ng-model="guestListForm.page"/>
+
+        <label>Page Size</label>
+        <input type="number" ng-model="guestListForm.pageSize"/>
+
+        <button class="venus button" type="submit" ng-disabled="!guestListForm.$valid">Enviar</button>
       </form>
 
       <form  class="venus" novalidate name="transactionDataForm" ng-show="selectedMethod === 'transactionData'" ng-submit="getTransactionData()">

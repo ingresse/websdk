@@ -599,6 +599,40 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
           return deferred.promise;
         },
 
+        getGuestList: function (eventId, token, fields, filters) {
+          var deferred = $q.defer();
+
+          var url = ingresseAPI_Preferences.getHost() + '/event/'+ eventId + '/guestlist' + this.generateAuthKey() + '&usertoken=' + token;
+
+          if (fields) {
+              url += '&fields=' + fields.toString();
+          }
+
+          if (filters) {
+              if (filters.status) {
+                url += '&status=' + filters.status;
+              }
+
+              if (filters.tickettypeid) {
+                url += '&tickettypeid=' + filters.tickettypeid;
+              }
+
+              if (filters.sessionid) {
+                url += '&sessionid=' + filters.sessionid;
+              }
+            }
+
+          $http.get(url)
+          .success(function(response){
+            deferred.resolve(response.responseData);
+          })
+          .catch(function(error){
+            deferred.reject(error.message);
+          });
+
+          return deferred.promise;
+        },
+
         getTransactionData: function (transactionId, token, fields) {
           var deferred = $q.defer();
 

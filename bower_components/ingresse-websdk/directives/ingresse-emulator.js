@@ -194,6 +194,21 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         });
       };
 
+      $scope.getGuestList = function () {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Carregando lista de convidados...');
+        ingresseAPI.getGuestList($scope.guestListForm.eventId, $scope.user.token, $scope.guestListForm.fields, $scope.guestListForm.filters)
+        .then(function (response) {
+          $scope.result = response;
+        })
+        .catch( function (error) {
+          VenusActivityIndicatorService.error(error);
+        })
+        .finally(function(){
+          VenusActivityIndicatorService.stopActivity('Carregando lista de convidados...');
+        });
+      };
+
       $scope.getTransactionData = function () {
         $scope.resetResponses();
         VenusActivityIndicatorService.startActivity('Carregando dados da transação...');
