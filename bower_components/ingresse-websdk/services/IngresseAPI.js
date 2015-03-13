@@ -2,7 +2,7 @@ window.addEventListener("message", receiveMessage, false);
 
 function receiveMessage(event)
 {
-  if (event.origin !== "https://dk57nqppwurwj.cloudfront.net"){
+  if (event.origin !== "https://dk57nqppwurwj.cloudfront.net" && event.origin !== "https://compra.ingresse.com"){
   return;
   }
 
@@ -153,7 +153,7 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
         }
 
         if(error.code === 2016) {
-          errorMessage += "Desculpe. Parece que a sua solicitação expirou. Por favor verifique se o horário em seu computador esta correto e tente novamente.";
+          errorMessage += "Desculpe, mas parece que sua conta não tem permissão para realizar esta ação, se você não for o organizador do evento, entre em contato com o organizador, se você for o organizador do evento entre em contato com a ingresse.";
           return $q.reject(Error(errorMessage));
         }
 
@@ -222,6 +222,11 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
           RETURNS THE STRING TO BE USED ON API CALLS.
         */
         generateAuthKey : function(){
+
+          if (!ingresseAPI_Preferences.privatekey && !ingresseAPI_Preferences.publickey) {
+            return;
+          }
+
           var formatTwoCaracters = function(value){
             if(value < 10){
               value = "0" + value;
@@ -628,6 +633,10 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
               if (filters.sessionid) {
                 url += '&sessionid=' + filters.sessionid;
               }
+
+              if (filters.from) {
+                url += '&from=' + filters.from;
+              }
             }
 
           $http.get(url)
@@ -778,7 +787,17 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
 
             $http.post(url,currentTransaction)
             .success(function(response){
-              deferred.resolve(response.responseData);
+              if (!response.responseData.data) {
+                  deferred.reject('Desculpe, houve um erro ao tentar gerar o boleto. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.');
+                  return;
+              }
+
+              if (response.responseDaat.data.status === "declined") {
+                  deferred.reject(response.responseData.data.message);
+                  return;
+              }
+
+              deferred.resolve(response.responseData.data);
             })
             .catch(function(error){
               deferred.reject(error.message);

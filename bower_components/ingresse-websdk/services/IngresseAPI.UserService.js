@@ -1,21 +1,27 @@
-angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserService($rootScope, $cookies){
+angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserService($rootScope, ipCookie){
     return {
         data: null,
         userId: null,
         token: null,
         login: function(){
+            this.userId = ipCookie('userId');
+            this.token = ipCookie('token');
+
             if(!this.userId || !this.token){
                 $rootScope.$broadcast('showLogin');
                 return;
             }
+
+            $rootScope.$broadcast('userSessionSaved');
         },
         register: function(){
             $rootScope.$broadcast('showRegister');
         },
         logout: function(){
-            document.cookie = "userid=; expires=Fri, 31 Dec 1960 23:59:59 GMT; path=/";
-            document.cookie = "token=; expires=Fri, 31 Dec 1960 23:59:59 GMT; path=/";
+            ipCookie.remove('userId');
+            ipCookie.remove('token');
             $rootScope.$broadcast('showLogout');
+
             this.data = null;
             this.userId = null;
             this.token = null;
@@ -23,11 +29,13 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
         saveCredentials: function (token, userId){
             this.userId = userId;
             this.token = token;
+            ipCookie('userId', userId, { expires: 7 });
+            ipCookie('token', token, { expires: 7 });
             $rootScope.$broadcast('userSessionSaved');
         },
         saveLocation: function(location){
             this.city = location;
-            document.cookie = "city=" + this.city + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+            ipCookie('city',this.city,365);
             $rootScope.$broadcast('user_service.location_saved');
         },
         getLocation: function(){

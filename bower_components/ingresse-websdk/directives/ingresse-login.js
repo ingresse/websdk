@@ -3,7 +3,7 @@ angular.module('ingresseSDK').directive('ingresseLogin', function (ingresseAPI_P
         scope: {}, // {} = isolate, true = child, false/undefined = no change
         controller: function($scope, $rootScope, $element, $attrs, $transclude, ingresseAPI, IngresseAPI_UserService, $sce) {
             $scope.isVisible = false;
-            $scope.url = null;
+            $scope.url = $sce.trustAsResourceUrl(ingresseAPI.login());
 
             $scope.hide = function(){
                 $scope.isVisible = false;

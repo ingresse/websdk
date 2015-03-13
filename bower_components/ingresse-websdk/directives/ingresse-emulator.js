@@ -12,7 +12,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
   // Runs during compile
   return {
     scope: {}, // {} = isolate, true = child, false/undefined = no change
-    controller: function ($scope, $cookies, $log, $http, ingresseAPI, ingresseAPI_Preferences, IngresseAPI_UserService, VenusActivityIndicatorService) {
+    controller: function ($scope, ipCookie, $log, $http, ingresseAPI, ingresseAPI_Preferences, IngresseAPI_UserService, IngresseAPI_Freepass, VenusActivityIndicatorService) {
       $scope.domain = ingresseAPI_Preferences._host;
       $scope.httpCalls = ingresseAPI_Preferences.httpCalls;
       $scope.result = {};
@@ -269,6 +269,21 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         });
       };
 
+      $scope.freepass = function (form) {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Validando cortesias...');
+        IngresseAPI_Freepass.send(form.eventId, form.ticketTypeId, form.isHalfPrice, form.emails, form.validate, $scope.user.token)
+        .then(function (response) {
+          $scope.result = response;
+        })
+        .catch(function (error) {
+          VenusActivityIndicatorService.error(error);
+        })
+        .finally(function() {
+          VenusActivityIndicatorService.stopActivity('Validando cortesias...');
+        });
+      };
+
       $scope.generateTimestamp = function () {
         var timestamp = new Date();
         return timestamp.getTime();
@@ -326,7 +341,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         if (!$scope.privateKey) {
           return;
         }
-        $cookies.privatekey = $scope.privateKey;
+        ipCookie('privatekey',$scope.privateKey,{expires:365});
       });
 
       $scope.$watch('publicKey', function(){
@@ -334,15 +349,15 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           return;
         }
         // $document.cookie = "publicKey=" + $scope.publicKey + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-        $cookies.publickey = $scope.publicKey;
+        ipCookie('publickey',$scope.publicKey,{expires:365});
       });
 
-      if($cookies.publickey != "") {
-        ingresseAPI_Preferences.setPublicKey($cookies.publickey);
+      if(ipCookie.publickey != "") {
+        ingresseAPI_Preferences.setPublicKey(ipCookie('publickey'));
       }
 
-      if($cookies.privatekey != "") {
-        ingresseAPI_Preferences.setPrivateKey($cookies.privatekey);
+      if(ipCookie.privatekey != "") {
+        ingresseAPI_Preferences.setPrivateKey(ipCookie('privatekey'));
       }
 
       $scope.privateKey = ingresseAPI_Preferences.privatekey;

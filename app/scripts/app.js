@@ -11,7 +11,7 @@
 var app = angular
   .module('ingresseEmulatorApp', [
     'ngAnimate',
-    'ngCookies',
+    'ipCookie',
     'ngResource',
     'ngRoute',
     'ngSanitize',
@@ -24,7 +24,7 @@ var app = angular
   .config(function ($routeProvider, ingresseAPI_PreferencesProvider) {
     // ingresseAPI_PreferencesProvider.setPublicKey('yourkey');
     // ingresseAPI_PreferencesProvider.setPrivateKey('yourkey');
-    // ingresseAPI_PreferencesProvider.setTemplateDirectory('/bower_components/ingresse-websdk/directives/');
+    ingresseAPI_PreferencesProvider.setTemplateDirectory('/bower_components/ingresse-websdk/directives/');
 
     $routeProvider
       .when('/', {

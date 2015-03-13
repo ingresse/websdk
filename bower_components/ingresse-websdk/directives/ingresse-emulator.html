@@ -32,6 +32,7 @@
           <option value="updateUser">Atualizar Usuário</option>
           <option value="createTransaction">Criar Transação</option>
           <option value="payTransaction">Pagar Transação</option>
+          <option value="freepass">Enviar Cortesias</option>
           <option value="errorList">Erros</option>
         </select>
       </form>
@@ -74,8 +75,8 @@
         <label>User token</label>
         <input type="text" ng-model="user.token" disabled/>
 
-        <label>Event ID</label>
-        <input type="number" ng-model="eventForm.id" required/>
+        <label>Event ID or Link</label>
+        <input type="text" ng-model="eventForm.id" />
 
         <label>Fields</label>
         <input type="text" ng-model="eventForm.fields"/>
@@ -206,6 +207,9 @@
 
         <label>Session ID</label>
         <input type="number" ng-model="guestListForm.filters.sessionid"/>
+
+        <label>From</label>
+        <input type="number" ng-model="guestListForm.filters.from"/>
 
         <label>Page</label>
         <input type="number" ng-model="guestListForm.page"/>
@@ -390,6 +394,29 @@
         </select>
 
         <button class="venus button" type="submit">Enviar</button>
+      </form>
+
+
+      <form  class="venus" novalidate name="freepassForm" ng-show="selectedMethod === 'freepass'" ng-submit="freepass(freepassForm)">
+        <label>User token</label>
+        <input type="text" ng-model="user.token" required disabled/>
+
+        <label>Event ID</label>
+        <input type="number" ng-model="freepassForm.eventId" required/>
+
+        <label>Ticket Type ID</label>
+        <input type="number" ng-model="freepassForm.ticketTypeId" required/>
+
+        <label>Lista de emails</label>
+        <textarea ng-model="freepassForm.emails" title="Separar e-mails por virgula" required></textarea>
+
+        <input type="checkbox" ng-model="freepassForm.isHalfPrice"/>
+        <label>Meia Entrada</label>
+
+        <input type="checkbox" ng-model="freepassForm.validate" title="Marque se quiser apenas validar se é possível enviar a lista de cortesias." />
+        <label>Validação</label>
+
+        <button class="venus button" type="submit" ng-disabled="!freepassForm.$valid">Enviar</button>
       </form>
     </div>
   </div>
