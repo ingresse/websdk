@@ -6,6 +6,9 @@ node_modules
 .htaccess
 bower_components/angular
 bower_components/angular-animate
+bower_components/angular-moment
+bower_components/moment
+bower_components/momentjs
 bower_components/angular-cookies
 bower_components/angular-mocks
 bower_components/angular-resource
