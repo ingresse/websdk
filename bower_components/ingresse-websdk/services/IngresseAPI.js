@@ -626,6 +626,14 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
                 url += '&status=' + filters.status;
               }
 
+              if (filters.term) {
+                url += '&term=' + filters.term;
+              }
+
+              if (filters.channel) {
+                url += '&channel=' + filters.channel;
+              }
+
               if (filters.tickettypeid) {
                 url += '&tickettypeid=' + filters.tickettypeid;
               }

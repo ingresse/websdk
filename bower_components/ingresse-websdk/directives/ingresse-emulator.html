@@ -195,11 +195,21 @@
         <label>Fields</label>
         <input type="text" ng-model="guestListForm.fields"/>
 
+        <label>Nome, email ou código do ingresso</label>
+        <input type="text" ng-model="guestListForm.filters.term"/>
+
         <label>Status</label>
         <select ng-model='guestListForm.filters.status'>
           <option value="all" selected>all</option>
           <option value="checked">checked</option>
           <option value="unchecked">unchecked</option>
+        </select>
+
+        <label>Channel</label>
+        <select ng-model='guestListForm.filters.channel'>
+          <option value="" selected>all</option>
+          <option value="online">online</option>
+          <option value="offline">offline</option>
         </select>
 
         <label>Ticket Type ID</label>
