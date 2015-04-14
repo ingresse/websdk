@@ -506,6 +506,49 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
         },
 
 
+        /*
+          GET SALES INFORMATION
+          At least one of the filters must be used: event, from-to. All the transaction will be available depending of user privileges. As event owner, transaction access are limited to transaction from his own events.
+
+          FILTERS
+          id: List of transaction IDs. Filter transactions by their IDs.
+          channel: List of transaction IDs. Filter transactions by their IDs.
+          event: Retrieve transaction for a specific event ID.
+          session: List of date IDs. Filter transactions information for the specified session. Requires event filter.
+          from: Filter transaction values for sales from the date specified. Format: Y-m-d. Limit of 180 days base. Requires to date to be specified.
+          to: Filter transaction values for sales until the date specified. Format: Y-m-d. Limit of 180 days base. Requires from date to be specified.
+          status: Array of status to filter transactions. Options: approved, declined, pending.
+          term: Filter transactions by guest name, buyer e-mail or transactionId. It should not match exactly to consider a valid result.
+        */
+        getSales: function(token, filters, page) {
+          var deferred = $q.defer();
+
+          var url = ingresseAPI_Preferences.getHost() + '/sale/' + this.generateAuthKey() + '&usertoken=' + token;
+
+          if (page) {
+              url += '&page=' + page;
+          }
+
+          if (filters) {
+            angular.forEach(filters, function (value, key) {
+              if(value) {
+                url += '&' + key + '=' + value;
+              }
+            });
+          }
+
+          $http.get(url)
+          .success(function(response){
+            deferred.resolve(response.responseData);
+          })
+          .catch(function(error){
+            deferred.reject(error.message);
+          });
+
+          return deferred.promise;
+        },
+
+
 
         /* UPDATE USER INFO
 

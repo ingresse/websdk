@@ -27,7 +27,9 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
       };
 
       $scope.setHost = function (host) {
+        ipCookie('host',host,{expires:365});
         ingresseAPI_Preferences.setHost(host);
+        $scope.domain = ingresseAPI_Preferences._host;
       };
 
       $scope.setPrivateKey = function (key) {
@@ -284,6 +286,39 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         });
       };
 
+      $scope.getSales = function (form) {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Carregando vendas...');
+
+        var status = [];
+        if (form.status) {
+          if (form.status.approved) {
+            status.push('approved');
+          }
+          if (form.status.declined) {
+            status.push('declined');
+          }
+          if (form.status.pending) {
+            status.push('pending');
+          }
+
+          if (status.length > 0) {
+            form.filters.status = status.toString();
+          }
+        }
+
+        ingresseAPI.getSales($scope.user.token, form.filters, form.page)
+        .then( function(response) {
+          $scope.result = response;
+        })
+        .catch(function(error) {
+          VenusActivityIndicatorService.error(error);
+        })
+        .finally(function(){
+          VenusActivityIndicatorService.stopActivity('Carregando vendas...');
+        });
+      }
+
       $scope.generateTimestamp = function () {
         var timestamp = new Date();
         return timestamp.getTime();
@@ -352,12 +387,16 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         ipCookie('publickey',$scope.publicKey,{expires:365});
       });
 
-      if(ipCookie.publickey != "") {
+      if(ipCookie('publickey') != "") {
         ingresseAPI_Preferences.setPublicKey(ipCookie('publickey'));
       }
 
-      if(ipCookie.privatekey != "") {
+      if(ipCookie('privatekey') != "") {
         ingresseAPI_Preferences.setPrivateKey(ipCookie('privatekey'));
+      }
+
+      if(ipCookie('host') != "") {
+        $scope.setHost(ipCookie('host'));
       }
 
       $scope.privateKey = ingresseAPI_Preferences.privatekey;
