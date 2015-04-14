@@ -102,6 +102,11 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
          return $q.reject(Error(errorMessage));
         }
 
+        if(error.code === 1009) {
+         errorMessage += "Parâmetro do estado é inválido.";
+         return $q.reject(Error(errorMessage));
+        }
+
         if(error.code === 1013 || error.code === 1014) {
          errorMessage += "O número de parcelas não esta correto.";
          return $q.reject(Error(errorMessage));
@@ -125,6 +130,22 @@ angular.module('ingresseSDK').provider('ingresseAPI',function ($httpProvider) {
         if(error.code === 1032) {
          errorMessage += "Você esqueceu de preencher o campo CPF.";
          return $q.reject(Error(errorMessage));
+        }
+
+        if(error.code === 1089) {
+          errorMessage += "Faltou uma informação necessária: ";
+          var errorFields = [];
+          for(key in error.fields) {
+            if (key == 'event') {
+              errorFields.push('Id do evento');
+            }
+          }
+
+          if (errorFields.length > 0) {
+            errorMessage += errorFields.toString();
+          }
+
+          return $q.reject(Error(errorMessage));
         }
 
         if(error.code === 2001 || error.code === 2011) {
