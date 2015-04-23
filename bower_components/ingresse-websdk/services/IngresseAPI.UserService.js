@@ -3,6 +3,9 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
         data: null,
         userId: null,
         token: null,
+        userHasLoggedOut: function () {
+            $rootScope.$broadcast('userHasLoggedOut');
+        },
         login: function(){
             this.userId = ipCookie('userId');
             this.token = ipCookie('token');

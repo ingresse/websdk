@@ -3,7 +3,7 @@ angular.module('ingresseSDK').directive('ingresseLogin', function (ingresseAPI_P
         scope: {}, // {} = isolate, true = child, false/undefined = no change
         controller: function($scope, $rootScope, $element, $attrs, $transclude, ingresseAPI, IngresseAPI_UserService, $sce) {
             $scope.isVisible = false;
-            $scope.url = $sce.trustAsResourceUrl(ingresseAPI.login());
+            $scope.url = null;
 
             $scope.hide = function(){
                 $scope.isVisible = false;
@@ -26,7 +26,11 @@ angular.module('ingresseSDK').directive('ingresseLogin', function (ingresseAPI_P
 
             $scope.$on('ingresseAPI.userHasLogged',function(event,data){
                 $scope.isVisible = false;
-                IngresseAPI_UserService.saveCredentials(data.token, data.userId);
+                if (data.token && data.userId) {
+                    IngresseAPI_UserService.saveCredentials(data.token, data.userId);
+                } else {
+                    IngresseAPI_UserService.userHasLoggedOut();
+                }
                 $scope.$apply();
             });
         },

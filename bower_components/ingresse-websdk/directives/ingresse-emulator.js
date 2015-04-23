@@ -375,6 +375,10 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         };
       });
 
+      $scope.$on('userHasLoggedOut', function () {
+        $scope.user = null;
+      });
+
       $scope.$watch('privateKey', function () {
         // $document.cookie = "privateKey=" + $scope.privateKey + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
         if (!$scope.privateKey) {
