@@ -43,7 +43,7 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
         },
         getLocation: function(){
             if(!this.city){
-                return $cookies.city;
+                return ipCookie('city');
             }
 
             return this.city;
