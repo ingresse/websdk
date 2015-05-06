@@ -398,10 +398,18 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           Ingressos de um evento
           eventId: int
         */
-        getEventTickets: function (eventId) {
+        getEventTickets: function (eventId, usertoken, pos) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/tickets/' + this.generateAuthKey();
+
+          if (usertoken) {
+            url += '&usertoken=' + usertoken;
+          }
+
+          if (pos) {
+            url += '&pos=true';
+          }
 
           $http.get(url)
             .success(function (response) {

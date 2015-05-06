@@ -112,7 +112,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
       $scope.getEventTickets = function (form) {
         $scope.resetResponses();
         VenusActivityIndicatorService.startActivity('Carregando Ingressos...');
-        ingresseAPI.getEventTickets(form.id)
+        ingresseAPI.getEventTickets(form.id, $scope.user.token, form.pos)
           .then(function (response) {
             $scope.result = response;
           })

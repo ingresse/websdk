@@ -92,6 +92,11 @@
                 <label>Event ID</label>
                 <input type="number" ng-model="eventTicketsForm.id" required/>
 
+                <br>
+                <input type="checkbox" ng-model="eventTicketsForm.pos" />
+                <label>POS</label>
+                <br>
+
                 <button class="venus button" type="submit" ng-disabled="!eventTicketsForm.$valid">Enviar</button>
             </form>
 
