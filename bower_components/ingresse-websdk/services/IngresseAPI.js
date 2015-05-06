@@ -846,7 +846,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               }
             }
             // @TODO: Tratar o retorno dos erros de cartão em quem consome o método.
-            return cardErrors;
+            throw new Error(cardErrors);
           }
 
           // se não há erros, retorna o cartão...
@@ -872,6 +872,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
         payReservation: function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments) {
 
           var deferred = $q.defer();
+          var transactionDTO = {};
           var currentTransaction, url;
           var self = this;
 
@@ -921,10 +922,11 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             currentTransaction.installments = installments;
           }
 
-          var transactionDTO = this.createPagarmeCard(currentTransaction);
-
-          if (!transactionDTO) {
-            deferred.reject();
+          try {
+            transactionDTO = this.createPagarmeCard(currentTransaction);
+          }
+          catch (err) {
+            deferred.reject(err.message);
             return deferred.promise;
           }
 
