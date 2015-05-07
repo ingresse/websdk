@@ -7,15 +7,21 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
             $rootScope.$broadcast('userHasLoggedOut');
         },
         login: function(){
-            this.userId = ipCookie('userId');
-            this.token = ipCookie('token');
-
-            if(!this.userId || !this.token){
+            if(!this.getSavedLogin()){
                 $rootScope.$broadcast('showLogin');
                 return;
             }
+        },
+        getSavedLogin: function () {
+            this.userId = ipCookie('userId');
+            this.token = ipCookie('token');
 
-            $rootScope.$broadcast('userSessionSaved');
+            if(this.userId || this.token){
+                $rootScope.$broadcast('userSessionSaved');
+                return true;
+            }
+
+            return false;
         },
         register: function(){
             $rootScope.$broadcast('showRegister');
