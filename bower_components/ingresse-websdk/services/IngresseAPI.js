@@ -940,21 +940,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
 
             $http.post(url, transactionDTO)
               .success(function (response) {
-                if (response.responseData.data.status === 'declined') {
-                  deferred.reject(response.responseData.data);
-                }
-
-                // PAGAR.ME ERROR
-                if (response.responseData.data.status === 'error') {
-                  deferred.reject(response.responseData.data);
-                }
-
-                // LIFE IS GOOD, CREDIT IS GOOD!
-                if (response.responseData.data.status === 'approved') {
-                  deferred.resolve(response.responseData.data);
-                }
-
-                deferred.reject(new Error('Houve um erro com sua transação, o status recebido é: ' + response.responseData.data.status + ', entre em contato com a ingresse informando este erro.'));
+                deferred.resolve(response.responseData.data);
               })
               .catch(function (error) {
                 deferred.reject(error.message);
