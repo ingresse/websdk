@@ -9,6 +9,7 @@
   "main": [
     "bower_components/ingresse-websdk/services/IngresseAPI.Preferences.js",
     "bower_components/ingresse-websdk/services/IngresseAPI.UserService.js",
+    "bower_components/ingresse-websdk/services/IngresseAPI.EventService.js",
     "bower_components/ingresse-websdk/services/IngresseAPI.js",
     "bower_components/ingresse-websdk/directives/ingresse-login.js",
     "bower_components/ingresse-websdk/directives/ingresse-login.css",
@@ -32,7 +33,8 @@
     "angular-route": "~1.3.0",
     "crypto-js": "http://crypto-js.googlecode.com/files/CryptoJS%20v3.1.2.zip",
     "venus": "~1.9.9",
-    "ng-json-explorer": "*"
+    "ng-json-explorer": "*",
+    "moment": "~2.9.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.3.0",
