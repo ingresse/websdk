@@ -12,13 +12,16 @@ angular.module('ingresseSDK')
         saleAvailable: true,
         profit: apiEvent.totalProfit,
         quantitySold: apiEvent.totalTicketsSold,
-        ownerPhoto: ingresseAPI.getUserPhotoUrl(apiEvent.addedBy.id),
         link: apiEvent.link,
         poster: apiEvent.poster,
         totalTickets: apiEvent.totalTickets,
         type: apiEvent.type,
         taxToCostumer: apiEvent.taxToCostumer
       };
+
+      if (apiEvent.addedBy) {
+        appEvent.ownerPhoto = ingresseAPI.getUserPhotoUrl(apiEvent.addedBy.id);
+      }
 
       if (!apiEvent.date) {
         $log.error('The event does not have a date property');
