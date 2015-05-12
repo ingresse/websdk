@@ -12,6 +12,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
     scope: {}, // {} = isolate, true = child, false/undefined = no change
     controller: function ($scope, ipCookie, ingresseAPI, ingresseAPI_Preferences, IngresseAPI_UserService, IngresseAPI_Freepass, VenusActivityIndicatorService) {
       $scope.domain = ipCookie('host');
+
       if (!$scope.domain) {
         $scope.domain = ingresseAPI_Preferences._host;
       } else {
@@ -330,21 +331,16 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         $scope.resetResponses();
         VenusActivityIndicatorService.startActivity('Carregando vendas...');
 
-        var status = [];
-        if (form.status) {
-          if (form.status.approved) {
-            status.push('approved');
-          }
-          if (form.status.declined) {
-            status.push('declined');
-          }
-          if (form.status.pending) {
-            status.push('pending');
-          }
+        if (form.from) {
+          form.filters.from = moment(form.from).format('YYYY-MM-DD');
+        } else {
+          form.filters.from = null;
+        }
 
-          if (status.length > 0) {
-            form.filters.status = status.toString();
-          }
+        if (form.to) {
+          form.filters.to = moment(form.to).format('YYYY-MM-DD');
+        } else {
+          form.filters.to = null;
         }
 
         ingresseAPI.getSales($scope.user.token, form.filters, form.page)

@@ -1,0 +1,23 @@
+<form  class="venus" novalidate name="updateTicketStatusForm" ng-submit="updateTicketStatus()">
+    <label>User token</label>
+    <input type="text" ng-model="user.token" required disabled/>
+
+    <label>Event ID</label>
+    <input type="number" ng-model="updateTicketStatusData.eventid" required/>
+
+    <h6 class="venus">Ingressos</h6>
+    <a href="" class="venus" ng-click="updateTicketStatusAddTicket()">Adicionar</a>
+    <div class="item" ng-repeat="ticket in updateTicketStatusData.tickets">
+        <label>Código do ingresso</label>
+        <input type="text" ng-model="ticket.ticketCode" required/>
+
+        <label>Timestamp do ingresso</label>
+        <input type="number" ng-model="ticket.ticketTimestamp" disabled required/>
+
+        <input type="checkbox" ng-model="ticket.ticketStatus" ng-true-value="1" ng-false-value="0">
+        <label>Ingresso Validado: {{ticket.ticketStatus}}</label>
+        <a href="" class="venus" ng-click="updateTicketStatusRemoveTicket(ticket)">Remover</a>
+    </div>
+
+    <button class="venus button" type="submit" ng-disabled="!updateTicketStatusForm.$valid">Enviar</button>
+</form>

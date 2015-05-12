@@ -20,14 +20,48 @@
     <!-- Add your site or application content here -->
     <div ingresse-login></div>
     <div venus-activity-indicator/></div>
-    <div ng-view=""></div>
+    <div class="venus header">
+      <div class="venus container">
+        <div class="venus row">
+          <div class="venus column three left">
+            <h2>Emulador API</h2>
+          </div>
+          <div class="venus column">
+            <nav class="menu">
+              <ul>
+                <li><a class="venus" href="#/event">Evento</a></li>
+                <li><a class="venus" href="#/ticket">Ingresso</a></li>
+                <li><a class="venus" href="#/user">Usuário</a></li>
+                <li><a class="venus" href="#/transaction">Transação</a></li>
+                <li><a class="venus" href="#/sale">Venda</a></li>
+                <li><a class="venus" href="#/report">Report</a></li>
+                <li><a class="venus" href="#/error">Erro</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="venus container transmute-grid" style="margin-top: 40px;">
+        <div class="venus row">
+            <div class="venus column eight">
+                <form class="venus">
+                    <label>Domain</label>
+                    <input type="text" ng-model="domain" ng-change="setHost(domain)" />
+                    <label>Public Key</label>
+                    <input type="text" ng-model="publicKey" ng-change="setPublicKey(publicKey)"/>
+                    <label for="">Private Key</label>
+                    <input type="text" ng-model="privateKey" ng-change="setPrivateKey(privateKey)">
+                </form>
 
-    <!-- build:js(.) scripts/oldieshim.js -->
-    <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.js"></script>
-    <![endif]-->
-    <!-- endbuild -->
+                <div ingresse-user user="user" request-token="user.token"></div>
+                <a href="" class="venus button" ng-click="login()" ng-hide="user.token">Login</a>
+                <a href="" class="venus button" ng-click="logout()" ng-show="user.token">Logout</a>
+            </div>
+        </div>
+
+        <div ng-view=""></div>
+    </div>
 
     <script src="bower_components/crypto-js/rollups/hmac-sha1.js"></script>
     <script src="bower_components/crypto-js/components/enc-base64-min.js"></script>
@@ -55,5 +89,6 @@
     <script src="bower_components/ingresse-websdk/directives/ingresse-emulator.js"></script>
 
     <script src="scripts/app.js"></script>
+    <script src="scripts/emulator.js"></script>
 </body>
 </html>

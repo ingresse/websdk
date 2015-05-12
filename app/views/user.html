@@ -1,0 +1,96 @@
+<form  class="venus" novalidate name="userForm" ng-submit="getUser(userForm)">
+    <label>User token</label>
+    <input type="text" ng-model="user.token" disabled/>
+
+    <label>User ID</label>
+    <input type="number" ng-model="userForm.id" required/>
+
+    <label>Fields</label>
+    <input type="text" ng-model="userForm.fields"/>
+
+    <button class="venus button" type="submit" ng-disabled="!userForm.$valid">Enviar</button>
+</form>
+
+<form  class="venus" novalidate name="updateUserForm" ng-show="selectedMethod === 'updateUser'" ng-submit="updateUser(updateUserForm)">
+    <label>User token</label>
+    <input type="text" ng-model="user.token" required disabled/>
+
+    <label>User ID</label>
+    <input type="text" ng-model="updateUserForm.userId"/>
+
+    <label>Name</label>
+    <input type="text" ng-model="updateUserForm.userdata.name"/>
+
+    <label>Lastname</label>
+    <input type="text" ng-model="updateUserForm.userdata.lastname"/>
+
+    <label>Street</label>
+    <input type="text" ng-model="updateUserForm.userdata.street"/>
+
+    <label>Number</label>
+    <input type="text" ng-model="updateUserForm.userdata.number"/>
+
+    <label>Complement</label>
+    <input type="text" ng-model="updateUserForm.userdata.complement"/>
+
+    <label>District</label>
+    <input type="text" ng-model="updateUserForm.userdata.district"/>
+
+    <label>City</label>
+    <input type="text" ng-model="updateUserForm.userdata.city"/>
+
+    <label>State</label>
+    <input type="text" ng-model="updateUserForm.userdata.state"/>
+
+    <label>ZIP</label>
+    <input type="text" ng-model="updateUserForm.userdata.zip"/>
+
+    <label>Phone</label>
+    <input type="text" ng-model="updateUserForm.userdata.phone"/>
+
+    <button class="venus button" type="submit" ng-disabled="!updateUserForm.$valid">Enviar</button>
+</form>
+
+<form  class="venus" novalidate name="userEventsForm" ng-show="selectedMethod === 'userEvents'" ng-submit="getUserEvents(userEventsForm)">
+    <label>User token</label>
+    <input type="text" ng-model="user.token" required disabled/>
+
+    <label>User ID</label>
+    <input type="number" ng-model="userEventsForm.id" required/>
+
+    <label>Fields</label>
+    <input type="text" ng-model="userEventsForm.fields"/>
+
+    <label>Event Filter</label>
+    <input type="number" ng-model="userEventsForm.filters.event"/>
+
+    <label>Term Filter</label>
+    <input type="text" ng-model="userEventsForm.filters.term"/>
+
+    <label>Page</label>
+    <input type="number" ng-model="userEventsForm.page"/>
+
+    <label>Page Size</label>
+    <input type="number" ng-model="userEventsForm.pageSize"/>
+
+    <button class="venus button" type="submit" ng-disabled="!userEventsForm.$valid">Enviar</button>
+</form>
+
+<form  class="venus" novalidate name="userTicketsForm" ng-submit="getUserTickets(userTicketsForm)">
+    <label>User token</label>
+    <input type="text" ng-model="user.token" required disabled/>
+
+    <label>User ID</label>
+    <input type="number" ng-model="userTicketsForm.id" required/>
+
+    <label>Fields</label>
+    <input type="text" ng-model="userTicketsForm.fields"/>
+
+    <label>Event Filter</label>
+    <input type="number" ng-model="userTicketsForm.filters.event"/>
+
+    <label>Term Filter</label>
+    <input type="text" ng-model="userTicketsForm.filters.term"/>
+
+    <button class="venus button" type="submit" ng-disabled="!userTicketsForm.$valid">Enviar</button>
+</form>

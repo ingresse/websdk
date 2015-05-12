@@ -1,0 +1,142 @@
+<form  class="venus" novalidate name="transactionDataForm" ng-show="selectedMethod === 'transactionData'" ng-submit="getTransactionData()">
+    <label>User token</label>
+    <input type="text" ng-model="user.token" required disabled/>
+
+    <label>Transaction ID</label>
+    <input type="text" ng-model="transactionDataForm.transactionId" required/>
+
+    <label>Fields</label>
+    <input type="text" ng-model="transactionDataForm.fields"/>
+
+    <button class="venus button" type="submit" ng-disabled="!transactionDataForm.$valid">Enviar</button>
+</form>
+
+<form  class="venus" novalidate name="createTransactionForm" ng-show="selectedMethod === 'createTransaction'" ng-submit="createTransaction()">
+    <label>User token</label>
+    <input type="text" ng-model="user.token" required disabled/>
+
+    <label>Event ID</label>
+    <input type="number" ng-model="createTransactionData.eventId" required/>
+
+    <label>ID do Usuário</label>
+    <input type="number" ng-model="createTransactionData.userId" required/>
+
+    <label>Código de Desconto</label>
+    <input type="text" ng-model="createTransactionData.discountCode" />
+
+    <h6 class="venus">Ingressos</h6>
+    <a href="" class="venus" ng-click="createTransactionAddTicket()">Adicionar</a>
+    <div class="item" ng-repeat="ticket in createTransactionData.tickets">
+        <label>Código do tipo de ingresso</label>
+        <input type="number" ng-model="ticket.ticketTypeId" required/>
+
+        <label>Quantidade</label>
+        <input type="number" ng-model="ticket.quantity" required/>
+
+        <label>Meia / Inteira</label>
+        <select ng-model='ticket.type' required>
+            <option value="Inteira" selected>Inteira</option>
+            <option value="Meia">Meia</option>
+        </select>
+
+        <label>Data da sessão</label>
+        <input type="text" ng-model="ticket.session.date" placeholder="DD/MM/AAAA" required/>
+
+        <label>Horário da sessão</label>
+        <input type="text" ng-model="ticket.session.time" placeholder="HH:MM" required/>
+
+        <a href="" class="venus" ng-click="createTransactionRemoveTicket(ticket)">Remover</a>
+    </div>
+
+    <button class="venus button" type="submit" ng-disabled="!createTransactionForm.$valid">Enviar</button>
+</form>
+
+<form  class="venus" novalidate name="freepassForm" ng-show="selectedMethod === 'freepass'" ng-submit="freepass(freepassForm)">
+    <label>User token</label>
+    <input type="text" ng-model="user.token" required disabled/>
+
+    <label>Event ID</label>
+    <input type="number" ng-model="freepassForm.eventId" required/>
+
+    <label>Ticket Type ID</label>
+    <input type="number" ng-model="freepassForm.ticketTypeId" required/>
+
+    <label>Lista de emails</label>
+    <textarea ng-model="freepassForm.emails" title="Separar e-mails por virgula" required></textarea>
+
+    <input type="checkbox" ng-model="freepassForm.isHalfPrice"/>
+    <label>Meia Entrada</label>
+
+    <input type="checkbox" ng-model="freepassForm.validate" title="Marque se quiser apenas validar se é possível enviar a lista de cortesias." />
+    <label>Validação</label>
+
+    <button class="venus button" type="submit" ng-disabled="!freepassForm.$valid">Enviar</button>
+</form>
+
+
+<form  class="venus" novalidate name="payTransactionForm" ng-show="selectedMethod === 'payTransaction'" ng-submit="payTransaction(payTransactionForm)">
+    <label>User token</label>
+    <input type="text" ng-model="user.token" required disabled/>
+
+    <label>Event ID</label>
+    <input type="number" ng-model="payTransactionForm.eventId" required/>
+
+    <label>User ID</label>
+    <input type="number" ng-model="payTransactionForm.userId" required/>
+
+    <label>Transaction ID</label>
+    <input type="text" ng-model="payTransactionForm.transactionId" required/>
+
+    <label>Método de pagamento</label>
+    <select ng-model="payTransactionForm.paymentMethod" required>
+        <option value="BoletoBancario">Boleto</option>
+        <option value="CartaoCredito">Cartão de Crédito</option>
+    </select>
+
+    <div ng-show="payTransactionForm.paymentMethod == 'CartaoCredito'">
+        <h6 class="venus">Cartão de crédito</h6>
+        <label>CPF</label>
+        <input type="text" ng-model="payTransactionForm.creditCard.cpf"/>
+
+        <label>Numero</label>
+        <input type="text" ng-model="payTransactionForm.creditCard.number"/>
+
+        <label>Nome</label>
+        <input type="text" ng-model="payTransactionForm.creditCard.name"/>
+
+        <label>CVV</label>
+        <input type="text" ng-model="payTransactionForm.creditCard.cvv"/>
+
+        <label>Ano de validade</label>
+        <input type="text" ng-model="payTransactionForm.creditCard.year"/>
+
+        <label>Mês de validade</label>
+        <input type="text" ng-model="payTransactionForm.creditCard.month"/>
+    </div>
+
+    <h6 class="venus">Ingressos</h6>
+    <a href="" class="venus" ng-click="payTransactionFormAddTicket()">Adicionar</a>
+    <div class="item" ng-repeat="ticket in payTransactionFormData.tickets">
+        <label>Código do tipo de ingresso</label>
+        <input type="number" ng-model="ticket.ticketTypeId" required/>
+
+        <label>Quantidade</label>
+        <input type="number" ng-model="ticket.quantity" required/>
+
+        <label>Meia / Inteira</label>
+        <select ng-model='ticket.type' required>
+            <option value="Inteira" selected>Inteira</option>
+            <option value="Meia">Meia</option>
+        </select>
+
+        <label>Data da sessão</label>
+        <input type="text" ng-model="ticket.session.date" placeholder="DD/MM/AAAA" required/>
+
+        <label>Horário da sessão</label>
+        <input type="text" ng-model="ticket.session.time" placeholder="HH:MM" required/>
+
+        <a href="" class="venus" ng-click="payTransactionFormRemoveTicket(ticket)">Remover</a>
+    </div>
+
+    <button class="venus button" type="submit" ng-disabled="!payTransactionForm.$valid">Enviar</button>
+</form>

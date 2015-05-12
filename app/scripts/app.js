@@ -27,10 +27,35 @@ var app = angular
     ingresseAPI_PreferencesProvider.setTemplateDirectory('/bower_components/ingresse-websdk/directives/');
 
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html'
+      .when('/event/', {
+        templateUrl: 'views/event.html',
+        controller: 'EmulatorController'
+      })
+      .when('/user', {
+        templateUrl: 'views/user.html',
+        controller: 'EmulatorController'
+      })
+      .when('/ticket', {
+        templateUrl: 'views/ticket.html',
+        controller: 'EmulatorController'
+      })
+      .when('/report', {
+        templateUrl: 'views/report-checkin.html',
+        controller: 'EmulatorController'
+      })
+      .when('/transaction', {
+        templateUrl: 'views/transaction.html',
+        controller: 'EmulatorController'
+      })
+      .when('/error', {
+        templateUrl: 'views/error.html',
+        controller: 'EmulatorController'
+      })
+      .when('/sale', {
+        templateUrl: 'views/freepass.html',
+        controller: 'EmulatorController'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/event'
       });
   });
