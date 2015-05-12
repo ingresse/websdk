@@ -313,6 +313,31 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
+        getEventCrew: function (eventId, fields, usertoken) {
+          var deferred = $q.defer();
+          var url;
+
+          url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/crew' + this.generateAuthKey();
+
+          if (usertoken) {
+            url += '&usertoken=' + usertoken;
+          }
+
+          if (fields) {
+            url += '&fields=' + fields.toString();
+          }
+
+          $http.get(url)
+            .success(function (response) {
+              deferred.resolve(response.responseData);
+            })
+            .catch(function (error) {
+              deferred.reject(error.message);
+            });
+
+          return deferred.promise;
+        },
+
 
         getError: function (errorClass) {
           var deferred = $q.defer();

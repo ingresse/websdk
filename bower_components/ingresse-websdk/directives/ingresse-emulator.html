@@ -21,6 +21,7 @@
                 <select ng-model='selectedMethod'>
                     <option value="eventList">Buscar Eventos</option>
                     <option value="event">Consultar Evento</option>
+                    <option value="eventCrew">Consultar Vendedores do Evento</option>
                     <option value="eventTickets">Consultar Ingressos do Evento</option>
                     <option value="user">Consultar Usuário</option>
                     <option value="userEvents">Consultar Eventos do Usuário</option>
@@ -83,6 +84,19 @@
                 <input type="text" ng-model="eventForm.fields"/>
 
                 <button class="venus button" type="submit" ng-disabled="!eventForm.$valid">Enviar</button>
+            </form>
+
+            <form  class="venus" novalidate name="eventCrewForm" ng-show="selectedMethod === 'eventCrew'" ng-submit="getEventCrew(eventCrewForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" disabled/>
+
+                <label>Event ID</label>
+                <input type="text" ng-model="eventCrewForm.id" />
+
+                <label>Fields</label>
+                <input type="text" ng-model="eventCrewForm.fields"/>
+
+                <button class="venus button" type="submit" ng-disabled="!eventCrewForm.$valid">Enviar</button>
             </form>
 
             <form  class="venus" novalidate name="eventTicketsForm" ng-show="selectedMethod === 'eventTickets'" ng-submit="getEventTickets(eventTicketsForm)">
@@ -445,34 +459,50 @@
                 <label>Nome, E-mail ou Transaction ID</label>
                 <input type="text" ng-model="salesForm.filters.term" />
 
-                <label>Página</label>
-                <input type="number" ng-model="salesForm.page" />
-                <!-- <label>Sales ID</label>
-                <input type="text" ng-model="salesForm.idlist" title="Lista de ids separados por vírgula"/>
+                <!-- <label>APP ID (channel)</label>
+                <input type="text" ng-model="salesForm.filters.channel" /> -->
 
-                <label>APP ID (channel)</label>
-                <input type="text" ng-model="salesForm.filters.channel" />
+                <!-- <label>Session ID</label>
+                <input type="text" ng-model="salesForm.filters.session" title="Lista de IDs de sessão" /> -->
 
-                <label>Session ID</label>
-                <input type="text" ng-model="salesForm.filters.session" title="Lista de IDs de sessão" />
-
-                <label>A partir de {{salesForm.filters.from}}</label>
+                <!-- <label>A partir de {{salesForm.filters.from}}</label>
                 <input type="date" ng-model="salesForm.filters.from"/>
 
                 <label>Até {{salesForm.filters.to}}</label>
                 <input type="date" ng-model="salesForm.filters.to"/> -->
 
-                <!-- <label>Status</label>
-                <hr>
-                <input type="checkbox" value="approved" ng-model="salesForm.status.approved"/>
-                <label>Aprovado</label>
+                <label>Status</label>
+                <select ng-model="salesForm.filters.status">
+                    <option value="">Nenhum</option>
+                    <option value="pending">Pendente</option>
+                    <option value="cancelled">Cancelado</option>
+                    <option value="limitExceeded">Limite Excedido</option>
+                    <option value="approved">Aprovado</option>
+                    <option value="declined">Negado</option>
+                    <option value="error">Erro</option>
+                    <option value="refund">Estorno</option>
+                </select>
 
-                <input type="checkbox" value="declined" ng-model="salesForm.status.declined"/>
-                <label>Negado</label>
-                <input type="checkbox" value="pending" ng-model="salesForm.status.pending"/>
-                <label>Pendente</label> -->
+                <label>Meio de Pagamento</label>
+                <select ng-model="salesForm.filters.paymentOption">
+                    <option value="">Todos</option>
+                    <option value="bankBillet">Boleto</option>
+                    <option value="bankCheck">Cheque</option>
+                    <option value="creditCard">Cartão de Crédito</option>
+                    <option value="debitCard">Cartão de Débito</option>
+                    <option value="free">Cortesia</option>
+                    <option value="money">Dinheiro</option>
+                    <option value="other">Outros</option>
+                    <option value="paypal">Paypal</option>
+                    <option value="wireTransfer">Transferência Bancária</option>
+                </select>
 
-                <hr>
+                <label>Operador</label>
+                <input type="number" ng-model="salesForm.filters.operator">
+
+                <label>Página</label>
+                <input type="number" ng-model="salesForm.page" />
+
                 <button class="venus button" type="submit" ng-disabled="!salesForm.$valid">Enviar</button>
             </form>
         </div>

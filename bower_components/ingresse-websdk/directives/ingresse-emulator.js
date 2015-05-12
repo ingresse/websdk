@@ -11,7 +11,13 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
   return {
     scope: {}, // {} = isolate, true = child, false/undefined = no change
     controller: function ($scope, ipCookie, ingresseAPI, ingresseAPI_Preferences, IngresseAPI_UserService, IngresseAPI_Freepass, VenusActivityIndicatorService) {
-      $scope.domain = ingresseAPI_Preferences._host;
+      $scope.domain = ipCookie('host');
+      if (!$scope.domain) {
+        $scope.domain = ingresseAPI_Preferences._host;
+      } else {
+        ingresseAPI_Preferences.setHost($scope.domain);
+      }
+
       $scope.httpCalls = ingresseAPI_Preferences.httpCalls;
       $scope.result = {};
       $scope.collapsed = false;
@@ -76,6 +82,21 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando Eventos...');
+          });
+      };
+
+      $scope.getEventCrew = function (form) {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Carregando Vendedores...');
+        ingresseAPI.getEventCrew(form.id, form.fields, $scope.user.token)
+          .then(function (response) {
+            $scope.result = response;
+          })
+          .catch(function (error) {
+            VenusActivityIndicatorService.error(error);
+          })
+          .finally(function () {
+            VenusActivityIndicatorService.stopActivity('Carregando Vendedores...');
           });
       };
 
