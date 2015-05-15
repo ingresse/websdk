@@ -30,6 +30,7 @@
                     <option value="guestList">Consultar lista de convidados</option>
                     <option value="sales">Consultar Vendas</option>
                     <option value="checkinReport">Relatório de Checkin</option>
+                    <option value="visitsReport">Relatório de Visitas</option>
                     <option value="transactionData">Consultar Transação</option>
                     <option value="updateUser">Atualizar Usuário</option>
                     <option value="createTransaction">Criar Transação</option>
@@ -203,6 +204,22 @@
                 <input type="number" ng-model="checkinReportForm.eventId" required/>
 
                 <button class="venus button" type="submit" ng-disabled="!checkinReportForm.$valid">Enviar</button>
+            </form>
+
+            <form  class="venus" novalidate name="visitsReportForm" ng-show="selectedMethod === 'visitsReport'" ng-submit="getVisitsReport(visitsReportForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" required disabled/>
+
+                <label>Event ID</label>
+                <input type="number" ng-model="visitsReportForm.eventId" required/>
+
+                <label>From</label>
+                <input type="text" ng-model="visitsReportForm.filters.from">
+
+                <label>To</label>
+                <input type="text" ng-model="visitsReportForm.filters.to">
+
+                <button class="venus button" type="submit" ng-disabled="!visitsReportForm.$valid">Enviar</button>
             </form>
 
             <form  class="venus" novalidate name="guestListForm" ng-show="selectedMethod === 'guestList'" ng-submit="getGuestList()">

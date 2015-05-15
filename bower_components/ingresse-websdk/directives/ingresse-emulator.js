@@ -221,6 +221,21 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           });
       };
 
+      $scope.getVisitsReport = function (form) {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Carregando dados do relatório de visitas...');
+        ingresseAPI.getVisitsReport(form.eventId, form.filters, $scope.user.token)
+          .then(function (response) {
+            $scope.result = response;
+          })
+          .catch(function (error) {
+            VenusActivityIndicatorService.error(error);
+          })
+          .finally(function () {
+            VenusActivityIndicatorService.stopActivity('Carregando dados do relatório de visitas...');
+          });
+      };
+
       $scope.getGuestList = function () {
         $scope.resetResponses();
         VenusActivityIndicatorService.startActivity('Carregando lista de convidados...');
