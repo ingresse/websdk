@@ -372,6 +372,20 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         IngresseAPI_UserService.logout();
       };
 
+      $scope.refund = function (form) {
+        VenusActivityIndicatorService.startActivity('Estornando Pagamento...');
+        ingresseAPI.refund($scope.user.token, form.transactionId, form.reason)
+        .then(function (response) {
+          $scope.result = response;
+        })
+        .catch(function (error) {
+          VenusActivityIndicatorService.error(error);
+        })
+        .finally(function () {
+          VenusActivityIndicatorService.stopActivity('Estornando Pagamento...');
+        })
+      };
+
       $scope.updateTicketStatusData = {
         tickets: [{
           ticketCode: '',

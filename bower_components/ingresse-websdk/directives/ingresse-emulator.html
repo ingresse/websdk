@@ -35,6 +35,7 @@
                     <option value="updateUser">Atualizar Usuário</option>
                     <option value="createTransaction">Criar Transação</option>
                     <option value="payTransaction">Pagar Transação</option>
+                    <option value="refund">Estornar Transação</option>
                     <option value="freepass">Enviar Cortesias</option>
                     <option value="errorList">Erros</option>
                 </select>
@@ -521,6 +522,19 @@
                 <input type="number" ng-model="salesForm.page" />
 
                 <button class="venus button" type="submit" ng-disabled="!salesForm.$valid">Enviar</button>
+            </form>
+
+            <form  class="venus" novalidate name="refundForm" ng-show="selectedMethod === 'refund'" ng-submit="refund(refundForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" required disabled/>
+
+                <label>Transaction ID</label>
+                <input type="text" ng-model="refundForm.transactionId" required/>
+
+                <label>Razão</label>
+                <input type="text" ng-model="refundForm.reason" required/>
+
+                <button class="venus button" type="submit" ng-disabled="!refundForm.$valid">Enviar</button>
             </form>
         </div>
     </div>

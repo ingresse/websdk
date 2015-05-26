@@ -206,6 +206,11 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return $q.reject(new Error(errorMessage));
         }
 
+        if (error.code === 3036) {
+          errorMessage += "Desculpe, somente é possível estornar transações aprovadas.";
+          return $q.reject(new Error(errorMessage));
+        }
+
         if (error.code === 5001) {
           errorMessage += "Não conseguimos nos conectar ao seu facebook... Por favor, faça o login no seu facebook e tente novamente.";
           return $q.reject(new Error(errorMessage));
@@ -677,6 +682,23 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             })
             .error(function (error) {
               deferred.reject(error);
+            });
+
+          return deferred.promise;
+        },
+
+
+        refund: function (token, transactionId, reason) {
+          var deferred = $q.defer();
+
+          var url = ingresseAPI_Preferences.getHost() + '/sale/' + transactionId + this.generateAuthKey() + '&usertoken=' + token + '&method=refund';
+
+          $http.post(url, {reason: reason})
+            .success(function (response) {
+              deferred.resolve(response.responseData);
+            })
+            .catch(function (error) {
+              deferred.reject(error.message);
             });
 
           return deferred.promise;
