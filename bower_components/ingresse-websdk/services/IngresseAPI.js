@@ -84,7 +84,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
         }
 
         var error = response.data.responseError;
-        var errorMessage = error.code + ': ';
+        var errorMessage = "";
 
         if (error.code === 1001) {
           errorMessage += "Desculpe, mas você precisa selecionar pelo menos um ingresso.";
@@ -227,6 +227,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
         }
 
         $log.error(error);
+        errorMessage = error.code + ': ';
         errorMessage += "Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código";
         return $q.reject(new Error(errorMessage));
       }
