@@ -221,6 +221,11 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return $q.reject(new Error(errorMessage));
         }
 
+        if (error.code === 6014) {
+          errorMessage += "Você excedeu o limite de ingressos disponíveis por conta. Para mais informações, verifique a descrição do evento.";
+          return $q.reject(new Error(errorMessage));
+        }
+
         $log.error(error);
         errorMessage += "Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código";
         return $q.reject(new Error(errorMessage));
