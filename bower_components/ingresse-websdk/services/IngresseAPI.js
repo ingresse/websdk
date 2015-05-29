@@ -71,9 +71,8 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
       'responseError': function (rejection) {
         // do something on error
         ingresseAPI_Preferences.httpCallStoped(rejection.config.url, false);
-        var errorMessage = new Error("Não foi possível nos comunicar com os servidores da ingresse. Verifique sua conexão com a internet e tente novamente.");
 
-        return $q.reject(errorMessage);
+        return $q.reject(new Error("Não foi possível nos comunicar com os servidores da ingresse. Verifique sua conexão com a internet e tente novamente."));
       },
       'response': function (response) {
          // do something on error
@@ -83,61 +82,62 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return response;
         }
 
-        var error = response.data.responseError;
-        var errorMessage = "";
+        var error = new Error();
+        error.code = response.data.responseError.code;
+        error.message = response.data.responseError.message;
 
         if (error.code === 1001) {
-          errorMessage += "Desculpe, mas você precisa selecionar pelo menos um ingresso.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Desculpe, mas você precisa selecionar pelo menos um ingresso.";
+          return $q.reject(error);
         }
 
         if (error.code === 1005) {
-          errorMessage += "O usuário informado é diferente do usuário que gerou a transação. Você trocou de login no meio do processo? Por favor, recomeçe a operação.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "O usuário informado é diferente do usuário que gerou a transação. Você trocou de login no meio do processo? Por favor, recomeçe a operação.";
+          return $q.reject(error);
         }
 
         if (error.code === 1006) {
-          errorMessage += "O campo e-mail não foi preenchido.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "O campo e-mail não foi preenchido.";
+          return $q.reject(error);
         }
 
         if (error.code === 1007) {
-          errorMessage += "O endereço de e-mail informado não é valido.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "O endereço de e-mail informado não é valido.";
+          return $q.reject(error);
         }
 
         if (error.code === 1009) {
-          errorMessage += "Parâmetro do estado é inválido.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Parâmetro do estado é inválido.";
+          return $q.reject(error);
         }
 
         if (error.code === 1013 || error.code === 1014) {
-          errorMessage += "O número de parcelas não esta correto.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "O número de parcelas não esta correto.";
+          return $q.reject(error);
         }
 
         if (error.code === 1029 || error.code === 1030) {
-          errorMessage += "O código de desconto inforado não esta correto.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "O código de desconto inforado não esta correto.";
+          return $q.reject(error);
         }
 
         if (error.code === 1031) {
-          errorMessage += "Esta faltando alguma informação do cartão de crédito, verifique se você não esqueceu de preencher algo.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Esta faltando alguma informação do cartão de crédito, verifique se você não esqueceu de preencher algo.";
+          return $q.reject(error);
         }
 
         if (error.code === 1032) {
-          errorMessage += "Você esqueceu de preencher o campo CPF.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Você esqueceu de preencher o campo CPF.";
+          return $q.reject(error);
         }
 
         if (error.code === 1032) {
-          errorMessage += "Você esqueceu de preencher o campo CPF.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Você esqueceu de preencher o campo CPF.";
+          return $q.reject(error);
         }
 
         if (error.code === 1089) {
-          errorMessage += "Faltou uma informação necessária: ";
+          error.message = "Faltou uma informação necessária: ";
           var errorFields = [];
           var key;
 
@@ -150,86 +150,110 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           }
 
           if (errorFields.length > 0) {
-            errorMessage += errorFields.toString();
+            error.message = errorFields.toString();
           }
 
-          return $q.reject(new Error(errorMessage));
+          return $q.reject(error);
         }
 
-        if (error.code === 2001 || error.code === 2011) {
-          errorMessage += "Parece que seu login expirou, por favor, faça o login novamente.";
-          return $q.reject(new Error(errorMessage));
+        if (error.code === 2004) {
+          error.message = "Você já acessou a última página";
+          return $q.reject(error);
         }
 
-        if (error.code === 2006) {
-          errorMessage += "Desculpe, mas você precisa estar logado para acessar esta informação.";
-          return $q.reject(new Error(errorMessage));
+        if (error.code === 2005) {
+          error.message = "É preciso fazer login para continuar";
+          return $q.reject(error);
+        }
+
+        if (error.code === 2007) {
+          error.message = "Esta aplicação não possui permissão para realizar a operação de login";
+          return $q.reject(error);
+        }
+
+        if (error.code === 2008) {
+          error.message = "Sua conexão não esta segura (https)";
+          return $q.reject(error);
+        }
+
+        if (error.code === 2009) {
+          error.message = "Aparentemente você não tem permissão para realizar esta tarefa";
+          return $q.reject(error);
         }
 
         if (error.code === 2011) {
-          errorMessage += "Parece que seu login expirou, por favor, faça o login novamente.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Para continuar você precisa ser o dono do evento";
+          return $q.reject(error);
         }
 
-        if (error.code === 2012) {
-          errorMessage += "Acesso não autorizado: O usuário logado não é o dono do evento.";
-          return $q.reject(new Error(errorMessage));
-        }
-
-        if (error.code === 2013) {
-          errorMessage += "Parece que a solicitação expirou. Por favor tente novamente.";
-          return $q.reject(new Error(errorMessage));
+        if (error.code === 2015) {
+          error.message = "Opa! Parece que a configuração de dia e hora não está ok. Verifique se o dia e hora no seu computador ou celular está configurado corretamente. Cod:2015";
+          return $q.reject(error);
         }
 
         if (error.code === 2016) {
-          errorMessage += "Desculpe, mas parece que sua conta não tem permissão para realizar esta ação, se você não for o organizador do evento, entre em contato com o organizador, se você for o organizador do evento entre em contato com a ingresse.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Aparentemente você não tem permissão para realizar esta tarefa";
+          return $q.reject(error);
+        }
+
+        if (error.code === 2020) {
+          error.message = "Senha inválida";
+          return $q.reject(error);
+        }
+
+        if (error.code === 2021) {
+          error.message = "Seu e-mail não foi encontrado";
+          return $q.reject(error);
+        }
+
+        if (error.code === 2022) {
+          error.message = "Não foi possível enviar o e-mail";
+          return $q.reject(error);
         }
 
         if (error.code === 2028) {
-          errorMessage += "Desculpe, mas este usuário não possui permissão de venda para este evento.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Desculpe, mas este usuário não possui permissão de venda para este evento.";
+          return $q.reject(error);
         }
 
         if (error.code === 3002) {
-          errorMessage += "Desculpe, mas o evento solicitado não existe em nosso banco de dados.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Desculpe, mas o evento solicitado não existe em nosso banco de dados.";
+          return $q.reject(error);
         }
 
         if (error.code === 3003) {
-          errorMessage += "Desculpe, este usuário não existe.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Desculpe, este usuário não existe.";
+          return $q.reject(error);
         }
 
         if (error.code === 3020) {
-          errorMessage += "Desculpe, mas não há ingressos cadastrados para o evento solicitado.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Desculpe, mas não há ingressos cadastrados para o evento solicitado.";
+          return $q.reject(error);
         }
 
         if (error.code === 3036) {
-          errorMessage += "Desculpe, somente é possível estornar transações aprovadas.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Desculpe, somente é possível estornar transações aprovadas.";
+          return $q.reject(error);
         }
 
         if (error.code === 5001) {
-          errorMessage += "Não conseguimos nos conectar ao seu facebook... Por favor, faça o login no seu facebook e tente novamente.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Não conseguimos nos conectar ao seu facebook... Por favor, faça o login no seu facebook e tente novamente.";
+          return $q.reject(error);
         }
 
         if (error.code === 5002) {
-          errorMessage += "Houve um problema de comunicação com nosso gateway de pagamento. Por favor tente novamente.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Houve um problema de comunicação com nosso gateway de pagamento. Por favor tente novamente.";
+          return $q.reject(error);
         }
 
         if (error.code === 6014) {
-          errorMessage += "Você excedeu o limite de ingressos disponíveis por conta. Para mais informações, verifique a descrição do evento.";
-          return $q.reject(new Error(errorMessage));
+          error.message = "Você excedeu o limite de ingressos disponíveis por conta. Para mais informações, verifique a descrição do evento.";
+          return $q.reject(error);
         }
 
         $log.error(error);
-        errorMessage = error.code + ': ';
-        errorMessage += "Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código";
-        return $q.reject(new Error(errorMessage));
+        error.message = "Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código";
+        return $q.reject(error);
       }
     };
   });
@@ -318,7 +342,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -343,7 +367,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -374,7 +398,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -396,7 +420,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -454,7 +478,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -483,7 +507,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -513,7 +537,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -543,7 +567,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -606,7 +630,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -649,7 +673,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -704,7 +728,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -745,7 +769,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -765,7 +789,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -819,7 +843,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -839,7 +863,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -891,7 +915,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               deferred.resolve(response.responseData);
             })
             .catch(function (error) {
-              deferred.reject(error.message);
+              deferred.reject(error);
             });
 
           return deferred.promise;
@@ -986,7 +1010,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
                 deferred.resolve(response.responseData.data);
               })
               .catch(function (error) {
-                deferred.reject(error.message);
+                deferred.reject(error);
               });
 
             return deferred.promise;
@@ -1027,7 +1051,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
                 deferred.resolve(response.responseData.data);
               })
               .catch(function (error) {
-                deferred.reject(error.message);
+                deferred.reject(error);
               });
           });
 

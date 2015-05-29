@@ -78,7 +78,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando Eventos...');
@@ -93,7 +93,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando Vendedores...');
@@ -108,7 +108,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando lista de erros...');
@@ -123,7 +123,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando Eventos...');
@@ -138,7 +138,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando Ingressos...');
@@ -154,7 +154,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando dados do usuário...');
@@ -169,7 +169,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando ingressos do usuário...');
@@ -184,7 +184,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando eventos do usuário...');
@@ -199,7 +199,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Alterando status dos ingressos...');
@@ -214,7 +214,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando dados do relatório de entrada...');
@@ -229,7 +229,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando dados do relatório de visitas...');
@@ -244,7 +244,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando lista de convidados...');
@@ -259,7 +259,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando dados da transação...');
@@ -274,7 +274,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Atualizando dados do usuário...');
@@ -289,7 +289,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Gerando Transação...');
@@ -304,7 +304,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Pagando Transação...');
@@ -319,7 +319,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Validando cortesias...');
@@ -352,7 +352,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             $scope.result = response;
           })
           .catch(function (error) {
-            VenusActivityIndicatorService.error(error);
+            VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
             VenusActivityIndicatorService.stopActivity('Carregando vendas...');
@@ -379,7 +379,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           $scope.result = response;
         })
         .catch(function (error) {
-          VenusActivityIndicatorService.error(error);
+          VenusActivityIndicatorService.error(error.message);
         })
         .finally(function () {
           VenusActivityIndicatorService.stopActivity('Estornando Pagamento...');
