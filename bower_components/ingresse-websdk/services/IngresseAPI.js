@@ -71,8 +71,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
       'responseError': function (rejection) {
         // do something on error
         ingresseAPI_Preferences.httpCallStoped(rejection.config.url, false);
+        var error = new Error("Não foi possível nos comunicar com os servidores da ingresse. Verifique sua conexão com a internet e tente novamente.");
+        error.code = 503;
 
-        return $q.reject(new Error("Não foi possível nos comunicar com os servidores da ingresse. Verifique sua conexão com a internet e tente novamente."));
+        return $q.reject(error);
       },
       'response': function (response) {
          // do something on error
@@ -953,8 +955,11 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
                 cardErrors += ' ' + fieldErrors[key];
               }
             }
-            // @TODO: Tratar o retorno dos erros de cartão em quem consome o método.
-            throw new Error(cardErrors);
+
+            var error = new Error(cardErrors);
+            error.code = 1031;
+
+            throw error;
           }
 
           // se não há erros, retorna o cartão...

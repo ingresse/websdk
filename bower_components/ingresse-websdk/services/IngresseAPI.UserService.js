@@ -38,13 +38,13 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
         saveCredentials: function (token, userId){
             this.userId = userId;
             this.token = token;
-            ipCookie('userId', userId, { expires: 7 });
-            ipCookie('token', token, { expires: 7 });
+            ipCookie('userId', userId, { expires: 7, domain:'.ingresse.com' });
+            ipCookie('token', token, { expires: 7, domain:'.ingresse.com' });
             $rootScope.$broadcast('userSessionSaved');
         },
         saveLocation: function(location){
             this.city = location;
-            ipCookie('city',this.city,365);
+            ipCookie('city',this.city, {expires: 365, domain:'.ingresse.com'});
             $rootScope.$broadcast('user_service.location_saved');
         },
         getLocation: function(){
