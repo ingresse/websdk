@@ -10,6 +10,7 @@ angular.module('ingresseSDK')
         addedBy: apiEvent.addedBy,
         venue: apiEvent.venue,
         saleAvailable: true,
+        saleEnabled: apiEvent.saleEnabled,
         profit: apiEvent.totalProfit,
         quantitySold: apiEvent.totalTicketsSold,
         link: apiEvent.link,
