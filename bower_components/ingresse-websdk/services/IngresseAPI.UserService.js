@@ -29,6 +29,8 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
         logout: function(){
             ipCookie('userId', "", { expires: -1, domain: '.ingresse.com' });
             ipCookie('token', "", { expires: -1, domain: '.ingresse.com' });
+            ipCookie('userId', "", { expires: -1});
+            ipCookie('token', "", { expires: -1});
             $rootScope.$broadcast('showLogout');
 
             this.data = null;
