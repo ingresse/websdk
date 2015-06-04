@@ -27,8 +27,8 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
             $rootScope.$broadcast('showRegister');
         },
         logout: function(){
-            ipCookie.remove('userId');
-            ipCookie.remove('token');
+            ipCookie('userId', "", { expires: -1, domain: '.ingresse.com' });
+            ipCookie('token', "", { expires: -1, domain: '.ingresse.com' });
             $rootScope.$broadcast('showLogout');
 
             this.data = null;
@@ -38,8 +38,8 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
         saveCredentials: function (token, userId){
             this.userId = userId;
             this.token = token;
-            ipCookie('userId', userId, { expires: 7, domain:'.ingresse.com' });
-            ipCookie('token', token, { expires: 7, domain:'.ingresse.com' });
+            ipCookie('userId', userId, { expires: 7, domain: '.ingresse.com' });
+            ipCookie('token', token, { expires: 7, domain: '.ingresse.com' });
             $rootScope.$broadcast('userSessionSaved');
         },
         saveLocation: function(location){
