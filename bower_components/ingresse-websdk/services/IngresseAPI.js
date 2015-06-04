@@ -254,7 +254,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
         }
 
         $log.error(error);
-        error.message = "Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código";
+        error.message = "Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código: " + error.code;
         return $q.reject(error);
       }
     };
