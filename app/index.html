@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
-    <link rel="stylesheet" href="bower_components/venus/dist/styles/venus.css" />
     <link rel="stylesheet" href="bower_components/ng-json-explorer/src/gd-ui-jsonexplorer.css" />
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="bower_components/ingresse-websdk/directives/ingresse-emulator.css" />
     <link rel="stylesheet" href="bower_components/ingresse-websdk/directives/ingresse-login.css" />
+    <link rel="stylesheet" href="bower_components/venus/dist/styles/venus.css" />
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="bower_components/ingresse-websdk/directives/ingresse-emulator.css" />
   </head>
   <body ng-app="ingresseEmulatorApp">
     <!--[if lt IE 7]>
@@ -19,30 +21,86 @@
 
     <!-- Add your site or application content here -->
     <div ingresse-login></div>
-    <div venus-activity-indicator/></div>
-    <div class="venus header">
-      <div class="venus container">
-        <div class="venus row">
-          <div class="venus column three left">
-            <h2>Emulador API</h2>
-          </div>
-          <div class="venus column">
-            <nav class="menu">
-              <ul>
-                <li><a class="venus" href="#/event">Evento</a></li>
-                <li><a class="venus" href="#/ticket">Ingresso</a></li>
-                <li><a class="venus" href="#/user">Usuário</a></li>
-                <li><a class="venus" href="#/transaction">Transação</a></li>
-                <li><a class="venus" href="#/sale">Venda</a></li>
-                <li><a class="venus" href="#/report">Report</a></li>
-                <li><a class="venus" href="#/error">Erro</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
+    <!-- <div venus-activity-indicator/></div> -->
+    <div layout="column" layout-fill>
+        <md-sidenav layout-fill class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+            <div ng-controller="SidenavController">
+                <md-toolbar class="md-theme-indigo">
+                    <h1 class="md-toolbar-tools">Settings</h1>
+                </md-toolbar>
+                <md-content layout-padding>
+                    <md-input-container>
+                        <label>Domain</label>
+                        <input type="text" ng-model="domain"/>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Public Key</label>
+                        <input type="text" ng-model="publicKey"/>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Private Key</label>
+                        <input type="text" ng-model="privateKey"/>
+                    </md-input-container>
+                </md-content>
+                <md-card flex="33">
+                    <md-card-content>
+                        <h2 class="md-title">Login</h2>
+                        <md-input-container>
+                            <label>User token</label>
+                            <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
+                        <md-list class="fixedRows" ng-show="user.data.name">
+                            <md-subheader class="md-no-sticky">User</md-subheader>
+                            <md-list-item class="md-2-line contact-item">
+                                <img ng-src="{{user.photo}}" class="md-avatar" alt="{{user.data.name}}" />
+                                <div class="md-list-item-text compact">
+                                    <h3>{{user.data.name}}</h3>
+                                    <p>{{user.data.mail}}</p>
+                                    <p>
+                                        <span ng-show="user.data.type === '1'">Admin</span>
+                                        <span ng-show="user.data.type === '2'">Pro</span>
+                                        <span ng-show="user.data.type === '3'">Free</span>
+                                    </p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-card-content>
+                    <div class="md-actions" layout="row" layout-align="end center">
+                        <md-button class="md-raised" ng-click="login()" ng-hide="user.token">Login</md-button>
+                        <md-button class="md-raised md-warn" ng-click="logout()" ng-show="user.token">Logout</md-button>
+                    </div>
+                </md-card>
+            </div>
+        </md-sidenav>
+        <md-toolbar ng-controller="SidenavController">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
+                    <md-icon md-svg-icon="styles/images/icons/ic_settings_48px.svg"></md-icon>
+                </md-button>
+                <h2>
+                    <span>Ingresse API</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-button" aria-label="Evento" href="#/event">Event</md-button>
+            </div>
+        </md-toolbar>
+        <div ng-view=""></div>
     </div>
-    <div class="venus container transmute-grid" style="margin-top: 40px;">
+    <!-- <div layout="row">
+        <h2>Emulador API</h2>
+        <nav class="menu">
+          <ul>
+            <li><a class="venus" href="#/event">Evento</a></li>
+            <li><a class="venus" href="#/ticket">Ingresso</a></li>
+            <li><a class="venus" href="#/user">Usuário</a></li>
+            <li><a class="venus" href="#/transaction">Transação</a></li>
+            <li><a class="venus" href="#/sale">Venda</a></li>
+            <li><a class="venus" href="#/report">Report</a></li>
+            <li><a class="venus" href="#/error">Erro</a></li>
+          </ul>
+        </nav>
+    </div> -->
+    <!-- <div class="venus container transmute-grid" style="margin-top: 40px;">
         <div class="venus row">
             <div class="venus column eight">
                 <form class="venus">
@@ -61,23 +119,25 @@
         </div>
 
         <div ng-view=""></div>
-    </div>
+    </div> -->
 
     <script src="bower_components/crypto-js/rollups/hmac-sha1.js"></script>
     <script src="bower_components/crypto-js/components/enc-base64-min.js"></script>
     <script src="bower_components/pagar-me/index.js"></script>
     <script src="bower_components/moment/min/moment.min.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
     <script src="bower_components/angular-cookie/angular-cookie.min.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
-    <script src="bower_components/venus/dist/venus.js"></script>
     <script src="bower_components/ng-json-explorer/src/gd-ui-jsonexplorer.js"></script>
+    <script src="bower_components/venus/dist/venus.js"></script>
 
     <script src="bower_components/ingresse-websdk/services/IngresseAPI.Preferences.js"></script>
     <script src="bower_components/ingresse-websdk/services/IngresseAPI.UserService.js"></script>
@@ -90,5 +150,8 @@
 
     <script src="scripts/app.js"></script>
     <script src="scripts/emulator.js"></script>
+    <script src="scripts/SidenavController.js"></script>
+    <script src="scripts/EventController.js"></script>
+    <script src="directives/dynamicInput.js"></script>
 </body>
 </html>

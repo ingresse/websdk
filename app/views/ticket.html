@@ -1,23 +1,60 @@
-<form  class="venus" novalidate name="updateTicketStatusForm" ng-submit="updateTicketStatus()">
-    <label>User token</label>
-    <input type="text" ng-model="user.token" required disabled/>
-
-    <label>Event ID</label>
-    <input type="number" ng-model="updateTicketStatusData.eventid" required/>
-
-    <h6 class="venus">Ingressos</h6>
-    <a href="" class="venus" ng-click="updateTicketStatusAddTicket()">Adicionar</a>
-    <div class="item" ng-repeat="ticket in updateTicketStatusData.tickets">
-        <label>Código do ingresso</label>
-        <input type="text" ng-model="ticket.ticketCode" required/>
-
-        <label>Timestamp do ingresso</label>
-        <input type="number" ng-model="ticket.ticketTimestamp" disabled required/>
-
-        <input type="checkbox" ng-model="ticket.ticketStatus" ng-true-value="1" ng-false-value="0">
-        <label>Ingresso Validado: {{ticket.ticketStatus}}</label>
-        <a href="" class="venus" ng-click="updateTicketStatusRemoveTicket(ticket)">Remover</a>
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
+            <md-icon md-svg-icon="styles/images/icons/ic_menu_24px.svg"></md-icon>
+        </md-button>
+        <h2>
+            <span>Ingresse API</span>
+        </h2>
     </div>
+</md-toolbar>
+<div layout="row" layout-align="center left">
+    <md-card flex>
+        <md-card-content>
+            <h2 class="md-title">Event</h2>
+            <form  name="eventForm">
+                <md-input-container>
+                    <label>User token</label>
+                    <input type="text" ng-model="user.token" disabled/>
+                </md-input-container>
 
-    <button class="venus button" type="submit" ng-disabled="!updateTicketStatusForm.$valid">Enviar</button>
-</form>
+                <md-input-container>
+                    <label>Event ID or Link</label>
+                    <input type="text" ng-model="eventForm.id" />
+                </md-input-container>
+
+                <md-input-container>
+                    <label>Fields</label>
+                    <input type="text" ng-model="eventForm.fields"/>
+                </md-input-container>
+            </form>
+        </md-card-content>
+        <div class="md-actions" layout="row" layout-align="end center">
+            <md-button ng-click="getEvent(eventForm)">Send</md-button>
+        </div>
+    </md-card>
+</div>
+<div layout="row" layout-align="center left" ng-show="result.id">
+    <md-card flex>
+        <md-card-content>
+            <md-list class="fixedRows">
+                <md-list-item class="md-2-line contact-item">
+                    <img ng-src="{{result.poster}}" class="md-avatar" alt="{{result.title}}" />
+                    <div class="md-list-item-text compact">
+                        <h3>{{result.title}}</h3>
+                        <p>{{result.id}}</p>
+                    </div>
+                </md-list-item>
+            </md-list>
+            <!-- <h2 class="md-title">{{result.title}}</h2> -->
+            <json-explorer class="result" json-data="{{result}}" collapsed="{{collapsed}}"></json-explorer>
+            <!-- <md-input-container ng-repeat="(key, value) in result">
+                <label>{{key}}</label>
+                <input type="text" ng-model="value" disabled/>
+            </md-input-container> -->
+        </md-card-content>
+        <div class="md-actions" layout="row" layout-align="end center">
+            <md-button class="md-raised" href="#/tickets/{{result.id}}">Get Tickets</md-button>
+        </div>
+    </md-card>
+</div>

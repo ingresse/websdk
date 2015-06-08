@@ -1,129 +1,176 @@
-<h2 class="venus">Event</h2>
-<form  class="venus" novalidate name="eventForm" ng-submit="getEvent(eventForm)">
-    <label>User token</label>
-    <input type="text" ng-model="user.token" disabled/>
+<div layout-md="column" layout-gt-md="row">
+    <md-card flex>
+        <md-card-content>
+            <md-tabs md-border-bottom style="min-height:500px;">
+                <md-tab>
+                    <md-tab-label>
+                    EVENT
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-input-container>
+                            <label>User token</label>
+                            <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
 
-    <label>Event ID or Link</label>
-    <input type="text" ng-model="eventForm.id" />
+                        <md-input-container>
+                            <label>Event ID or Link</label>
+                            <input type="text" ng-model="request.id" />
+                        </md-input-container>
 
-    <label>Fields</label>
-    <input type="text" ng-model="eventForm.fields"/>
+                        <md-input-container>
+                            <label>Fields</label>
+                            <input type="text" ng-model="request.fields"/>
+                        </md-input-container>
 
-    <label>User token</label>
-    <input type="text" ng-model="user.token" disabled/>
+                        <div class="md-actions" layout="row" layout-align="end center">
+                            <md-button ng-click="getEvent()">Send</md-button>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                    Ticket Types
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-input-container>
+                            <label>User token</label>
+                            <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
 
-    <button class="venus button" type="submit" ng-disabled="!eventForm.$valid">Enviar</button>
-</form>
+                        <md-input-container>
+                            <label>Event ID or Link</label>
+                            <input type="text" ng-model="request.id" />
+                        </md-input-container>
 
-<form  class="venus" novalidate name="eventListForm" ng-submit="getEventList(eventListForm)">
+                        <md-checkbox ng-model="request.pos">POS</md-checkbox>
 
-    <label>Latitude</label>
-    <input type="text" ng-model="eventListForm.filters.lat"/>
+                        <div class="md-actions" layout="row" layout-align="end center">
+                            <md-button ng-click="getEventTicketTypes()">Send</md-button>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                    Guest List
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-input-container>
+                            <label>User token</label>
+                            <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
 
-    <label>Longitude</label>
-    <input type="text" ng-model="eventListForm.filters.long"/>
+                        <md-input-container>
+                            <label>Fields</label>
+                            <input type="text" ng-model="request.fields"/>
+                        </md-input-container>
 
-    <label>A partir da data</label>
-    <input type="date" ng-model="eventListForm.filters.from"/>
+                        <md-input-container>
+                            <label>Page</label>
+                            <input type="text" ng-model="request.page"/>
+                        </md-input-container>
 
-    <label>Até a data</label>
-    <input type="date" ng-model="eventListForm.filters.to"/>
+                        <md-input-container>
+                            <label>Page Size</label>
+                            <input type="text" ng-model="request.pageSize"/>
+                        </md-input-container>
 
-    <label>Estado</label>
-    <input type="text" ng-model="eventListForm.filters.state"/>
+                        <md-input-container>
+                            <md-select placeholder="Status" ng-model="request.filters.status">
+                                <md-option value="all">all</md-option>
+                                <md-option value="checked">checked</md-option>
+                                <md-option value="unchecked">unchecked</md-option>
+                            </md-select>
+                        </md-input-container>
 
-    <label>Contendo</label>
-    <input type="text" ng-model="eventListForm.filters.term"/>
+                        <md-input-container>
+                            <label>Term</label>
+                            <input type="text" ng-model="request.filters.term"/>
+                        </md-input-container>
 
-    <label>Fields</label>
-    <input type="text" ng-model="eventListForm.fields"/>
+                        <md-input-container>
+                            <md-select placeholder="Channel" ng-model="request.filters.channel">
+                                <md-option value="online">online</md-option>
+                                <md-option value="offline">offline</md-option>
+                            </md-select>
+                        </md-input-container>
 
-    <label>Page</label>
-    <input type="number" ng-model="eventListForm.page"/>
+                        <md-input-container>
+                            <label>Ticket Type ID</label>
+                            <input type="text" ng-model="request.filters.tickettypeid"/>
+                        </md-input-container>
 
-    <label>Page Size</label>
-    <input type="number" ng-model="eventListForm.pageSize"/>
+                        <md-input-container>
+                            <label>Session ID</label>
+                            <input type="text" ng-model="request.filters.sessionid"/>
+                        </md-input-container>
 
-    <button class="venus button" type="submit">Enviar</button>
-</form>
+                        <md-input-container>
+                            <label>From</label>
+                            <input type="date" ng-model="request.filters.from"/>
+                        </md-input-container>
 
-<form  class="venus" novalidate name="guestListForm" ng-show="selectedMethod === 'guestList'" ng-submit="getGuestList()">
-    <label>User token</label>
-    <input type="text" ng-model="user.token" required disabled/>
+                        <div class="md-actions" layout="row" layout-align="end center">
+                            <md-button ng-click="getGuestList()">Send</md-button>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                    Crew
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-input-container>
+                            <label>User token</label>
+                            <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
 
-    <label>Event ID</label>
-    <input type="number" ng-model="guestListForm.eventId" required/>
+                        <md-input-container>
+                            <label>Event ID or Link</label>
+                            <input type="text" ng-model="request.id" />
+                        </md-input-container>
 
-    <label>Fields</label>
-    <input type="text" ng-model="guestListForm.fields"/>
+                        <md-input-container>
+                            <label>Fields</label>
+                            <input type="text" ng-model="request.fields"/>
+                        </md-input-container>
 
-    <label>Nome, email ou código do ingresso</label>
-    <input type="text" ng-model="guestListForm.filters.term"/>
+                        <div class="md-actions" layout="row" layout-align="end center">
+                            <md-button ng-click="getEventCrew()">Send</md-button>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </md-card-content>
+    </md-card>
 
-    <label>Status</label>
-    <select ng-model='guestListForm.filters.status'>
-        <option value="all" selected>all</option>
-        <option value="checked">checked</option>
-        <option value="unchecked">unchecked</option>
-    </select>
-
-    <label>Channel</label>
-    <select ng-model='guestListForm.filters.channel'>
-        <option value="" selected>all</option>
-        <option value="online">online</option>
-        <option value="offline">offline</option>
-    </select>
-
-    <label>Ticket Type ID</label>
-    <input type="number" ng-model="guestListForm.filters.tickettypeid"/>
-
-    <label>Session ID</label>
-    <input type="number" ng-model="guestListForm.filters.sessionid"/>
-
-    <label>From</label>
-    <input type="number" ng-model="guestListForm.filters.from"/>
-
-    <label>Page</label>
-    <input type="number" ng-model="guestListForm.page"/>
-
-    <label>Page Size</label>
-    <input type="number" ng-model="guestListForm.pageSize"/>
-
-    <button class="venus button" type="submit" ng-disabled="!guestListForm.$valid">Enviar</button>
-</form>
-
-<form  class="venus" novalidate name="eventTicketsForm" ng-submit="getEventTickets(eventTicketsForm)">
-    <label>User token</label>
-    <input type="text" ng-model="user.token" disabled/>
-
-    <label>Event ID</label>
-    <input type="number" ng-model="eventTicketsForm.id" required/>
-
-    <br>
-    <input type="checkbox" ng-model="eventTicketsForm.pos" />
-    <label>POS</label>
-    <br>
-
-    <button class="venus button" type="submit" ng-disabled="!eventTicketsForm.$valid">Enviar</button>
-</form>
-
-
-<div class="venus row" style="margin-top:40px;">
-    <div class="venus eight centered">
-        <form class="venus" style="margin-bottom:5px;" ng-submit="makeCall()">
-            <input id="check1" type="checkbox" name="check" value="check1" ng-model="collapsed">
-            <label for="check1">Collapse Results</label>
-        </form>
-        <div ingresse-user user="responseUser" request-token="user.token"></div>
-        <div class="httpcalls" ng-hide="httpCalls.length == 0">
-            <a href="" ng-click="clearHttpHistory()" class="venus clear">Limpar</a>
-            <div class="calls">
-                <p class="call" ng-repeat="call in httpCalls" ng-show="call.requestTime">
-                    {{call.url}} - {{call.requestTime}}s
-                    <span class="time" style="width: {{call.requestTime * 10}}%"></span>
-                </p>
-            </div>
-        </div>
-        <json-explorer class="result" json-data="{{result}}" collapsed="{{collapsed}}"></json-explorer>
-    </div>
+    <md-card flex>
+        <md-card-content>
+            <md-progress-linear md-mode="indeterminate" ng-show="isLoading"></md-progress-linear>
+            <md-tabs md-border-bottom md-selected="selectedIndex" style="min-height:500px;">
+                <md-tab>
+                    <md-tab-label>
+                    Result
+                    </md-tab-label>
+                    <md-tab-body>
+                        <json-explorer class="result" json-data="{{result}}" collapsed="false"></json-explorer>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                    History
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-list>
+                            <md-list-item class="md-2-line" ng-repeat="call in calls">
+                                <div class="md-list-item-text">
+                                    <h3>{{call.stopTime | momentum:'HH:mm:ss'}} - {{call.requestTime}}s</h3>
+                                    <p>{{call.url}}</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </md-card-content>
+    </md-card>
 </div>

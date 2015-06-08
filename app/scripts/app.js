@@ -19,7 +19,7 @@ var app = angular
     'ingresseSDK',
     'gd.ui.jsonexplorer',
     'ingresse.emulator',
-    'venusUI'
+    'ngMaterial'
   ])
   .config(function ($routeProvider, ingresseAPI_PreferencesProvider) {
     // ingresseAPI_PreferencesProvider.setPublicKey('yourkey');
@@ -29,13 +29,17 @@ var app = angular
     $routeProvider
       .when('/event/', {
         templateUrl: 'views/event.html',
-        controller: 'EmulatorController'
+        controller: 'EventController'
+      })
+      .when('/event/:id', {
+        templateUrl: 'views/event.html',
+        controller: 'EventController'
       })
       .when('/user', {
         templateUrl: 'views/user.html',
         controller: 'EmulatorController'
       })
-      .when('/ticket', {
+      .when('/tickets/:eventid', {
         templateUrl: 'views/ticket.html',
         controller: 'EmulatorController'
       })
@@ -58,4 +62,19 @@ var app = angular
       .otherwise({
         redirectTo: '/event'
       });
+  });
+
+
+angular.module('ingresseEmulatorApp').filter('momentum', function() {
+    return function(input,format) {
+      var momentDate = moment(input);
+      var output = null;
+      if(format) {
+        output = momentDate.format(format);
+        return output;
+      }
+
+      output = momentDate.format('DD/MM/YYYY');
+      return output
+    };
   });
