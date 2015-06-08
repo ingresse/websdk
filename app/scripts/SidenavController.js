@@ -6,16 +6,16 @@ angular.module('ingresseEmulatorApp')
       ingresseAPI_Preferences.setHost($scope.domain);
     }
 
-    $scope.openLeftMenu = function() {
-      $mdSidenav('left').toggle();
-    };
-
     $scope.login = function () {
       IngresseAPI_UserService.login();
     };
 
     $scope.logout = function () {
       IngresseAPI_UserService.logout();
+    };
+
+    $scope.openLeftMenu = function() {
+      $mdSidenav('left').toggle();
     };
 
     $scope.setHost = function (host) {
@@ -36,6 +36,13 @@ angular.module('ingresseEmulatorApp')
       ingresseAPI_Preferences.setPublicKey(key);
     };
 
+    $scope.$on('userSessionSaved', function () {
+      $scope.user = {
+        token: IngresseAPI_UserService.token,
+        id: IngresseAPI_UserService.userId
+      };
+    });
+
     $scope.$watch('privateKey', function () {
       // $document.cookie = "privateKey=" + $scope.privateKey + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
       if (!$scope.privateKey) {
@@ -50,18 +57,6 @@ angular.module('ingresseEmulatorApp')
       }
       // $document.cookie = "publicKey=" + $scope.publicKey + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
       ipCookie('publickey', $scope.publicKey, {expires: 365});
-    });
-
-    $scope.$on('userSessionSaved', function () {
-      $scope.user = {
-        token: IngresseAPI_UserService.token,
-        id: IngresseAPI_UserService.userId
-      };
-      ingresseAPI.getUser($scope.user.id, $scope.user.token, ['id','name','email','type'])
-      .then(function (response) {
-        $scope.user.data = response;
-        $scope.user.photo = ingresseAPI.getUserPhotoUrl($scope.user.id);
-      });
     });
 
     $scope.$on('userHasLoggedOut', function () {

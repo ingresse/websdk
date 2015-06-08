@@ -5,6 +5,11 @@ angular.module('ingresseEmulatorApp')
         token: IngresseAPI_UserService.token,
         id: IngresseAPI_UserService.userId
       };
+      ingresseAPI.getUser($scope.user.id, $scope.user.token, ['id','name','email','type'])
+      .then(function (response) {
+        $scope.user.data = response;
+        $scope.user.photo = ingresseAPI.getUserPhotoUrl($scope.user.id);
+      });
     });
 
     $scope.$on('userHasLoggedOut', function () {
@@ -35,6 +40,14 @@ angular.module('ingresseEmulatorApp')
 
       $scope.selectedIndex = 0;
     });
+
+    $scope.login = function () {
+      IngresseAPI_UserService.login();
+    };
+
+    $scope.logout = function () {
+      IngresseAPI_UserService.logout();
+    };
 
     $scope.showError = function(text) {
       alert = $mdDialog.alert({
