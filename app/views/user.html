@@ -67,6 +67,76 @@
                         </div>
                     </md-tab-body>
                 </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                    Update
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-input-container>
+                            <label>User token</label>
+                            <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>User ID</label>
+                            <input type="number" ng-model="request.id" />
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Name</label>
+                            <input type="text" ng-model="request.userObj.name"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Lastname</label>
+                            <input type="text" ng-model="request.userObj.lastname"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Street</label>
+                            <input type="text" ng-model="request.userObj.street"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Number</label>
+                            <input type="text" ng-model="request.userObj.number"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Complement</label>
+                            <input type="text" ng-model="request.userObj.complement"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>District</label>
+                            <input type="text" ng-model="request.userObj.district"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>City</label>
+                            <input type="text" ng-model="request.userObj.city"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>State</label>
+                            <input type="text" ng-model="request.userObj.state"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Zip</label>
+                            <input type="text" ng-model="request.userObj.zip"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Phone</label>
+                            <input type="text" ng-model="request.userObj.phone"/>
+                        </md-input-container>
+
+                        <div class="md-actions" layout="row" layout-align="end center">
+                            <md-button ng-click="updateUserInfo()">Send</md-button>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
             </md-tabs>
         </md-card-content>
     </md-card>

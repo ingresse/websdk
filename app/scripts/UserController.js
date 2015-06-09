@@ -60,6 +60,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
       ingresseAPI.getUser($scope.request.id, $scope.user.token, $scope.request.fields)
         .then(function (response) {
+          $scope.request.userObj = angular.copy(response);
           $scope.result = response;
         })
         .catch(function (error) {
@@ -83,5 +84,21 @@ angular.module('ingresseEmulatorApp')
         .finally(function () {
           $scope.isLoading = false;
         });
-    }
+    };
+
+    $scope.updateUserInfo = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+      ingresseAPI.updateUserInfo($scope.request.id, $scope.user.token, $scope.request.userObj)
+        .then(function (response) {
+          $scope.request.userObj = angular.copy(response);
+          $scope.result = response;
+        })
+        .catch(function (error) {
+          $scope.result = error;
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
   });
