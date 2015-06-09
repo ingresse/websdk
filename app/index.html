@@ -15,23 +15,49 @@
     <link rel="stylesheet" href="bower_components/ingresse-websdk/directives/ingresse-emulator.css" />
   </head>
   <body ng-app="ingresseEmulatorApp">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
 
-    <!-- Add your site or application content here -->
     <div ingresse-login></div>
-    <!-- <div venus-activity-indicator/></div> -->
+
     <div layout="column" layout-fill>
+
         <md-sidenav layout-fill class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+
             <div ng-controller="SidenavController">
+
                 <md-toolbar class="md-theme-indigo">
                     <h1 class="md-toolbar-tools">Settings</h1>
                 </md-toolbar>
+
+                <md-button class="md-button" ng-click="login()" ng-hide="user.id">Login</md-button>
+
+                <md-list class="fixedRows" ng-show="user.data.name">
+
+                    <md-list-item class="md-2-line contact-item">
+
+                        <img ng-src="{{user.photo}}" class="md-avatar" alt="{{user.data.name}}" />
+                        <div class="md-list-item-text compact">
+                            <h3>{{user.data.name}} {{user.data.lastname}}</h3>
+                            <p>{{user.data.mail}}</p>
+                            <p>{{user.id}}</p>
+                            <p>
+                                <span ng-show="user.data.type === '1'">Admin</span>
+                                <span ng-show="user.data.type === '2'">Pro</span>
+                                <span ng-show="user.data.type === '3'">Free</span>
+                            </p>
+                        </div>
+
+                    </md-list-item>
+
+                </md-list>
+
+                <md-button class="md-button md-warn" ng-click="logout()" ng-show="user.id">Logout</md-button>
+
+                <md-divider></md-divider>
+
                 <md-content layout-padding>
                     <md-input-container>
                         <label>Domain</label>
-                        <input type="text" ng-model="domain"/>
+                        <input type="text" ng-model="domain" ng-change="setHost(domain)"/>
                     </md-input-container>
                     <md-input-container>
                         <label>Public Key</label>
@@ -42,6 +68,7 @@
                         <input type="text" ng-model="privateKey"/>
                     </md-input-container>
                 </md-content>
+
             </div>
         </md-sidenav>
         <md-toolbar ng-controller="SidenavController">
@@ -54,45 +81,13 @@
                 </h2>
                 <span flex></span>
                 <md-button class="md-button" aria-label="Evento" href="#/event">Event</md-button>
-                <md-button class="md-raised" ng-click="login()" ng-hide="user.id">Login</md-button>
+                <md-button class="md-button" aria-label="Evento" href="#/user">User</md-button>
             </div>
         </md-toolbar>
+
         <div ng-view=""></div>
+
     </div>
-    <!-- <div layout="row">
-        <h2>Emulador API</h2>
-        <nav class="menu">
-          <ul>
-            <li><a class="venus" href="#/event">Evento</a></li>
-            <li><a class="venus" href="#/ticket">Ingresso</a></li>
-            <li><a class="venus" href="#/user">Usuário</a></li>
-            <li><a class="venus" href="#/transaction">Transação</a></li>
-            <li><a class="venus" href="#/sale">Venda</a></li>
-            <li><a class="venus" href="#/report">Report</a></li>
-            <li><a class="venus" href="#/error">Erro</a></li>
-          </ul>
-        </nav>
-    </div> -->
-    <!-- <div class="venus container transmute-grid" style="margin-top: 40px;">
-        <div class="venus row">
-            <div class="venus column eight">
-                <form class="venus">
-                    <label>Domain</label>
-                    <input type="text" ng-model="domain" ng-change="setHost(domain)" />
-                    <label>Public Key</label>
-                    <input type="text" ng-model="publicKey" ng-change="setPublicKey(publicKey)"/>
-                    <label for="">Private Key</label>
-                    <input type="text" ng-model="privateKey" ng-change="setPrivateKey(privateKey)">
-                </form>
-
-                <div ingresse-user user="user" request-token="user.token"></div>
-                <a href="" class="venus button" ng-click="login()" ng-hide="user.token">Login</a>
-                <a href="" class="venus button" ng-click="logout()" ng-show="user.token">Logout</a>
-            </div>
-        </div>
-
-        <div ng-view=""></div>
-    </div> -->
 
     <script src="bower_components/crypto-js/rollups/hmac-sha1.js"></script>
     <script src="bower_components/crypto-js/components/enc-base64-min.js"></script>
@@ -125,6 +120,7 @@
     <script src="scripts/emulator.js"></script>
     <script src="scripts/SidenavController.js"></script>
     <script src="scripts/EventController.js"></script>
+    <script src="scripts/UserController.js"></script>
     <script src="directives/dynamicInput.js"></script>
 </body>
 </html>

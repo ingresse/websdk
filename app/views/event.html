@@ -1,7 +1,7 @@
-<div layout-md="column" layout-gt-md="row">
-    <md-card flex>
+<div layout-md="column" layout-gt-md="row" layout-align="center start" layout-fill>
+    <md-card flex="40">
         <md-card-content>
-            <md-tabs md-border-bottom style="min-height:500px;">
+            <md-tabs md-border-bottom md-dynamic-height>
                 <md-tab>
                     <md-tab-label>
                     EVENT
@@ -11,23 +11,6 @@
                             <label>User token</label>
                             <input type="text" ng-model="user.token" disabled/>
                         </md-input-container>
-
-                        <md-list class="fixedRows" ng-show="user.data.name">
-                            <md-subheader class="md-no-sticky">User</md-subheader>
-                            <md-list-item class="md-2-line contact-item">
-                                <img ng-src="{{user.photo}}" class="md-avatar" alt="{{user.data.name}}" />
-                                <div class="md-list-item-text compact">
-                                    <h3>{{user.data.name}}</h3>
-                                    <p>{{user.data.mail}}</p>
-                                    <p>
-                                        <span ng-show="user.data.type === '1'">Admin</span>
-                                        <span ng-show="user.data.type === '2'">Pro</span>
-                                        <span ng-show="user.data.type === '3'">Free</span>
-                                    </p>
-                                </div>
-                                <md-button class="md-raised md-warn" ng-click="logout()">Logout</md-button>
-                            </md-list-item>
-                        </md-list>
 
                         <md-input-container>
                             <label>Event ID or Link</label>
@@ -74,6 +57,11 @@
                         <md-input-container>
                             <label>User token</label>
                             <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Event ID or Link</label>
+                            <input type="text" ng-model="request.id" />
                         </md-input-container>
 
                         <md-input-container>
@@ -162,13 +150,21 @@
 
     <md-card flex>
         <md-card-content>
-            <md-progress-linear md-mode="indeterminate" ng-show="isLoading"></md-progress-linear>
-            <md-tabs md-border-bottom md-selected="selectedIndex" style="min-height:500px;">
+            <md-tabs md-border-bottom md-selected="selectedIndex" md-dynamic-height>
                 <md-tab>
                     <md-tab-label>
                     Result
                     </md-tab-label>
                     <md-tab-body>
+                        <md-list>
+                            <md-list-item class="md-2-line" ng-show="calls[0].url">
+                                <div class="md-list-item-text">
+                                    <h3>{{calls[0].stopTime | momentum:'HH:mm:ss'}} - {{calls[0].requestTime}}s</h3>
+                                    <p>{{calls[0].domain}}</p>
+                                    <p ng-repeat="param in calls[0].parameters">{{param}}</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
                         <json-explorer class="result" json-data="{{result}}" collapsed="false"></json-explorer>
                     </md-tab-body>
                 </md-tab>
@@ -180,14 +176,16 @@
                         <md-list>
                             <md-list-item class="md-2-line" ng-repeat="call in calls">
                                 <div class="md-list-item-text">
-                                    <h3>{{call.stopTime | momentum:'HH:mm:ss'}} - {{call.requestTime}}s</h3>
-                                    <p>{{call.url}}</p>
+                                    <h3>{{calls[0].stopTime | momentum:'HH:mm:ss'}} - {{calls[0].requestTime}}s</h3>
+                                    <p>{{calls[0].domain}}</p>
+                                    <p ng-repeat="param in calls[0].parameters">{{param}}</p>
                                 </div>
                             </md-list-item>
                         </md-list>
                     </md-tab-body>
                 </md-tab>
             </md-tabs>
+            <md-progress-linear md-mode="indeterminate" ng-show="isLoading"></md-progress-linear>
         </md-card-content>
     </md-card>
 </div>

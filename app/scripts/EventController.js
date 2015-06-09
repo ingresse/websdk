@@ -5,11 +5,6 @@ angular.module('ingresseEmulatorApp')
         token: IngresseAPI_UserService.token,
         id: IngresseAPI_UserService.userId
       };
-      ingresseAPI.getUser($scope.user.id, $scope.user.token, ['id','name','email','type'])
-      .then(function (response) {
-        $scope.user.data = response;
-        $scope.user.photo = ingresseAPI.getUserPhotoUrl($scope.user.id);
-      });
     });
 
     $scope.$on('userHasLoggedOut', function () {
@@ -41,14 +36,6 @@ angular.module('ingresseEmulatorApp')
       $scope.selectedIndex = 0;
     });
 
-    $scope.login = function () {
-      IngresseAPI_UserService.login();
-    };
-
-    $scope.logout = function () {
-      IngresseAPI_UserService.logout();
-    };
-
     $scope.showError = function(text) {
       alert = $mdDialog.alert({
         title: 'Erro',
@@ -69,6 +56,7 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.getEvent = function () {
+      $scope.result = {};
       $scope.isLoading = true;
       ingresseAPI.getEvent($scope.request.id, $scope.request.fields, $scope.user.token)
         .then(function (response) {
@@ -83,6 +71,7 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.getEventTicketTypes = function () {
+      $scope.result = {};
       $scope.isLoading = true;
       ingresseAPI.getEventTickets($scope.request.id, $scope.user.token, $scope.request.pos)
         .then(function (response) {
@@ -97,6 +86,7 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.getGuestList = function () {
+      $scope.result = {};
       $scope.isLoading = true;
       ingresseAPI.getGuestList($scope.request.id, $scope.user.token, $scope.request.fields, $scope.request.filters, $scope.request.page, $scope.request.pageSize)
         .then(function (response) {
@@ -111,6 +101,7 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.getEventCrew = function () {
+      $scope.result = {};
       $scope.isLoading = true;
       ingresseAPI.getEventCrew($scope.request.id, $scope.request.fields, $scope.user.token)
         .then(function (response) {
@@ -125,6 +116,7 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.getEventList = function () {
+      $scope.result = {};
       $scope.isLoading = true;
       ingresseAPI.getEventList($scope.request.fields, $scope.request.filters, $scope.request.page, $scope.request.pageSize)
         .then(function (response) {

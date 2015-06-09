@@ -1,96 +1,114 @@
-<form  class="venus" novalidate name="userForm" ng-submit="getUser(userForm)">
-    <label>User token</label>
-    <input type="text" ng-model="user.token" disabled/>
+<div layout-md="column" layout-gt-md="row" layout-align="center start" layout-fill>
+    <md-card flex="40">
+        <md-card-content>
+            <md-tabs md-border-bottom md-dynamic-height>
+                <md-tab>
+                    <md-tab-label>
+                    User
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-input-container>
+                            <label>User token</label>
+                            <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
 
-    <label>User ID</label>
-    <input type="number" ng-model="userForm.id" required/>
+                        <md-input-container>
+                            <label>User ID</label>
+                            <input type="number" ng-model="request.id" />
+                        </md-input-container>
 
-    <label>Fields</label>
-    <input type="text" ng-model="userForm.fields"/>
+                        <md-input-container>
+                            <label>Fields</label>
+                            <input type="text" ng-model="request.fields"/>
+                        </md-input-container>
 
-    <button class="venus button" type="submit" ng-disabled="!userForm.$valid">Enviar</button>
-</form>
+                        <div class="md-actions" layout="row" layout-align="end center">
+                            <md-button ng-click="getUser()">Send</md-button>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                    Tickets
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-input-container>
+                            <label>User token</label>
+                            <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
 
-<form  class="venus" novalidate name="updateUserForm" ng-show="selectedMethod === 'updateUser'" ng-submit="updateUser(updateUserForm)">
-    <label>User token</label>
-    <input type="text" ng-model="user.token" required disabled/>
+                        <md-input-container>
+                            <label>User ID</label>
+                            <input type="number" ng-model="request.id" />
+                        </md-input-container>
 
-    <label>User ID</label>
-    <input type="text" ng-model="updateUserForm.userId"/>
+                        <md-input-container>
+                            <label>Page</label>
+                            <input type="number" ng-model="page" />
+                        </md-input-container>
 
-    <label>Name</label>
-    <input type="text" ng-model="updateUserForm.userdata.name"/>
+                        <md-input-container>
+                            <label>Page Size</label>
+                            <input type="number" ng-model="pageSize" />
+                        </md-input-container>
 
-    <label>Lastname</label>
-    <input type="text" ng-model="updateUserForm.userdata.lastname"/>
+                        <md-input-container>
+                            <label>Event</label>
+                            <input type="text" ng-model="request.filters.event" />
+                        </md-input-container>
 
-    <label>Street</label>
-    <input type="text" ng-model="updateUserForm.userdata.street"/>
+                        <md-input-container>
+                            <label>Term</label>
+                            <input type="text" ng-model="request.filters.term" />
+                        </md-input-container>
 
-    <label>Number</label>
-    <input type="text" ng-model="updateUserForm.userdata.number"/>
+                        <div class="md-actions" layout="row" layout-align="end center">
+                            <md-button ng-click="getUserTickets()">Send</md-button>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </md-card-content>
+    </md-card>
 
-    <label>Complement</label>
-    <input type="text" ng-model="updateUserForm.userdata.complement"/>
-
-    <label>District</label>
-    <input type="text" ng-model="updateUserForm.userdata.district"/>
-
-    <label>City</label>
-    <input type="text" ng-model="updateUserForm.userdata.city"/>
-
-    <label>State</label>
-    <input type="text" ng-model="updateUserForm.userdata.state"/>
-
-    <label>ZIP</label>
-    <input type="text" ng-model="updateUserForm.userdata.zip"/>
-
-    <label>Phone</label>
-    <input type="text" ng-model="updateUserForm.userdata.phone"/>
-
-    <button class="venus button" type="submit" ng-disabled="!updateUserForm.$valid">Enviar</button>
-</form>
-
-<form  class="venus" novalidate name="userEventsForm" ng-show="selectedMethod === 'userEvents'" ng-submit="getUserEvents(userEventsForm)">
-    <label>User token</label>
-    <input type="text" ng-model="user.token" required disabled/>
-
-    <label>User ID</label>
-    <input type="number" ng-model="userEventsForm.id" required/>
-
-    <label>Fields</label>
-    <input type="text" ng-model="userEventsForm.fields"/>
-
-    <label>Event Filter</label>
-    <input type="number" ng-model="userEventsForm.filters.event"/>
-
-    <label>Term Filter</label>
-    <input type="text" ng-model="userEventsForm.filters.term"/>
-
-    <label>Page</label>
-    <input type="number" ng-model="userEventsForm.page"/>
-
-    <label>Page Size</label>
-    <input type="number" ng-model="userEventsForm.pageSize"/>
-
-    <button class="venus button" type="submit" ng-disabled="!userEventsForm.$valid">Enviar</button>
-</form>
-
-<form  class="venus" novalidate name="userTicketsForm" ng-submit="getUserTickets(userTicketsForm)">
-    <label>User token</label>
-    <input type="text" ng-model="user.token" required disabled/>
-
-    <label>User ID</label>
-    <input type="number" ng-model="userTicketsForm.id" required/>
-
-    <label>Fields</label>
-    <input type="text" ng-model="userTicketsForm.fields"/>
-
-    <label>Event Filter</label>
-    <input type="number" ng-model="userTicketsForm.filters.event"/>
-
-    <label>Term Filter</label>
-    <input type="text" ng-model="userTicketsForm.filters.term"/>
-
-    <button class="venus button" type="submit" ng-disabled="!userTicketsForm.$valid">Enviar</button>
-</form>
+    <md-card flex>
+        <md-card-content>
+            <md-tabs md-border-bottom md-selected="selectedIndex" md-dynamic-height>
+                <md-tab>
+                    <md-tab-label>
+                    Result
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-list>
+                            <md-list-item class="md-2-line" ng-show="calls[0].url">
+                                <div class="md-list-item-text">
+                                    <h3>{{calls[0].stopTime | momentum:'HH:mm:ss'}} - {{calls[0].requestTime}}s</h3>
+                                    <p>{{calls[0].domain}}</p>
+                                    <p ng-repeat="param in calls[0].parameters">{{param}}</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                        <json-explorer class="result" json-data="{{result}}" collapsed="false"></json-explorer>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                    History
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-list>
+                            <md-list-item class="md-2-line" ng-repeat="call in calls">
+                                <div class="md-list-item-text">
+                                    <h3>{{calls[0].stopTime | momentum:'HH:mm:ss'}} - {{calls[0].requestTime}}s</h3>
+                                    <p>{{calls[0].domain}}</p>
+                                    <p ng-repeat="param in calls[0].parameters">{{param}}</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+            <md-progress-linear md-mode="indeterminate" ng-show="isLoading"></md-progress-linear>
+        </md-card-content>
+    </md-card>
+</div>

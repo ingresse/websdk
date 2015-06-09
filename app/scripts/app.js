@@ -21,9 +21,7 @@ var app = angular
     'ingresse.emulator',
     'ngMaterial'
   ])
-  .config(function ($routeProvider, ingresseAPI_PreferencesProvider) {
-    // ingresseAPI_PreferencesProvider.setPublicKey('yourkey');
-    // ingresseAPI_PreferencesProvider.setPrivateKey('yourkey');
+  .config(function ($routeProvider, ingresseAPI_PreferencesProvider, $mdThemingProvider) {
     ingresseAPI_PreferencesProvider.setTemplateDirectory('/bower_components/ingresse-websdk/directives/');
 
     $routeProvider
@@ -37,7 +35,7 @@ var app = angular
       })
       .when('/user', {
         templateUrl: 'views/user.html',
-        controller: 'EmulatorController'
+        controller: 'UserController'
       })
       .when('/tickets/:eventid', {
         templateUrl: 'views/ticket.html',
@@ -62,19 +60,23 @@ var app = angular
       .otherwise({
         redirectTo: '/event'
       });
+
+      $mdThemingProvider.theme('default')
+        .primaryPalette('blue')
+        .accentPalette('orange');
   });
 
 
 angular.module('ingresseEmulatorApp').filter('momentum', function() {
-    return function(input,format) {
-      var momentDate = moment(input);
-      var output = null;
-      if(format) {
-        output = momentDate.format(format);
-        return output;
-      }
+  return function(input,format) {
+    var momentDate = moment(input);
+    var output = null;
+    if(format) {
+      output = momentDate.format(format);
+      return output;
+    }
 
-      output = momentDate.format('DD/MM/YYYY');
-      return output
-    };
-  });
+    output = momentDate.format('DD/MM/YYYY');
+    return output
+  };
+});
