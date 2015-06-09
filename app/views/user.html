@@ -29,6 +29,71 @@
                 </md-tab>
                 <md-tab>
                     <md-tab-label>
+                    Events
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-input-container>
+                            <label>User token</label>
+                            <input type="text" ng-model="user.token" disabled/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>User ID</label>
+                            <input type="number" ng-model="request.id" />
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Fields</label>
+                            <input type="text" ng-model="request.fields"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Page</label>
+                            <input type="text" ng-model="request.page"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Page Size</label>
+                            <input type="number" ng-model="request.pageSize"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Lat</label>
+                            <input type="text" ng-model="request.filters.lat"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Long</label>
+                            <input type="text" ng-model="request.filters.long"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>From</label>
+                            <input type="date" ng-model="request.filters.from"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>To</label>
+                            <input type="date" ng-model="request.filters.to"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>State</label>
+                            <input type="text" ng-model="request.filters.state"/>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Term</label>
+                            <input type="date" ng-model="request.filters.term"/>
+                        </md-input-container>
+
+                        <div class="md-actions" layout="row" layout-align="end center">
+                            <md-button ng-click="getUserEvents()">Send</md-button>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab>
+                    <md-tab-label>
                     Tickets
                     </md-tab-label>
                     <md-tab-body>
@@ -44,12 +109,12 @@
 
                         <md-input-container>
                             <label>Page</label>
-                            <input type="number" ng-model="page" />
+                            <input type="number" ng-model="request.page" />
                         </md-input-container>
 
                         <md-input-container>
                             <label>Page Size</label>
-                            <input type="number" ng-model="pageSize" />
+                            <input type="number" ng-model="request.pageSize" />
                         </md-input-container>
 
                         <md-input-container>

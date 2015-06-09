@@ -38,9 +38,23 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI_Preferences',function () 
           this._host = host;
         },
         httpCallStarted: function (url) {
+          var decodedUrl = decodeURIComponent(url);
+          var domain = decodedUrl.split('?')[0];
+          var parameters = decodedUrl.split('?')[1].split('&');
+
+          for (var i = parameters.length - 1; i >= 0; i--) {
+            if (i === 0) {
+              parameters[i] = '?' + parameters[i];
+            } else {
+              parameters[i] = '&' + parameters[i];
+            }
+          };
+
           this.httpCalls.unshift({
             url: url,
-            startTime: new Date()
+            startTime: new Date(),
+            domain: domain,
+            parameters: parameters
           });
         },
         httpCallStoped: function (url, success) {
@@ -48,7 +62,7 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI_Preferences',function () 
             if (this.httpCalls[i].url == url) {
               this.httpCalls[i].stopTime = new Date();
               this.httpCalls[i].success = success;
-              this.httpCalls[i].requestTime = (this.httpCalls[i].stopTime - this.httpCalls[i].startTime)/1000;
+              this.httpCalls[i].requestTime = (this.httpCalls[i].stopTime - this.httpCalls[i].startTime) / 1000;
             }
           };
         },

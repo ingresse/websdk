@@ -545,7 +545,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
-        getUserTickets: function (userid, token, fields, filters) {
+        getUserTickets: function (userid, token, fields, filters, page, pageSize) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/user/' + userid + '/tickets' + this.generateAuthKey() + '&usertoken=' + token;
@@ -562,6 +562,14 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             if (filters.term) {
               url += '&term=' + filters.term;
             }
+          }
+
+          if (page) {
+            url += '&page=' + page;
+          }
+
+          if (pageSize) {
+            url += '&pageSize=' + pageSize;
           }
 
           $http.get(url)

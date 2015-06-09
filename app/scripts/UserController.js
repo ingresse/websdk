@@ -74,7 +74,22 @@ angular.module('ingresseEmulatorApp')
     $scope.getUserTickets = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.getUserTickets($scope.request.id, $scope.user.token, $scope.request.fields, $scope.request.filters, $scope.page, $scope.pageSize)
+      ingresseAPI.getUserTickets($scope.request.id, $scope.user.token, $scope.request.fields, $scope.request.filters, $scope.request.page, $scope.request.pageSize)
+      .then(function (response) {
+          $scope.result = response;
+        })
+        .catch(function (error) {
+          $scope.result = error;
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
+    $scope.getUserEvents = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+      ingresseAPI.getUserEvents($scope.request.id, $scope.user.token, $scope.request.fields, $scope.request.filters, $scope.request.page, $scope.request.pageSize)
       .then(function (response) {
           $scope.result = response;
         })
