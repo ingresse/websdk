@@ -101,6 +101,11 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getUserPhotoUrl = function () {
+      $scope.result = {};
+      $scope.result = {url: ingresseAPI.getUserPhotoUrl($scope.request.id)};
+    }
+
     $scope.updateUserInfo = function () {
       $scope.result = {};
       $scope.isLoading = true;

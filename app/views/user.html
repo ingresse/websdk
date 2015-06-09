@@ -202,6 +202,21 @@
                         </div>
                     </md-tab-body>
                 </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                    Picture
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-input-container>
+                            <label>User ID</label>
+                            <input type="number" ng-model="request.id" />
+                        </md-input-container>
+
+                        <div class="md-actions" layout="row" layout-align="end center">
+                            <md-button ng-click="getUserPhotoUrl()">Send</md-button>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
             </md-tabs>
         </md-card-content>
     </md-card>
