@@ -36,6 +36,24 @@ angular.module('ingresseEmulatorApp')
       $scope.selectedIndex = 0;
     });
 
+    $scope.getFiltersByTab = function (tab) {
+      var obj = {};
+      for (var i = tab.fields.length - 1; i >= 0; i--) {
+        if (!tab.fields[i].model) {
+          continue;
+        }
+
+        if (tab.fields[i].type === 'date') {
+          obj[tab.fields[i].label] = tab.fields[i].model.toISOString();
+          continue;
+        }
+
+        obj[tab.fields[i].label] = tab.fields[i].model;
+      };
+
+      return obj;
+    };
+
     $scope.showError = function(text) {
       alert = $mdDialog.alert({
         title: 'Erro',
@@ -58,7 +76,11 @@ angular.module('ingresseEmulatorApp')
     $scope.getUser = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.getUser($scope.request.id, $scope.user.token, $scope.request.fields)
+
+      var identifier = $scope.fields['user'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['user']);
+
+      ingresseAPI.getUser(identifier, filters, $scope.user.token)
         .then(function (response) {
           $scope.request.userObj = angular.copy(response);
           $scope.result = response;
@@ -74,7 +96,11 @@ angular.module('ingresseEmulatorApp')
     $scope.getUserTickets = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.getUserTickets($scope.request.id, $scope.user.token, $scope.request.fields, $scope.request.filters, $scope.request.page, $scope.request.pageSize)
+
+      var identifier = $scope.fields['userTickets'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['userTickets']);
+
+      ingresseAPI.getUserTickets(identifier, filters, $scope.user.token)
       .then(function (response) {
           $scope.result = response;
         })
@@ -89,7 +115,11 @@ angular.module('ingresseEmulatorApp')
     $scope.getUserEvents = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.getUserEvents($scope.request.id, $scope.user.token, $scope.request.fields, $scope.request.filters, $scope.request.page, $scope.request.pageSize)
+
+      var identifier = $scope.fields['userEvents'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['userEvents']);
+
+      ingresseAPI.getUserEvents(identifier, filters, $scope.user.token)
       .then(function (response) {
           $scope.result = response;
         })
@@ -103,13 +133,20 @@ angular.module('ingresseEmulatorApp')
 
     $scope.getUserPhotoUrl = function () {
       $scope.result = {};
-      $scope.result = {url: ingresseAPI.getUserPhotoUrl($scope.request.id)};
+
+      var identifier = $scope.fields['userPhoto'].identifier.model;
+
+      $scope.result = {url: ingresseAPI.getUserPhotoUrl(identifier)};
     }
 
     $scope.updateUserInfo = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.updateUserInfo($scope.request.id, $scope.user.token, $scope.request.userObj)
+
+      var identifier = $scope.fields['userUpdate'].identifier.model;
+      var obj = $scope.getFiltersByTab($scope.fields['userUpdate']);
+
+      ingresseAPI.updateUserInfo(identifier, obj, $scope.user.token)
         .then(function (response) {
           $scope.request.userObj = angular.copy(response);
           $scope.result = response;
@@ -120,5 +157,216 @@ angular.module('ingresseEmulatorApp')
         .finally(function () {
           $scope.isLoading = false;
         });
+    };
+
+    $scope.fields = {
+      user: {
+        label: 'User',
+        action: $scope.getUser,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false
+        },
+        fields: [
+          {
+            label: 'fields',
+            model: '',
+            type: 'text',
+            disabled: false
+          }
+        ]
+      },
+      userPhoto: {
+        label: 'Photo',
+        action: $scope.getUserPhotoUrl,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false
+        },
+        fields: []
+      },
+      userEvents: {
+        label: 'Events',
+        action: $scope.getUserEvents,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false
+        },
+        fields: [
+          {
+            label: 'fields',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'page',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'pageSize',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'lat',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'long',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'from',
+            model: '',
+            type: 'date',
+            disabled: false
+          },
+          {
+            label: 'to',
+            model: '',
+            type: 'date',
+            disabled: false
+          },
+          {
+            label: 'state',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'term',
+            model: '',
+            type: 'text',
+            disabled: false
+          }
+        ]
+      },
+      userTickets: {
+        label: 'Tickets',
+        action: $scope.getUserTickets,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false
+        },
+        fields: [
+          {
+            label: 'page',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'pageSize',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'event',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'term',
+            model: '',
+            type: 'text',
+            disabled: false
+          }
+        ]
+      },
+      userUpdate: {
+        label: 'Update',
+        action: $scope.updateUserInfo,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false
+        },
+        fields: [
+          {
+            label: 'name',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'lastname',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'street',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'number',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'complement',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'district',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'city',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'state',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'zip',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'phone',
+            model: '',
+            type: 'phone',
+            disabled: false
+          }
+        ]
+      }
     };
   });

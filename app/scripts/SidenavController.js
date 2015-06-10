@@ -56,7 +56,7 @@ angular.module('ingresseEmulatorApp')
         token: IngresseAPI_UserService.token,
         id: IngresseAPI_UserService.userId
       };
-      ingresseAPI.getUser($scope.user.id, $scope.user.token, ['id','name','email','type'])
+      ingresseAPI.getUser($scope.user.id, {fields:'id,name,email,type'}, $scope.user.token)
       .then(function (response) {
         $scope.user.data = response;
         $scope.user.photo = ingresseAPI.getUserPhotoUrl($scope.user.id);

@@ -1,9 +1,0 @@
-<form  class="venus" novalidate name="checkinReportForm" ng-show="selectedMethod === 'checkinReport'" ng-submit="getCheckinReport()">
-    <label>User token</label>
-    <input type="text" ng-model="user.token" required disabled/>
-
-    <label>Event ID</label>
-    <input type="number" ng-model="checkinReportForm.eventId" required/>
-
-    <button class="venus button" type="submit" ng-disabled="!checkinReportForm.$valid">Enviar</button>
-</form>

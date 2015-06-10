@@ -71,6 +71,7 @@
 
             </div>
         </md-sidenav>
+
         <md-toolbar ng-controller="SidenavController">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
@@ -81,11 +82,12 @@
                 </h2>
                 <span flex></span>
                 <md-button class="md-button" aria-label="Evento" href="#/event">Event</md-button>
-                <md-button class="md-button" aria-label="Evento" href="#/user">User</md-button>
+                <md-button class="md-button" aria-label="User" href="#/user">User</md-button>
+                <!-- <md-button class="md-button" aria-label="Error" href="#/error">Error</md-button>
+                <md-button class="md-button" aria-label="Sale" href="#/sale">Sale</md-button> -->
             </div>
         </md-toolbar>
-
-        <div ng-view=""></div>
+        <div layout-sm"column" layout-md="column" layout-gt-md="row" ng-view=""></div>
 
     </div>
 
@@ -121,6 +123,8 @@
     <script src="scripts/SidenavController.js"></script>
     <script src="scripts/EventController.js"></script>
     <script src="scripts/UserController.js"></script>
-    <script src="directives/dynamicInput.js"></script>
+    <script src="scripts/ErrorController.js"></script>
+    <!-- <script src="scripts/SaleController.js"></script> -->
+    <script src="directives/query-directive.js"></script>
 </body>
 </html>

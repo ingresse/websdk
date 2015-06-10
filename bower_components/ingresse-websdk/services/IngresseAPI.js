@@ -316,12 +316,23 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return authenticationString;
         },
 
+        getUrlParameters: function (filters) {
+          var parameters = '';
+          for (var key in filters) {
+            if (filters.hasOwnProperty(key)) {
+              parameters += '&' + key + '=' + filters[key];
+            }
+          }
+
+          return parameters;
+        },
+
         /*
           BUSCA INFORMAÇÕES DE UM ÚNICO EVENTO
           eventId: int
           fields: string
         */
-        getEvent: function (eventId, fields, usertoken) {
+        getEvent: function (eventId, filters, usertoken) {
           var deferred = $q.defer();
           var url;
 
@@ -335,9 +346,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             url += '&usertoken=' + usertoken;
           }
 
-          if (fields) {
-            url += '&fields=' + fields.toString();
-          }
+          url += this.getUrlParameters(filters);
 
           $http.get(url)
             .success(function (response) {
@@ -350,7 +359,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
-        getEventCrew: function (eventId, fields, usertoken) {
+        getEventCrew: function (eventId, filters, usertoken) {
           var deferred = $q.defer();
           var url;
 
@@ -360,9 +369,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             url += '&usertoken=' + usertoken;
           }
 
-          if (fields) {
-            url += '&fields=' + fields.toString();
-          }
+          url += this.getUrlParameters(filters);
 
           $http.get(url)
             .success(function (response) {
@@ -433,47 +440,11 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           eventId: int
           fields: string
         */
-        getEventList: function (fields, filters, page, pageSize) {
+        getEventList: function (filters) {
           var deferred = $q.defer();
           var url = ingresseAPI_Preferences.getHost() + '/event/' + this.generateAuthKey();
 
-          if (fields) {
-            url += '&fields=' + fields.toString();
-          }
-
-          if (page) {
-            url += '&page=' + page;
-          }
-
-          if (pageSize) {
-            url += '&pageSize=' + pageSize;
-          }
-
-          if (filters) {
-            if (filters.lat) {
-              url += '&lat=' + filters.lat;
-            }
-
-            if (filters.long) {
-              url += '&long=' + filters.long;
-            }
-
-            if (filters.from) {
-              url += '&from=' + filters.from;
-            }
-
-            if (filters.to) {
-              url += '&to=' + filters.to;
-            }
-
-            if (filters.state) {
-              url += '&state=' + filters.state;
-            }
-
-            if (filters.term) {
-              url += '&term=' + filters.term;
-            }
-          }
+          url += this.getUrlParameters(filters);
 
           $http.get(url)
             .success(function (response) {
@@ -491,7 +462,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           Ingressos de um evento
           eventId: int
         */
-        getEventTickets: function (eventId, usertoken, pos) {
+        getEventTickets: function (eventId, filters, usertoken) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/tickets/' + this.generateAuthKey();
@@ -500,9 +471,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             url += '&usertoken=' + usertoken;
           }
 
-          if (pos) {
-            url += '&pos=true';
-          }
+          url += this.getUrlParameters(filters);
 
           $http.get(url)
             .success(function (response) {
@@ -521,7 +490,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           token: string
           fields: string
         */
-        getUser: function (userid, token, fields) {
+        getUser: function (userid, filters, token) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/user/' + userid + this.generateAuthKey();
@@ -530,9 +499,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             url += '&usertoken=' + token;
           }
 
-          if (fields) {
-            url += '&fields=' + fields.toString();
-          }
+          url += this.getUrlParameters(filters);
 
           $http.get(url)
             .success(function (response) {
@@ -545,32 +512,12 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
-        getUserTickets: function (userid, token, fields, filters, page, pageSize) {
+        getUserTickets: function (userid, filters, token) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/user/' + userid + '/tickets' + this.generateAuthKey() + '&usertoken=' + token;
 
-          if (fields) {
-            url += '&fields=' + fields.toString();
-          }
-
-          if (filters) {
-            if (filters.event) {
-              url += '&event=' + filters.event;
-            }
-
-            if (filters.term) {
-              url += '&term=' + filters.term;
-            }
-          }
-
-          if (page) {
-            url += '&page=' + page;
-          }
-
-          if (pageSize) {
-            url += '&pageSize=' + pageSize;
-          }
+          url += this.getUrlParameters(filters);
 
           $http.get(url)
             .success(function (response) {
@@ -592,48 +539,12 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             term: string
           }
         */
-        getUserEvents: function (userid, token, fields, filters, page, pageSize) {
+        getUserEvents: function (userid, filters, token) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/user/' + userid + '/events' + this.generateAuthKey() + '&usertoken=' + token;
 
-          if (fields) {
-            url += '&fields=' + fields.toString();
-          }
-
-          if (page) {
-            url += '&page=' + page;
-          }
-
-          if (pageSize) {
-            url += '&pageSize=' + pageSize;
-          }
-
-          if (filters) {
-            if (filters.lat) {
-              url += '&lat=' + filters.lat;
-            }
-
-            if (filters.long) {
-              url += '&long=' + filters.long;
-            }
-
-            if (filters.from) {
-              url += '&from=' + filters.from;
-            }
-
-            if (filters.to) {
-              url += '&to=' + filters.to;
-            }
-
-            if (filters.state) {
-              url += '&state=' + filters.state;
-            }
-
-            if (filters.term) {
-              url += '&term=' + filters.term;
-            }
-          }
+          url += this.getUrlParameters(filters);
 
           $http.get(url)
             .success(function (response) {
@@ -707,7 +618,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             phone: ''
           }
         */
-        updateUserInfo: function (userid, token, userObj) {
+        updateUserInfo: function (userid, userObj, token) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/user/' + userid + this.generateAuthKey() + '&usertoken=' + token + '&method=update';
@@ -805,48 +716,12 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
-        getGuestList: function (eventId, token, fields, filters, page, pageSize) {
+        getGuestList: function (eventId, filters, token) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/guestlist' + this.generateAuthKey() + '&usertoken=' + token;
 
-          if (fields) {
-            url += '&fields=' + fields.toString();
-          }
-
-          if (page) {
-            url += '&page=' + page;
-          }
-
-          if (pageSize) {
-            url += '&pageSize=' + pageSize;
-          }
-
-          if (filters) {
-            if (filters.status) {
-              url += '&status=' + filters.status;
-            }
-
-            if (filters.term) {
-              url += '&term=' + filters.term;
-            }
-
-            if (filters.channel) {
-              url += '&channel=' + filters.channel;
-            }
-
-            if (filters.tickettypeid) {
-              url += '&tickettypeid=' + filters.tickettypeid;
-            }
-
-            if (filters.sessionid) {
-              url += '&sessionid=' + filters.sessionid;
-            }
-
-            if (filters.from) {
-              url += '&from=' + filters.from;
-            }
-          }
+          url += this.getUrlParameters(filters);
 
           $http.get(url)
             .success(function (response) {

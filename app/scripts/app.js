@@ -26,37 +26,21 @@ var app = angular
 
     $routeProvider
       .when('/event/', {
-        templateUrl: 'views/event.html',
-        controller: 'EventController'
-      })
-      .when('/event/:id', {
-        templateUrl: 'views/event.html',
+        templateUrl: 'views/emulator.html',
         controller: 'EventController'
       })
       .when('/user', {
-        templateUrl: 'views/user.html',
+        templateUrl: 'views/emulator.html',
         controller: 'UserController'
       })
-      .when('/tickets/:eventid', {
-        templateUrl: 'views/ticket.html',
-        controller: 'EmulatorController'
-      })
-      .when('/report', {
-        templateUrl: 'views/report-checkin.html',
-        controller: 'EmulatorController'
-      })
-      .when('/transaction', {
-        templateUrl: 'views/transaction.html',
-        controller: 'EmulatorController'
-      })
-      .when('/error', {
-        templateUrl: 'views/error.html',
-        controller: 'EmulatorController'
-      })
-      .when('/sale', {
-        templateUrl: 'views/freepass.html',
-        controller: 'EmulatorController'
-      })
+      // .when('/error', {
+      //   templateUrl: 'views/emulator.html',
+      //   controller: 'ErrorController'
+      // })
+      // .when('/sale', {
+      //   templateUrl: 'views/emulator.html',
+      //   controller: 'SaleController'
+      // })
       .otherwise({
         redirectTo: '/event'
       });

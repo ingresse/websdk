@@ -55,10 +55,32 @@ angular.module('ingresseEmulatorApp')
       $mdSidenav('left').toggle();
     };
 
+    $scope.getFiltersByTab = function (tab) {
+      var obj = {};
+      for (var i = tab.fields.length - 1; i >= 0; i--) {
+        if (!tab.fields[i].model) {
+          continue;
+        }
+
+        if (tab.fields[i].type === 'date') {
+          obj[tab.fields[i].label] = tab.fields[i].model.toISOString();
+          continue;
+        }
+
+        obj[tab.fields[i].label] = tab.fields[i].model;
+      };
+
+      return obj;
+    };
+
     $scope.getEvent = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.getEvent($scope.request.id, $scope.request.fields, $scope.user.token)
+
+      var identifier = $scope.fields['event'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['event']);
+
+      ingresseAPI.getEvent(identifier, filters, $scope.user.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -73,7 +95,11 @@ angular.module('ingresseEmulatorApp')
     $scope.getEventTicketTypes = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.getEventTickets($scope.request.id, $scope.user.token, $scope.request.pos)
+
+      var identifier = $scope.fields['eventTicketTypes'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['eventTicketTypes']);
+
+      ingresseAPI.getEventTickets(identifier, filters, $scope.user.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -88,7 +114,11 @@ angular.module('ingresseEmulatorApp')
     $scope.getGuestList = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.getGuestList($scope.request.id, $scope.user.token, $scope.request.fields, $scope.request.filters, $scope.request.page, $scope.request.pageSize)
+
+      var identifier = $scope.fields['guestList'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['guestList']);
+
+      ingresseAPI.getGuestList(identifier, filters, $scope.user.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -103,7 +133,11 @@ angular.module('ingresseEmulatorApp')
     $scope.getEventCrew = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.getEventCrew($scope.request.id, $scope.request.fields, $scope.user.token)
+
+      var identifier = $scope.fields['crew'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['crew']);
+
+      ingresseAPI.getEventCrew(identifier, filters, $scope.user.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -118,7 +152,10 @@ angular.module('ingresseEmulatorApp')
     $scope.getEventList = function () {
       $scope.result = {};
       $scope.isLoading = true;
-      ingresseAPI.getEventList($scope.request.fields, $scope.request.filters, $scope.request.page, $scope.request.pageSize)
+
+      var filters = $scope.getFiltersByTab($scope.fields['eventSearch']);
+
+      ingresseAPI.getEventList(filters)
         .then(function (response) {
           $scope.result = response;
         })
@@ -129,4 +166,193 @@ angular.module('ingresseEmulatorApp')
           $scope.isLoading = false;
         });
     };
+
+    $scope.fields = {
+        event: {
+          label: 'Event',
+          action: $scope.getEvent,
+          authentication: true,
+          identifier: {
+            label: 'eventId',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          fields: [
+            {
+              label: 'fields',
+              model: '',
+              type: 'text',
+              disabled: false
+            }
+          ]
+        },
+        eventSearch: {
+          label: 'Event Search',
+          action: $scope.getEventList,
+          fields: [
+            {
+              label: 'fields',
+              model: '',
+              type: 'text',
+              disabled: false
+            },
+            {
+              label: 'page',
+              model: '',
+              type: 'text',
+              disabled: false
+            },
+            {
+              label: 'pageSize',
+              model: '',
+              type: 'text',
+              disabled: false
+            },
+            {
+              label: 'lat',
+              model: '',
+              type: 'text',
+              disabled: false
+            },
+            {
+              label: 'long',
+              model: '',
+              type: 'text',
+              disabled: false
+            },
+            {
+              label: 'from',
+              model: '',
+              type: 'date',
+              disabled: false
+            },
+            {
+              label: 'to',
+              model: '',
+              type: 'date',
+              disabled: false
+            },
+            {
+              label: 'state',
+              model: '',
+              type: 'text',
+              disabled: false
+            },
+            {
+              label: 'term',
+              model: '',
+              type: 'text',
+              disabled: false
+            }
+          ]
+        },
+        eventTicketTypes: {
+          label: 'Ticket Types',
+          action: $scope.getEventTicketTypes,
+          authentication: true,
+          identifier: {
+            label: 'eventId',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          fields: [
+            {
+              label: 'pos',
+              model: '',
+              type: 'checkbox',
+              disabled: false
+            }
+          ]
+        },
+        guestList: {
+          label: 'Guest List',
+          action: $scope.getGuestList,
+          authentication: true,
+          identifier: {
+            label: 'eventId',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          fields: [
+            {
+              label: 'fields',
+              model: '',
+              type: 'text',
+              disabled: false
+            },
+            {
+              label: 'page',
+              model: '',
+              type: 'number',
+              disabled: false
+            },
+            {
+              label: 'pageSize',
+              model: '',
+              type: 'number',
+              disabled: false
+            },
+            {
+              label: 'status',
+              model: '',
+              type: 'option',
+              options: ['all','checked','unchecked'],
+              disabled: false
+            },
+            {
+              label: 'term',
+              model: '',
+              type: 'text',
+              disabled: false
+            },
+            {
+              label: 'channel',
+              model: '',
+              type: 'option',
+              options: ['online','offline'],
+              disabled: false
+            },
+            {
+              label: 'tickettypeid',
+              model: '',
+              type: 'number',
+              disabled: false
+            },
+            {
+              label: 'sessionid',
+              model: '',
+              type: 'number',
+              disabled: false
+            },
+            {
+              label: 'from',
+              model: '',
+              type: 'date',
+              disabled: false
+            }
+          ]
+        },
+        crew: {
+          label: 'Crew',
+          action: $scope.getEventCrew,
+          authentication: true,
+          identifier: {
+            label: 'eventId',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          fields: [
+            {
+              label: 'fields',
+              model: '',
+              type: 'text',
+              disabled: false
+            }
+          ]
+        }
+      };
   });

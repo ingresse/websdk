@@ -1,17 +1,15 @@
 angular.module('ingresseEmulatorApp')
-.directive('dynamicInput', function () {
+.directive('query', function () {
     return {
-        templateUrl: 'directives/dynamic-input.html',
+        templateUrl: 'directives/query.html',
         restrict: 'E',
+        transclude: true,
         scope: {
-            key: '=',
-            value: '='
+            fields: '=',
+            user: '='
         },
         controller: function($scope, $element, $attrs, $transclude) {
-            $scope.isSimple = true;
-            if (typeof($scope.value) === 'object') {
-                $scope.isSimple = false;
-            }
+
         },
         compile: function compile(tElement, tAttrs, transclude) {
             return function postLink(scope, iElement, iAttrs, controller) {

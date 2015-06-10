@@ -1,0 +1,34 @@
+<md-card>
+    <md-card-content>
+        <md-tabs md-border-bottom md-dynamic-height>
+            <md-tab ng-repeat="tab in fields">
+                <md-tab-label>
+                {{tab.label}}
+                </md-tab-label>
+                <md-tab-body>
+                    <md-input-container ng-if="tab.authentication">
+                        <label>User token</label>
+                        <input type="text" ng-model="user.token" disabled/>
+                    </md-input-container>
+                    <md-input-container ng-if="tab.identifier">
+                        <label>{{tab.identifier.label}}</label>
+                        <input type="{{tab.identifier.type}}" ng-model="tab.identifier.model" ng-disabled="tab.identifier.disabled"/>
+                    </md-input-container>
+                    <md-input-container ng-repeat="input in tab.fields">
+                            <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'">{{input.label}}</label>
+                            <input ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled"/>
+                            <md-checkbox ng-if="input.type === 'checkbox'" ng-model="input.model">{{input.label}}</md-checkbox>
+                            <md-select ng-if="input.type === 'option'" placeholder="{{input.label}}" ng-model="input.model">
+                                <md-option ng-repeat="option in input.options" value="{{option}}">{{option}}</md-option>
+                            </md-select>
+                        </span>
+                    </md-input-container>
+
+                    <div class="md-actions" layout="row" layout-align="end center">
+                        <md-button ng-click="tab.action()">Send</md-button>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-card-content>
+</md-card>

@@ -1,0 +1,43 @@
+<query flex-gt-md="40" flex-md="100" fields="fields" user="user">
+</query>
+
+<md-card flex flex-md="100">
+    <md-card-content>
+        <md-tabs md-border-bottom md-selected="selectedIndex" md-dynamic-height>
+            <md-tab>
+                <md-tab-label>
+                Result
+                </md-tab-label>
+                <md-tab-body>
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-show="calls[0].url">
+                            <div class="md-list-item-text">
+                                <h3>{{calls[0].stopTime | momentum:'HH:mm:ss'}} - {{calls[0].requestTime}}s</h3>
+                                <p>{{calls[0].domain}}</p>
+                                <p ng-repeat="param in calls[0].parameters">{{param}}</p>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                    <json-explorer class="result" json-data="{{result}}" collapsed="false"></json-explorer>
+                </md-tab-body>
+            </md-tab>
+            <md-tab>
+                <md-tab-label>
+                History
+                </md-tab-label>
+                <md-tab-body>
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="call in calls">
+                            <div class="md-list-item-text">
+                                <h3>{{calls[0].stopTime | momentum:'HH:mm:ss'}} - {{calls[0].requestTime}}s</h3>
+                                <p>{{calls[0].domain}}</p>
+                                <p ng-repeat="param in calls[0].parameters">{{param}}</p>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+        <md-progress-linear md-mode="indeterminate" ng-show="isLoading"></md-progress-linear>
+    </md-card-content>
+</md-card>
