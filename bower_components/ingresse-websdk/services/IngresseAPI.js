@@ -851,14 +851,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
-        getTransactionData: function (transactionId, token, fields) {
+        getTransactionData: function (transactionId, token) {
           var deferred = $q.defer();
 
-          var url = ingresseAPI_Preferences.getHost() + '/shop/' + transactionId + this.generateAuthKey() + '&usertoken=' + token;
-
-          if (fields) {
-            url += '&fields=' + fields.toString();
-          }
+          var url = ingresseAPI_Preferences.getHost() + '/sale/' + transactionId + this.generateAuthKey() + '&usertoken=' + token;
 
           $http.get(url)
             .success(function (response) {
