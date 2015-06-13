@@ -33,6 +33,10 @@ var app = angular
         templateUrl: 'views/emulator.html',
         controller: 'UserController'
       })
+      .when('/sale', {
+        templateUrl: 'views/emulator.html',
+        controller: 'SaleController'
+      })
       // .when('/error', {
       //   templateUrl: 'views/emulator.html',
       //   controller: 'ErrorController'

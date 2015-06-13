@@ -1,10 +1,18 @@
 angular.module('ingresseEmulatorApp')
-  .controller('SidenavController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $mdSidenav, $mdDialog) {
-    if (!$scope.domain) {
+  .controller('SidenavController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $mdSidenav, $mdDialog, $timeout) {
+    $scope.init = function () {
+      $scope.loadCookies();
+
+      $scope.privateKey = ingresseAPI_Preferences.privatekey;
+      $scope.publicKey = ingresseAPI_Preferences.publickey;
+
+      if (!$scope.privateKey || !$scope.publicKey) {
+        $mdSidenav('left').toggle();
+        $scope.showError('Para utilizar o emulador você precisa de chaves públicas e privadas. Entre em contato com a ingresse para solicitar a sua e preencha ao lado. As chaves ficarão salvas nos cookies para sua comodidade.');
+      }
+
       $scope.domain = ingresseAPI_Preferences._host;
-    } else {
-      ingresseAPI_Preferences.setHost($scope.domain);
-    }
+    };
 
     $scope.login = function () {
       IngresseAPI_UserService.login();
@@ -43,14 +51,6 @@ angular.module('ingresseEmulatorApp')
       $scope.domain = ingresseAPI_Preferences._host;
     };
 
-    $scope.setPrivateKey = function (key) {
-      ingresseAPI_Preferences.setPrivateKey(key);
-    };
-
-    $scope.setPublicKey = function (key) {
-      ingresseAPI_Preferences.setPublicKey(key);
-    };
-
     $scope.$on('userSessionSaved', function () {
       $scope.user = {
         token: IngresseAPI_UserService.token,
@@ -63,45 +63,40 @@ angular.module('ingresseEmulatorApp')
       });
     });
 
-    $scope.$watch('privateKey', function () {
-      // $document.cookie = "privateKey=" + $scope.privateKey + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-      if (!$scope.privateKey) {
-        return;
-      }
-      ipCookie('privatekey', $scope.privateKey, {expires: 365});
-      ingresseAPI_Preferences.setPublicKey(ipCookie('privatekey'));
-    });
+    $scope.updatePrivateKey = function (privateKey) {
+      ipCookie('privatekey', privateKey, {expires: 365});
+      ingresseAPI_Preferences.setPrivateKey(privateKey);
+    };
 
-    $scope.$watch('publicKey', function () {
-      if (!$scope.publicKey) {
-        return;
+    $scope.updatePublicKey = function (publicKey) {
+      ipCookie('publickey', publicKey, {expires: 365});
+      ingresseAPI_Preferences.setPublicKey(publicKey);
+    };
+
+    $scope.loadCookies = function () {
+      var publicKey = ipCookie('publickey');
+      var privateKey = ipCookie('privatekey');
+      var host = ipCookie('host');
+
+      if (publicKey) {
+        ingresseAPI_Preferences.setPublicKey(publicKey);
       }
-      // $document.cookie = "publicKey=" + $scope.publicKey + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-      ipCookie('publickey', $scope.publicKey, {expires: 365});
-      ingresseAPI_Preferences.setPublicKey(ipCookie('publickey'));
-    });
+
+      if (privateKey) {
+        ingresseAPI_Preferences.setPrivateKey(privateKey);
+      }
+
+      if (host) {
+        $scope.setHost(host);
+      }
+    };
 
     $scope.$on('userHasLoggedOut', function () {
       $scope.user = null;
     });
 
-    if (ipCookie('publickey') !== "") {
-      ingresseAPI_Preferences.setPublicKey(ipCookie('publickey'));
-    }
-
-    if (ipCookie('privatekey') !== "") {
-      ingresseAPI_Preferences.setPrivateKey(ipCookie('privatekey'));
-    }
-
-    if (ipCookie('host') !== "") {
-      $scope.setHost(ipCookie('host'));
-    }
-
-    $scope.privateKey = ingresseAPI_Preferences.privatekey;
-    $scope.publicKey = ingresseAPI_Preferences.publickey;
-
-    if (!$scope.privateKey || !$scope.publicKey) {
-      $mdSidenav('left').toggle();
-      $scope.showError('Para utilizar o emulador você precisa de chaves públicas e privadas. Entre em contato com a ingresse para solicitar a sua e preencha ao lado. As chaves ficarão salvas nos cookies para sua comodidade.');
-    }
+    $timeout(function () {
+        //DOM has finished rendering
+        $scope.init();
+    });
   });

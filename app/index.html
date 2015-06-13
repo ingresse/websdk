@@ -61,18 +61,18 @@
                     </md-input-container>
                     <md-input-container>
                         <label>Public Key</label>
-                        <input type="text" ng-model="publicKey"/>
+                        <input type="text" ng-model="publicKey" ng-blur="updatePublicKey(publicKey)"/>
                     </md-input-container>
                     <md-input-container>
                         <label>Private Key</label>
-                        <input type="text" ng-model="privateKey"/>
+                        <input type="text" ng-model="privateKey" ng-blur="updatePrivateKey(privateKey)"/>
                     </md-input-container>
                 </md-content>
 
             </div>
         </md-sidenav>
 
-        <md-toolbar ng-controller="SidenavController">
+        <md-toolbar ng-controller="HeaderController">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
                     <md-icon md-svg-icon="styles/images/icons/ic_settings_48px.svg"></md-icon>
@@ -83,6 +83,7 @@
                 <span flex></span>
                 <md-button class="md-button" aria-label="Evento" href="#/event">Event</md-button>
                 <md-button class="md-button" aria-label="User" href="#/user">User</md-button>
+                <md-button class="md-button" aria-label="Sale" href="#/sale">Sale</md-button>
                 <!-- <md-button class="md-button" aria-label="Error" href="#/error">Error</md-button>
                 <md-button class="md-button" aria-label="Sale" href="#/sale">Sale</md-button> -->
             </div>
@@ -119,12 +120,12 @@
     <script src="bower_components/ingresse-websdk/directives/ingresse-emulator.js"></script>
 
     <script src="scripts/app.js"></script>
-    <script src="scripts/emulator.js"></script>
     <script src="scripts/SidenavController.js"></script>
+    <script src="scripts/HeaderController.js"></script>
     <script src="scripts/EventController.js"></script>
     <script src="scripts/UserController.js"></script>
     <script src="scripts/ErrorController.js"></script>
-    <!-- <script src="scripts/SaleController.js"></script> -->
+    <script src="scripts/SaleController.js"></script>
     <script src="directives/query-directive.js"></script>
 </body>
 </html>
