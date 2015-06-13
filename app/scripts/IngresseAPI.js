@@ -572,22 +572,12 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           status: Array of status to filter transactions. Options: approved, declined, pending.
           term: Filter transactions by guest name, buyer e-mail or transactionId. It should not match exactly to consider a valid result.
         */
-        getSales: function (token, filters, page) {
+        getSales: function (token, filters) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/sale/' + this.generateAuthKey() + '&usertoken=' + token;
 
-          if (page) {
-            url += '&page=' + page;
-          }
-
-          if (filters) {
-            angular.forEach(filters, function (value, key) {
-              if (value) {
-                url += '&' + key + '=' + value;
-              }
-            });
-          }
+          url += this.getUrlParameters(filters);
 
           $http.get(url)
             .success(function (response) {

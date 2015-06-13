@@ -1,19 +1,19 @@
 {
   "name": "ingresse-websdk",
-  "version": "4.0.0",
+  "version": "7.0.0",
   "homepage": "https://github.com/ingresse/ingresse-websdk",
   "authors": [
     "Daniel Borlino de Oliveira <daniel.borlino@ingresse.com>"
   ],
   "description": "SDK da API do ingresse.com em angular.js",
   "main": [
-    "bower_components/ingresse-websdk/services/IngresseAPI.Preferences.js",
-    "bower_components/ingresse-websdk/services/IngresseAPI.UserService.js",
-    "bower_components/ingresse-websdk/services/IngresseAPI.EventService.js",
-    "bower_components/ingresse-websdk/services/IngresseAPI.js",
-    "bower_components/ingresse-websdk/directives/ingresse-login.js",
-    "bower_components/ingresse-websdk/directives/ingresse-login.css",
-    "bower_components/ingresse-websdk/directives/ingresse-user.js"
+    "scripts/IngresseAPI.Preferences.js",
+    "scripts/IngresseAPI.UserService.js",
+    "scripts/IngresseAPI.EventService.js",
+    "scripts/IngresseAPI.js",
+    "scripts/ingresse-login.js",
+    "scripts/ingresse-login.css",
+    "scripts/ingresse-user.js"
   ],
   "keywords": [
     "ingresse.com",

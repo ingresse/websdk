@@ -22,7 +22,7 @@ var app = angular
     'ngMaterial'
   ])
   .config(function ($routeProvider, ingresseAPI_PreferencesProvider, $mdThemingProvider) {
-    ingresseAPI_PreferencesProvider.setTemplateDirectory('/bower_components/ingresse-websdk/directives/');
+    ingresseAPI_PreferencesProvider.setTemplateDirectory('directives/');
 
     $routeProvider
       .when('/event/', {
