@@ -22,7 +22,7 @@
 
         <md-sidenav layout-fill class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
 
-            <div ng-controller="SidenavController">
+            <div ng-controller="SidenavController" layout="column">
 
                 <md-toolbar class="md-theme-indigo">
                     <h1 class="md-toolbar-tools">Settings</h1>
@@ -56,10 +56,6 @@
 
                 <md-content layout-padding>
                     <md-input-container>
-                        <label>Domain</label>
-                        <input type="text" ng-model="domain" ng-change="setHost(domain)"/>
-                    </md-input-container>
-                    <md-input-container>
                         <label>Public Key</label>
                         <input type="text" ng-model="publicKey" ng-blur="updatePublicKey(publicKey)"/>
                     </md-input-container>
@@ -72,21 +68,31 @@
             </div>
         </md-sidenav>
 
-        <md-toolbar ng-controller="HeaderController">
+        <md-toolbar layout-sm"column" layout-md="column" layout-gt-md="row" layout-align="start center" ng-controller="HeaderController">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
                     <md-icon md-svg-icon="styles/images/icons/ic_settings_48px.svg"></md-icon>
                 </md-button>
-                <h2>
-                    <span>Ingresse API</span>
-                </h2>
-                <span flex></span>
-                <md-button class="md-button" aria-label="Evento" href="#/event">Event</md-button>
-                <md-button class="md-button" aria-label="User" href="#/user">User</md-button>
-                <md-button class="md-button" aria-label="Sale" href="#/sale">Sale</md-button>
-                <md-button class="md-button" aria-label="Error" href="#/error">Error</md-button>
-                <md-button class="md-button" aria-label="Dashboard" href="#/dashboard">Dashboard</md-button>
-                <!-- <md-button class="md-button" aria-label="Sale" href="#/sale">Sale</md-button> -->
+                <h2>Ingresse API</h2>
+            </div>
+            <div flex></div>
+            <div layout-padding layout-sm"column" layout-md="column" layout-gt-md="row">
+                <md-input-container style="width: 400px;">
+                    <label>Domain</label>
+                    <input type="text" ng-model="domain" ng-blur="setHost(domain)">
+                </md-input-container>
+                <md-input-container style="width: 250px;">
+                    <md-select
+                        placeholder="method"
+                        ng-model="method"
+                        ng-change="methodSelected(method)">
+                        <md-option value="/event">/event</md-option>
+                        <md-option value="/user">/user</md-option>
+                        <md-option value="/sale">/sale</md-option>
+                        <md-option value="/error">/error</md-option>
+                        <md-option value="/dashboard">/dashboard</md-option>
+                    </md-select>
+                </md-input-container>
             </div>
         </md-toolbar>
         <div layout-sm"column" layout-md="column" layout-gt-md="row" ng-view=""></div>

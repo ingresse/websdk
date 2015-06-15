@@ -25,7 +25,7 @@ var app = angular
     ingresseAPI_PreferencesProvider.setTemplateDirectory('directives/');
 
     $routeProvider
-      .when('/event/', {
+      .when('/event', {
         templateUrl: 'views/emulator.html',
         controller: 'EventController'
       })

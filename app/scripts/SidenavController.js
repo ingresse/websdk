@@ -10,8 +10,6 @@ angular.module('ingresseEmulatorApp')
         $mdSidenav('left').toggle();
         $scope.showError('Para utilizar o emulador você precisa de chaves públicas e privadas. Entre em contato com a ingresse para solicitar a sua e preencha ao lado. As chaves ficarão salvas nos cookies para sua comodidade.');
       }
-
-      $scope.domain = ingresseAPI_Preferences._host;
     };
 
     $scope.login = function () {
@@ -41,16 +39,6 @@ angular.module('ingresseEmulatorApp')
       $mdSidenav('left').toggle();
     };
 
-    $scope.setHost = function (host) {
-      if (!host || host === '') {
-        return;
-      }
-
-      ipCookie('host', host, {expires: 365});
-      ingresseAPI_Preferences.setHost(host);
-      $scope.domain = ingresseAPI_Preferences._host;
-    };
-
     $scope.$on('userSessionSaved', function () {
       $scope.user = {
         token: IngresseAPI_UserService.token,
@@ -76,7 +64,6 @@ angular.module('ingresseEmulatorApp')
     $scope.loadCookies = function () {
       var publicKey = ipCookie('publickey');
       var privateKey = ipCookie('privatekey');
-      var host = ipCookie('host');
 
       if (publicKey) {
         ingresseAPI_Preferences.setPublicKey(publicKey);
@@ -84,10 +71,6 @@ angular.module('ingresseEmulatorApp')
 
       if (privateKey) {
         ingresseAPI_Preferences.setPrivateKey(privateKey);
-      }
-
-      if (host) {
-        $scope.setHost(host);
       }
     };
 
