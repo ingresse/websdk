@@ -92,6 +92,45 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getCheckinReport = function() {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields['checkinReport'].identifier.model;
+
+      ingresseAPI.getCheckinReport(identifier, $scope.user.token)
+        .then(function (response) {
+          $scope.result = response;
+        })
+        .catch(function (error) {
+          $scope.result = error;
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
+    $scope.updateTicketStatus = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields['updateTicketStatus'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['updateTicketStatus']);
+
+      filters.ticketTimestamp = new Date().toISOString();
+
+      ingresseAPI.updateTicketStatus(identifier, filters, $scope.user.token)
+        .then(function (response) {
+          $scope.result = response;
+        })
+        .catch(function (error) {
+          $scope.result = error;
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.getEventTicketTypes = function () {
       $scope.result = {};
       $scope.isLoading = true;
@@ -99,7 +138,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['eventTicketTypes'].identifier.model;
       var filters = $scope.getFiltersByTab($scope.fields['eventTicketTypes']);
 
-      ingresseAPI.getEventTickets(identifier, filters, $scope.user.token)
+      ingresseAPI.getEventTicketTypes(identifier, filters, $scope.user.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -176,7 +215,8 @@ angular.module('ingresseEmulatorApp')
             label: 'eventId',
             model: '',
             type: 'text',
-            disabled: false
+            disabled: false,
+            required: true
           },
           fields: [
             {
@@ -186,6 +226,18 @@ angular.module('ingresseEmulatorApp')
               disabled: false
             }
           ]
+        },
+        checkinReport: {
+          label: 'Checkin Report',
+          action: $scope.getCheckinReport,
+          authentication: true,
+          identifier: {
+            label: 'eventId',
+            model: '',
+            type: 'text',
+            disabled: false,
+            required: true
+          }
         },
         eventSearch: {
           label: 'Event Search',
@@ -255,13 +307,44 @@ angular.module('ingresseEmulatorApp')
             label: 'eventId',
             model: '',
             type: 'text',
-            disabled: false
+            disabled: false,
+            required: true
           },
           fields: [
             {
               label: 'pos',
               model: '',
               type: 'checkbox',
+              disabled: false
+            }
+          ]
+        },
+        updateTicketStatus: {
+          label: 'Update Ticket',
+          action: $scope.updateTicketStatus,
+          authentication: true,
+          identifier: {
+            label: 'eventId',
+            model: '',
+            type: 'text',
+            disabled: false,
+            required: true
+          },
+          fields: [
+            {
+              label: 'ticketCode',
+              model: '',
+              type: 'text',
+              disabled: false
+            },
+            {
+              label: 'ticketStatus',
+              model: '',
+              type: 'checkbox',
+              checkbox: {
+                trueValue: '1',
+                falseValue: '0'
+              },
               disabled: false
             }
           ]
@@ -274,7 +357,8 @@ angular.module('ingresseEmulatorApp')
             label: 'eventId',
             model: '',
             type: 'text',
-            disabled: false
+            disabled: false,
+            required: true
           },
           fields: [
             {
@@ -343,7 +427,8 @@ angular.module('ingresseEmulatorApp')
             label: 'eventId',
             model: '',
             type: 'text',
-            disabled: false
+            disabled: false,
+            required: true
           },
           fields: [
             {

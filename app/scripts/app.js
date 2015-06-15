@@ -37,14 +37,14 @@ var app = angular
         templateUrl: 'views/emulator.html',
         controller: 'SaleController'
       })
-      // .when('/error', {
-      //   templateUrl: 'views/emulator.html',
-      //   controller: 'ErrorController'
-      // })
-      // .when('/sale', {
-      //   templateUrl: 'views/emulator.html',
-      //   controller: 'SaleController'
-      // })
+      .when('/error', {
+        templateUrl: 'views/emulator.html',
+        controller: 'ErrorController'
+      })
+      .when('/dashboard', {
+        templateUrl: 'views/emulator.html',
+        controller: 'DashboardController'
+      })
       .otherwise({
         redirectTo: '/event'
       });

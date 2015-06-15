@@ -81,21 +81,18 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return parameters;
       };
 
-      API.getEvent = function (eventId, filters, usertoken) {
+      API._get = function (method, identifier, parameters) {
         var deferred = $q.defer();
         var url;
 
-        if (angular.isNumber(parseInt(eventId, 10)) && !isNaN(eventId)) {
-          url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + this.generateAuthKey();
-        } else {
-          url = ingresseAPI_Preferences.getHost() + '/event/' + this.generateAuthKey() + '&method=identify&link=' + eventId;
+        url = ingresseAPI_Preferences.getHost() + '/' + method;
+
+        if (identifier) {
+          url += '/' + identifier;
         }
 
-        if (usertoken) {
-          url += '&usertoken=' + usertoken;
-        }
-
-        url += this.getUrlParameters(filters);
+        url += this.generateAuthKey();
+        url += this.getUrlParameters(parameters);
 
         $http.get(url)
           .success(function (response) {
@@ -106,322 +103,179 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           });
 
         return deferred.promise;
+      };
+
+      API._post = function (method, identifier, parameters, postParameters) {
+        var deferred = $q.defer();
+        var url;
+
+        url = ingresseAPI_Preferences.getHost() + '/' + method;
+
+        if (identifier) {
+          url += '/' + identifier;
+        }
+
+        url += this.generateAuthKey();
+        url += this.getUrlParameters(parameters);
+
+        $http.post(url, postParameters)
+          .success(function (response) {
+            deferred.resolve(response.responseData);
+          })
+          .catch(function (error) {
+            deferred.reject(error);
+          });
+
+        return deferred.promise;
+      };
+
+      API.getEvent = function (eventId, filters) {
+        var identifier;
+
+        if (angular.isNumber(parseInt(eventId, 10)) && !isNaN(eventId)) {
+          identifier = eventId;
+        } else {
+          filters.method = 'identify';
+          filters.link = eventId;
+        }
+
+        return this._get('event', identifier, filters);
       };
 
       API.getEventCrew = function (eventId, filters, usertoken) {
-        var deferred = $q.defer();
-        var url;
-
-        url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/crew' + this.generateAuthKey();
+        var identifier = eventId + '/crew';
 
         if (usertoken) {
-          url += '&usertoken=' + usertoken;
+          filters.usertoken = usertoken;
         }
 
-        url += this.getUrlParameters(filters);
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('event', identifier, filters);
       };
 
-      API.getVisitsReport = function (eventId, filters, usertoken) {
-        var deferred = $q.defer();
-        var url;
-
-        url = ingresseAPI_Preferences.getHost() + '/dashboard/' + eventId + '/visitsReport' + this.generateAuthKey();
+      API.getVisitsReport = function (eventId, usertoken) {
+        var identifier = eventId + '/visitsReport';
 
         if (usertoken) {
-          url += '&usertoken=' + usertoken;
+          filters.usertoken = usertoken;
         }
 
-        if (filters) {
-          if (filters.from) {
-            url += '&from=' + filters.from;
-          }
-
-          if (filters.to) {
-            url += '&to=' + filters.to;
-          }
-        }
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('dashboard', identifier, filters);
       };
 
       API.getError = function (errorClass) {
-        var deferred = $q.defer();
-        var url;
-
-        if (errorClass) {
-          url = ingresseAPI_Preferences.getHost() + '/error/' + errorClass + this.generateAuthKey();
-        } else {
-          url = ingresseAPI_Preferences.getHost() + '/error/' + this.generateAuthKey();
-        }
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('error', errorClass);
       };
 
       API.getEventList = function (filters) {
-        var deferred = $q.defer();
-        var url = ingresseAPI_Preferences.getHost() + '/event/' + this.generateAuthKey();
-
-        url += this.getUrlParameters(filters);
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('event',null, filters);
       };
 
-      API.getEventTickets = function (eventId, filters, usertoken) {
-        var deferred = $q.defer();
+      API.getEventTicketTypes = function (eventId, filters, usertoken) {
+        var identifier = eventId + '/tickets';
 
-        var url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/tickets/' + this.generateAuthKey();
-
-        if (usertoken) {
-          url += '&usertoken=' + usertoken;
-        }
-
-        url += this.getUrlParameters(filters);
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('event', identifier, filters);
       };
 
       API.getUser = function (userid, filters, token) {
-        var deferred = $q.defer();
-
-        var url = ingresseAPI_Preferences.getHost() + '/user/' + userid + this.generateAuthKey();
-
         if (token) {
-          url += '&usertoken=' + token;
+          filters.usertoken = token;
         }
 
-        url += this.getUrlParameters(filters);
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('user',userid, filters);
       };
 
       API.getUserTickets = function (userid, filters, token) {
-        var deferred = $q.defer();
+        var identifier = userid + '/tickets';
 
-        var url = ingresseAPI_Preferences.getHost() + '/user/' + userid + '/tickets' + this.generateAuthKey() + '&usertoken=' + token;
+        if (token) {
+          filters.usertoken = token;
+        }
 
-        url += this.getUrlParameters(filters);
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('user',identifier, filters);
       };
 
       API.getUserEvents = function (userid, filters, token) {
-        var deferred = $q.defer();
+        var identifier = userid + '/events';
 
-        var url = ingresseAPI_Preferences.getHost() + '/user/' + userid + '/events' + this.generateAuthKey() + '&usertoken=' + token;
+        if (token) {
+          filters.usertoken = token;
+        }
 
-        url += this.getUrlParameters(filters);
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('user', identifier, filters);
       };
 
-      API.getSales = function (token, filters) {
-        var deferred = $q.defer();
+      API.getSales = function (filters, token) {
+        if (token) {
+          filters.usertoken = token;
+        }
 
-        var url = ingresseAPI_Preferences.getHost() + '/sale/' + this.generateAuthKey() + '&usertoken=' + token;
-
-        url += this.getUrlParameters(filters);
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('sale', null, filters);
       };
 
       API.updateUserInfo = function (userid, userObj, token) {
-        var deferred = $q.defer();
+        if (token) {
+          var filters = {
+            usertoken: token
+          }
+        }
 
-        var url = ingresseAPI_Preferences.getHost() + '/user/' + userid + this.generateAuthKey() + '&usertoken=' + token + '&method=update';
-
-        $http.post(url, userObj)
-          .success(function (response) {
-            if (angular.isObject(response.responseData)) {
-              deferred.resolve(true);
-            } else {
-              deferred.reject();
-            }
-          })
-          .error(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._post('user', userid, filters, userObj);
       };
 
+      API.refund = function (transactionId, reason, token) {
+        var postObject = {
+          reason: reason
+        }
 
-      API.refund = function (token, transactionId, reason) {
-        var deferred = $q.defer();
+        var filters = {
+          method: 'refund',
+          usertoken: token
+        }
 
-        var url = ingresseAPI_Preferences.getHost() + '/sale/' + transactionId + this.generateAuthKey() + '&usertoken=' + token + '&method=refund';
-
-        $http.post(url, {reason: reason})
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._post('sale', transactionId, filters, postObject);
       };
 
-      API.updateTicketStatus = function (eventId, token, tickets) {
-        var deferred = $q.defer();
-
-        if (!token) {
-          deferred.reject('Token do usuário não foi informado.');
-          return deferred.promise;
+      API.updateTicketStatus = function (eventId, ticket, token) {
+        var filters = {
+          method: 'updatestatus',
+          usertoken: token
         }
 
-        if (!eventId) {
-          deferred.reject('O id do evento não foi informado.');
-          return deferred.promise;
+        var identifier = eventId + '/guestlist';
+
+        var postObject = {
+          tickets: [ticket]
         }
 
-        if (!tickets) {
-          deferred.reject('Os ingressos não foram informados');
-          return deferred.promise;
-        }
-
-        var url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/guestlist' + this.generateAuthKey() + '&method=updatestatus' + '&usertoken=' + token;
-
-        var obj = {
-          tickets: tickets
-        };
-
-        $http.post(url, obj)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._post('event', identifier, filters, postObject);
       };
 
-      API.getCheckinReport = function (eventId, token, fields) {
-        var deferred = $q.defer();
+      API.getCheckinReport = function (eventId, token) {
+        var identifier = eventId + '/guestlist';
 
-        var url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/guestlist' + this.generateAuthKey() + '&usertoken=' + token + '&method=report';
-
-        if (fields) {
-          url += '&fields=' + fields.toString();
+        var filters = {
+          usertoken: token
         }
 
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('event', identifier, filters);
       };
 
       API.getGuestList = function (eventId, filters, token) {
-        var deferred = $q.defer();
+        var identifier = eventId + '/guestlist';
 
-        var url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/guestlist' + this.generateAuthKey() + '&usertoken=' + token;
+        if (token) {
+          filters.usertoken = token;
+        }
 
-        url += this.getUrlParameters(filters);
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('event', identifier, filters);
       };
 
       API.getTransactionData = function (transactionId, token) {
-        var deferred = $q.defer();
+        var filters = {
+          usertoken: token
+        };
 
-        var url = ingresseAPI_Preferences.getHost() + '/sale/' + transactionId + this.generateAuthKey() + '&usertoken=' + token;
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._get('sale', transactionId, filters);
       };
 
       API.getUserPhotoUrl = function (userid) {
@@ -456,24 +310,18 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
       API.ticketReservation = function (eventId, userId, token, tickets, discountCode) {
         var deferred = $q.defer();
 
-        var url = ingresseAPI_Preferences.getHost() + '/shop/' + this.generateAuthKey() + '&usertoken=' + token;
+        var filters = {
+          usertoken: token
+        };
 
-        var reservation = {
+        var postObject = {
           eventId: eventId,
           userId: userId,
           tickets: tickets,
           discountCode: discountCode
         };
 
-        $http.post(url, reservation)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
+        return this._post('shop', null, filters, postObject);
       };
 
       API.createPagarmeCard = function (transaction) {

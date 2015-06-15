@@ -11,19 +11,37 @@
                             <label>User token</label>
                             <input type="text" ng-model="user.token" disabled/>
                         </md-input-container>
+
                         <md-input-container ng-if="tab.identifier">
                             <label>{{tab.identifier.label}}</label>
-                            <input type="{{tab.identifier.type}}" ng-model="tab.identifier.model" ng-disabled="tab.identifier.disabled" required/>
+                            <input type="{{tab.identifier.type}}" ng-model="tab.identifier.model" ng-disabled="tab.identifier.disabled" ng-required="tab.identifier.required"/>
                         </md-input-container>
+
                         <md-input-container ng-repeat="input in tab.fields">
                                 <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'">{{input.label}}</label>
+
                                 <input name="{{input.label}}" ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled" ng-required="input.required"/>
-                                <md-checkbox name="{{input.label}}" ng-if="input.type === 'checkbox'" ng-model="input.model">{{input.label}}</md-checkbox>
+
+                                <md-checkbox name="{{input.label}}"
+                                    ng-if="input.type === 'checkbox' && input.checkbox.trueValue"
+                                    ng-model="input.model"
+                                    ng-true-value="{{input.checkbox.trueValue}}"
+                                    ng-false-value="{{input.checkbox.falseValue}}">
+                                    {{input.label}}
+                                </md-checkbox>
+
+                                <md-checkbox name="{{input.label}}"
+                                    ng-if="input.type === 'checkbox' && !input.checkbox.trueValue"
+                                    ng-model="input.model"
+                                    {{input.label}}
+                                </md-checkbox>
+
                                 <md-select
                                     ng-if="input.type === 'option'"
                                     placeholder="{{input.label}}"
                                     ng-model="input.model"
-                                    required="input.required">
+                                    ng-required="input.required">
+                                    <md-option value=""></md-option>
                                     <md-option
                                         ng-repeat="option in input.options"
                                         value="{{option}}">

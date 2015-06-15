@@ -69,7 +69,26 @@ angular.module('ingresseEmulatorApp')
 
       var filters = $scope.getFiltersByTab($scope.fields['sales']);
 
-      ingresseAPI.getSales($scope.user.token, filters)
+      ingresseAPI.getSales(filters, $scope.user.token)
+        .then(function (response) {
+          $scope.result = response;
+        })
+        .catch(function (error) {
+          $scope.result = error;
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
+    $scope.refund = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields['refund'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['refund']);
+
+      ingresseAPI.refund(identifier, filters, $scope.user.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -90,9 +109,31 @@ angular.module('ingresseEmulatorApp')
           label: 'transactionId',
           model: '',
           type: 'text',
-          disabled: false
+          disabled: false,
+          required: true
         },
         fields: []
+      },
+      refund: {
+        label: 'Refund',
+        action: $scope.refund,
+        authentication: true,
+        identifier: {
+          label: 'transactionId',
+          model: '',
+          type: 'text',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'reason',
+            model: '',
+            type: 'text',
+            disabled: false,
+            required: true
+          }
+        ]
       },
       sales: {
         label: 'Sales',

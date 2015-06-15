@@ -168,7 +168,8 @@ angular.module('ingresseEmulatorApp')
           label: 'userid',
           model: '',
           type: 'number',
-          disabled: false
+          disabled: false,
+          required: true
         },
         fields: [
           {
@@ -187,7 +188,8 @@ angular.module('ingresseEmulatorApp')
           label: 'userid',
           model: '',
           type: 'number',
-          disabled: false
+          disabled: false,
+          required: true
         },
         fields: []
       },
@@ -199,7 +201,8 @@ angular.module('ingresseEmulatorApp')
           label: 'userid',
           model: '',
           type: 'number',
-          disabled: false
+          disabled: false,
+          required: true
         },
         fields: [
           {
@@ -266,7 +269,8 @@ angular.module('ingresseEmulatorApp')
           label: 'userid',
           model: '',
           type: 'number',
-          disabled: false
+          disabled: false,
+          required: true
         },
         fields: [
           {
@@ -303,7 +307,8 @@ angular.module('ingresseEmulatorApp')
           label: 'userid',
           model: '',
           type: 'number',
-          disabled: false
+          disabled: false,
+          required: true
         },
         fields: [
           {
