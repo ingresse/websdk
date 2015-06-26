@@ -40,14 +40,12 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.$on('userSessionSaved', function () {
-      $scope.user = {
-        token: IngresseAPI_UserService.token,
-        id: IngresseAPI_UserService.userId
-      };
-      ingresseAPI.getUser($scope.user.id, {fields:'id,name,email,type'}, $scope.user.token)
+      $scope.credentials = IngresseAPI_UserService.credentials;
+
+      ingresseAPI.getUser($scope.credentials.userId, {fields:'id,name,email,type'}, $scope.credentials.token)
       .then(function (response) {
-        $scope.user.data = response;
-        $scope.user.photo = ingresseAPI.getUserPhotoUrl($scope.user.id);
+        $scope.user = response;
+        $scope.user.photo = ingresseAPI.getUserPhotoUrl($scope.credentials.userId);
       });
     });
 

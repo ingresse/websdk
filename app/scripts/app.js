@@ -25,26 +25,6 @@ var app = angular
     ingresseAPI_PreferencesProvider.setTemplateDirectory('directives/');
 
     $routeProvider
-      .when('/event', {
-        templateUrl: 'views/emulator.html',
-        controller: 'EventController'
-      })
-      .when('/user', {
-        templateUrl: 'views/emulator.html',
-        controller: 'UserController'
-      })
-      .when('/sale', {
-        templateUrl: 'views/emulator.html',
-        controller: 'SaleController'
-      })
-      .when('/error', {
-        templateUrl: 'views/emulator.html',
-        controller: 'ErrorController'
-      })
-      .when('/dashboard', {
-        templateUrl: 'views/emulator.html',
-        controller: 'DashboardController'
-      })
       .otherwise({
         redirectTo: '/event'
       });

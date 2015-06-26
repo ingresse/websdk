@@ -1,24 +1,16 @@
 angular.module('ingresseEmulatorApp')
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when('/sale', {
+        templateUrl: 'views/emulator.html',
+        controller: 'SaleController'
+      })
+  })
   .controller('SaleController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $routeParams, $mdSidenav, $mdDialog, $location) {
-    $scope.$on('userSessionSaved', function () {
-      $scope.user = {
-        token: IngresseAPI_UserService.token,
-        id: IngresseAPI_UserService.userId
-      };
-    });
-
-    $scope.$on('userHasLoggedOut', function () {
-      $scope.user = {};
-    });
-
-    $scope.request = {};
-    $scope.result = {};
-
     $scope.$on('$viewContentLoaded', function() {
-      $scope.user = {
-        token: IngresseAPI_UserService.token,
-        id: IngresseAPI_UserService.userId
-      };
+      $scope.credentials = IngresseAPI_UserService.credentials;
+      $scope.request = {};
+      $scope.result = {};
 
       $scope.calls = ingresseAPI_Preferences.httpCalls;
     });
@@ -51,7 +43,7 @@ angular.module('ingresseEmulatorApp')
 
       var identifier = $scope.fields['transaction'].identifier.model;
 
-      ingresseAPI.getTransactionData(identifier, $scope.user.token)
+      ingresseAPI.getTransactionData(identifier, $scope.credentials.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -69,7 +61,7 @@ angular.module('ingresseEmulatorApp')
 
       var filters = $scope.getFiltersByTab($scope.fields['sales']);
 
-      ingresseAPI.getSales(filters, $scope.user.token)
+      ingresseAPI.getSales(filters, $scope.credentials.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -88,7 +80,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['refund'].identifier.model;
       var filters = $scope.getFiltersByTab($scope.fields['refund']);
 
-      ingresseAPI.refund(identifier, filters, $scope.user.token)
+      ingresseAPI.refund(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           $scope.result = response;
         })

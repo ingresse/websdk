@@ -6,10 +6,10 @@
                 {{tab.label}}
                 </md-tab-label>
                 <md-tab-body>
-                    <form name="queryForm">
+                    <form name="queryForm" ng-submit="tab.action()">
                         <md-input-container ng-if="tab.authentication">
                             <label>User token</label>
-                            <input type="text" ng-model="user.token" disabled/>
+                            <input type="text" ng-model="credentials.token" required disabled/>
                         </md-input-container>
 
                         <md-input-container ng-if="tab.identifier">
@@ -32,7 +32,7 @@
 
                                 <md-checkbox name="{{input.label}}"
                                     ng-if="input.type === 'checkbox' && !input.checkbox.trueValue"
-                                    ng-model="input.model"
+                                    ng-model="input.model">
                                     {{input.label}}
                                 </md-checkbox>
 

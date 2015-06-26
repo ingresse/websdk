@@ -1,9 +1,15 @@
 angular.module('ingresseEmulatorApp')
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when('/error', {
+        templateUrl: 'views/emulator.html',
+        controller: 'ErrorController'
+      })
+  })
   .controller('ErrorController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $routeParams, $mdSidenav, $mdDialog, $location) {
-    $scope.request = {};
-    $scope.result = {};
-
     $scope.$on('$viewContentLoaded', function() {
+      $scope.request = {};
+      $scope.result = {};
       $scope.calls = ingresseAPI_Preferences.httpCalls;
     });
 

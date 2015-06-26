@@ -1,11 +1,13 @@
 angular.module('ingresseEmulatorApp')
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when('/user', {
+        templateUrl: 'views/emulator.html',
+        controller: 'UserController'
+      })
+  })
   .controller('UserController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $routeParams, $mdSidenav, $mdDialog, $location) {
-    $scope.$on('userSessionSaved', function () {
-      $scope.user = {
-        token: IngresseAPI_UserService.token,
-        id: IngresseAPI_UserService.userId
-      };
-    });
+    $scope.credentials = IngresseAPI_UserService.credentials;
 
     $scope.$on('userHasLoggedOut', function () {
       $scope.user = {};
@@ -80,7 +82,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['user'].identifier.model;
       var filters = $scope.getFiltersByTab($scope.fields['user']);
 
-      ingresseAPI.getUser(identifier, filters, $scope.user.token)
+      ingresseAPI.getUser(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           $scope.request.userObj = angular.copy(response);
           $scope.result = response;
@@ -100,7 +102,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['userTickets'].identifier.model;
       var filters = $scope.getFiltersByTab($scope.fields['userTickets']);
 
-      ingresseAPI.getUserTickets(identifier, filters, $scope.user.token)
+      ingresseAPI.getUserTickets(identifier, filters, $scope.credentials.token)
       .then(function (response) {
           $scope.result = response;
         })
@@ -119,7 +121,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['userEvents'].identifier.model;
       var filters = $scope.getFiltersByTab($scope.fields['userEvents']);
 
-      ingresseAPI.getUserEvents(identifier, filters, $scope.user.token)
+      ingresseAPI.getUserEvents(identifier, filters, $scope.credentials.token)
       .then(function (response) {
           $scope.result = response;
         })
@@ -146,7 +148,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['userUpdate'].identifier.model;
       var obj = $scope.getFiltersByTab($scope.fields['userUpdate']);
 
-      ingresseAPI.updateUserInfo(identifier, obj, $scope.user.token)
+      ingresseAPI.updateUserInfo(identifier, obj, $scope.credentials.token)
         .then(function (response) {
           $scope.request.userObj = angular.copy(response);
           $scope.result = response;

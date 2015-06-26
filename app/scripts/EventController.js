@@ -1,16 +1,12 @@
 angular.module('ingresseEmulatorApp')
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when('/event', {
+        templateUrl: 'views/emulator.html',
+        controller: 'EventController'
+      });
+  })
   .controller('EventController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $routeParams, $mdSidenav, $mdDialog, $location) {
-    $scope.$on('userSessionSaved', function () {
-      $scope.user = {
-        token: IngresseAPI_UserService.token,
-        id: IngresseAPI_UserService.userId
-      };
-    });
-
-    $scope.$on('userHasLoggedOut', function () {
-      $scope.user = {};
-    });
-
     $scope.request = {};
     $scope.result = {};
 
@@ -22,10 +18,7 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.$on('$viewContentLoaded', function() {
-      $scope.user = {
-        token: IngresseAPI_UserService.token,
-        id: IngresseAPI_UserService.userId
-      };
+      $scope.credentials = IngresseAPI_UserService.credentials;
 
       $scope.calls = ingresseAPI_Preferences.httpCalls;
 
@@ -80,7 +73,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['event'].identifier.model;
       var filters = $scope.getFiltersByTab($scope.fields['event']);
 
-      ingresseAPI.getEvent(identifier, filters, $scope.user.token)
+      ingresseAPI.getEvent(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -98,7 +91,7 @@ angular.module('ingresseEmulatorApp')
 
       var identifier = $scope.fields['checkinReport'].identifier.model;
 
-      ingresseAPI.getCheckinReport(identifier, $scope.user.token)
+      ingresseAPI.getCheckinReport(identifier, $scope.credentials.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -119,7 +112,7 @@ angular.module('ingresseEmulatorApp')
 
       filters.ticketTimestamp = new Date().toISOString();
 
-      ingresseAPI.updateTicketStatus(identifier, filters, $scope.user.token)
+      ingresseAPI.updateTicketStatus(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -138,7 +131,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['eventTicketTypes'].identifier.model;
       var filters = $scope.getFiltersByTab($scope.fields['eventTicketTypes']);
 
-      ingresseAPI.getEventTicketTypes(identifier, filters, $scope.user.token)
+      ingresseAPI.getEventTicketTypes(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -157,7 +150,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['guestList'].identifier.model;
       var filters = $scope.getFiltersByTab($scope.fields['guestList']);
 
-      ingresseAPI.getGuestList(identifier, filters, $scope.user.token)
+      ingresseAPI.getGuestList(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           $scope.result = response;
         })
@@ -176,7 +169,7 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields['crew'].identifier.model;
       var filters = $scope.getFiltersByTab($scope.fields['crew']);
 
-      ingresseAPI.getEventCrew(identifier, filters, $scope.user.token)
+      ingresseAPI.getEventCrew(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           $scope.result = response;
         })

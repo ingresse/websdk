@@ -152,7 +152,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return this._get('event', identifier, filters);
       };
 
-      API.getVisitsReport = function (eventId, usertoken) {
+      API.getVisitsReport = function (eventId, filters, usertoken) {
         var identifier = eventId + '/visitsReport';
 
         if (usertoken) {
@@ -446,6 +446,14 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         });
 
         return deferred.promise;
+      };
+
+      API.getProducerCustomerList = function (producerId, filters, token) {
+        var identifier = producerId + '/customer';
+
+        filters.usertoken = token;
+
+        return this._get('producer', identifier, filters);
       };
 
       return API;

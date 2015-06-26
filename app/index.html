@@ -28,21 +28,21 @@
                     <h1 class="md-toolbar-tools">Settings</h1>
                 </md-toolbar>
 
-                <md-button class="md-button" ng-click="login()" ng-hide="user.id">Login</md-button>
+                <md-button class="md-button" ng-click="login()" ng-hide="credentials.userId">Login</md-button>
 
-                <md-list class="fixedRows" ng-show="user.data.name">
+                <md-list class="fixedRows" ng-show="user.name">
 
                     <md-list-item class="md-2-line contact-item">
 
-                        <img ng-src="{{user.photo}}" class="md-avatar" alt="{{user.data.name}}" />
+                        <img ng-src="{{user.photo}}" class="md-avatar" alt="{{user.name}}" />
                         <div class="md-list-item-text compact">
-                            <h3>{{user.data.name}} {{user.data.lastname}}</h3>
-                            <p>{{user.data.mail}}</p>
-                            <p>{{user.id}}</p>
+                            <h3>{{user.name}} {{user.lastname}}</h3>
+                            <p>{{user.mail}}</p>
+                            <p>{{credentials.userId}}</p>
                             <p>
-                                <span ng-show="user.data.type === '1'">Admin</span>
-                                <span ng-show="user.data.type === '2'">Pro</span>
-                                <span ng-show="user.data.type === '3'">Free</span>
+                                <span ng-show="user.type === '1'">Admin</span>
+                                <span ng-show="user.type === '2'">Pro</span>
+                                <span ng-show="user.type === '3'">Free</span>
                             </p>
                         </div>
 
@@ -50,7 +50,7 @@
 
                 </md-list>
 
-                <md-button class="md-button md-warn" ng-click="logout()" ng-show="user.id">Logout</md-button>
+                <md-button class="md-button md-warn" ng-click="logout()" ng-show="credentials.userId">Logout</md-button>
 
                 <md-divider></md-divider>
 
@@ -91,6 +91,7 @@
                         <md-option value="/sale">/sale</md-option>
                         <md-option value="/error">/error</md-option>
                         <md-option value="/dashboard">/dashboard</md-option>
+                        <md-option value="/producer">/producer</md-option>
                     </md-select>
                 </md-input-container>
             </div>
@@ -136,6 +137,7 @@
     <script src="scripts/ErrorController.js"></script>
     <script src="scripts/SaleController.js"></script>
     <script src="scripts/DashboardController.js"></script>
+    <script src="scripts/ProducerController.js"></script>
     <script src="directives/query-directive.js"></script>
 </body>
 </html>

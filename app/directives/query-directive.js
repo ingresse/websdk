@@ -6,7 +6,7 @@ angular.module('ingresseEmulatorApp')
         transclude: true,
         scope: {
             fields: '=',
-            user: '='
+            credentials: '='
         },
         controller: function($scope, $element, $attrs, $transclude) {
 

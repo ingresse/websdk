@@ -1,21 +1,14 @@
 angular.module('ingresseEmulatorApp')
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/dashboard', {
+      .when('/producer', {
         templateUrl: 'views/emulator.html',
-        controller: 'DashboardController'
+        controller: 'ProducerController'
       })
   })
-  .controller('DashboardController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $routeParams, $mdSidenav, $mdDialog, $location) {
+  .controller('ProducerController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $routeParams, $mdSidenav, $mdDialog, $location) {
     $scope.request = {};
     $scope.result = {};
-
-    $scope.toastPosition = {
-      bottom: false,
-      top: true,
-      left: false,
-      right: true
-    };
 
     $scope.$on('$viewContentLoaded', function() {
       $scope.credentials = IngresseAPI_UserService.credentials;
@@ -46,35 +39,15 @@ angular.module('ingresseEmulatorApp')
       return obj;
     };
 
-    $scope.showError = function(text) {
-      alert = $mdDialog.alert({
-        title: 'Erro',
-        content: text,
-        ok: 'Close'
-      });
-      $mdDialog
-        .show( alert )
-        .finally(function() {
-          alert = undefined;
-        });
-
-      $scope.selectedIndex = 0;
-    };
-
-    $scope.openLeftMenu = function() {
-      $mdSidenav('left').toggle();
-    };
-
-    $scope.getVisitsReport = function () {
+    $scope.getProducerCustomerList = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields['visitsReport'].identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields['visitsReport']);
+      var identifier = $scope.fields['producerCustomers'].identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields['producerCustomers']);
 
-      ingresseAPI.getVisitsReport(identifier, filters, $scope.credentials.token)
+      ingresseAPI.getProducerCustomerList(identifier, filters, $scope.credentials.token)
         .then(function (response) {
-          $scope.request.userObj = angular.copy(response);
           $scope.result = response;
         })
         .catch(function (error) {
@@ -86,12 +59,12 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.fields = {
-      visitsReport: {
-        label: 'Visits Report',
-        action: $scope.getVisitsReport,
+      producerCustomers: {
+        label: 'Costumer',
+        action: $scope.getProducerCustomerList,
         authentication: true,
         identifier: {
-          label: 'eventId',
+          label: 'producerId',
           model: '',
           type: 'number',
           disabled: false,
@@ -99,15 +72,33 @@ angular.module('ingresseEmulatorApp')
         },
         fields: [
           {
-            label: 'from',
+            label: 'scorefrom',
             model: '',
-            type: 'date',
+            type: 'number',
             disabled: false
           },
           {
-            label: 'to',
+            label: 'scoreto',
             model: '',
-            type: 'date',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'event',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'platform',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'classification',
+            model: '',
+            type: 'number',
             disabled: false
           }
         ]
