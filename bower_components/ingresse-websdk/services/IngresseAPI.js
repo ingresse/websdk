@@ -797,6 +797,44 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
+        getProducerCostumers: function (producerId, token, filters) {
+          var deferred = $q.defer();
+
+          var url = ingresseAPI_Preferences.getHost() + '/producer/' + producerId + '/customer' + this.generateAuthKey() + '&usertoken=' + token;
+
+          if (filters) {
+            if (filters.scorefrom) {
+              url += '&scorefrom=' + filters.scorefrom;
+            }
+
+            if (filters.scoreto) {
+              url += '&scoreto=' + filters.scoreto;
+            }
+
+            if (filters.event) {
+              url += '&event=' + filters.event;
+            }
+
+            if (filters.platform) {
+              url += '&platform=' + filters.platform;
+            }
+
+            if (filters.classification) {
+              url += '&classification=' + filters.classification;
+            }
+          }
+
+          $http.get(url)
+            .success(function (response) {
+              deferred.resolve(response.responseData);
+            })
+            .catch(function (error) {
+              deferred.reject(error);
+            });
+
+          return deferred.promise;
+        },
+
         getGuestList: function (eventId, token, fields, filters, page, pageSize) {
           var deferred = $q.defer();
 

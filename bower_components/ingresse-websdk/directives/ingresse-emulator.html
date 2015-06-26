@@ -31,6 +31,7 @@
                     <option value="sales">Consultar Vendas</option>
                     <option value="checkinReport">Relatório de Checkin</option>
                     <option value="visitsReport">Relatório de Visitas</option>
+                    <option value="producerCostumers">Relatório de Clientes do Produtor</option>
                     <option value="transactionData">Consultar Transação</option>
                     <option value="updateUser">Atualizar Usuário</option>
                     <option value="createTransaction">Criar Transação</option>
@@ -535,6 +536,45 @@
                 <input type="text" ng-model="refundForm.reason" required/>
 
                 <button class="venus button" type="submit" ng-disabled="!refundForm.$valid">Enviar</button>
+            </form>
+
+            <form  class="venus" novalidate name="producerCostumersForm" ng-show="selectedMethod === 'producerCostumers'" ng-submit="getProducerCostumers(producerCostumersForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" required disabled/>
+
+                <label>Producer ID</label>
+                <input type="text" ng-model="producerCostumersForm.producerId" required/>
+
+                <label>Score From</label>
+                <input type="number" ng-model="producerCostumersForm.filters.scorefrom"/>
+
+                <label>Score To</label>
+                <input type="number" ng-model="producerCostumersForm.filters.scoreto"/>
+
+                <label>Event ID</label>
+                <input type="number" ng-model="producerCostumersForm.filters.event"/>
+
+                <label>Platform</label>
+                <select ng-model="producerCostumersForm.filters.platform">
+                    <option value="application">application</option>
+                    <option value="mobile">mobile</option>
+                    <option value="web">web</option>
+                </select>
+
+                <label>Classification</label>
+                <select ng-model="producerCostumersForm.filters.classification">
+                    <option value="best">best</option>
+                    <option value="valuable">valuable  </option>
+                    <option value="shopper">shopper</option>
+                    <option value="firstTime">firstTime</option>
+                    <option value="shopperHigh">shopperHigh</option>
+                    <option value="frequent">frequent</option>
+                    <option value="spender">spender</option>
+                    <option value="uncertain">uncertain</option>
+                    <option value="churn">churn</option>
+                </select>
+
+                <button class="venus button" type="submit" ng-disabled="!producerCostumersForm.$valid">Send</button>
             </form>
         </div>
     </div>
