@@ -983,6 +983,30 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
+        getTransactionReport: function(eventId, token, filters) {
+          var deferred = $q.defer();
+
+          var url = ingresseAPI_Preferences.getHost() + '/dashboard/' + eventId + '/transactionReport' + this.generateAuthKey() + '&usertoken=' + token;
+
+          if (filters) {
+            angular.forEach(filters, function (value, key) {
+              if (value) {
+                url += '&' + key + '=' + value;
+              }
+            });
+          }
+
+          $http.get(url)
+            .success(function (response) {
+              deferred.resolve(response.responseData);
+            })
+            .catch(function (error) {
+              deferred.reject(error);
+            });
+
+          return deferred.promise;
+        },
+
         getUserPhotoUrl: function (userid) {
           return ingresseAPI_Preferences.getHost() + '/user/' + userid + '/picture/' + this.generateAuthKey();
         },

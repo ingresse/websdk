@@ -36,6 +36,7 @@
                     <option value="producerCostumers">Relatório de Clientes do Produtor</option>
                     <option value="producerSalesGroupReport">Relatório do Grupo de Vendas</option>
                     <option value="transactionData">Consultar Transação</option>
+                    <option value="transactionReport">Relatório de Transações</option>
                     <option value="updateUser">Atualizar Usuário</option>
                     <option value="createTransaction">Criar Transação</option>
                     <option value="payTransaction">Pagar Transação</option>
@@ -283,6 +284,22 @@
                 <input type="text" ng-model="transactionDataForm.fields"/>
 
                 <button class="venus button" type="submit" ng-disabled="!transactionDataForm.$valid">Enviar</button>
+            </form>
+
+            <form  class="venus" novalidate name="transactionReportForm" ng-show="selectedMethod === 'transactionReport'" ng-submit="getTransactionReport(transactionReportForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" required disabled/>
+
+                <label>Event ID</label>
+                <input type="text" ng-model="transactionReportForm.eventId" required/>
+
+                <label>from</label>
+                <input type="text" ng-model="transactionReportForm.filters.from"/>
+
+                <label>to</label>
+                <input type="text" ng-model="transactionReportForm.filters.to"/>
+
+                <button class="venus button" type="submit" ng-disabled="!transactionReportForm.$valid">Enviar</button>
             </form>
 
             <form  class="venus" novalidate name="updateUserForm" ng-show="selectedMethod === 'updateUser'" ng-submit="updateUser(updateUserForm)">
