@@ -33,6 +33,7 @@
                     <option value="checkinReport">Relatório de Checkin</option>
                     <option value="visitsReport">Relatório de Visitas</option>
                     <option value="producerCostumers">Relatório de Clientes do Produtor</option>
+                    <option value="producerSalesGroupReport">Relatório do Grupo de Vendas</option>
                     <option value="transactionData">Consultar Transação</option>
                     <option value="updateUser">Atualizar Usuário</option>
                     <option value="createTransaction">Criar Transação</option>
@@ -601,6 +602,28 @@
                 </select>
 
                 <button class="venus button" type="submit" ng-disabled="!producerCostumersForm.$valid">Send</button>
+            </form>
+
+            <form  class="venus" novalidate name="producerSalesGroupReportForm" ng-show="selectedMethod === 'producerSalesGroupReport'" ng-submit="getProducerSalesGroupReport(producerSalesGroupReportForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" required disabled/>
+
+                <label>Producer ID</label>
+                <input type="text" ng-model="producerSalesGroupReportForm.producerId" required/>
+
+                <label>From</label>
+                <input type="number" ng-model="producerSalesGroupReportForm.filters.from"/>
+
+                <label>To</label>
+                <input type="number" ng-model="producerSalesGroupReportForm.filters.to"/>
+
+                <label>Event</label>
+                <input type="text" ng-model="producerSalesGroupReportForm.filters.event"/>
+
+                <label>Session</label>
+                <input type="text" ng-model="producerSalesGroupReportForm.filters.session"/>
+
+                <button class="venus button" type="submit" ng-disabled="!producerSalesGroupReportForm.$valid">Send</button>
             </form>
         </div>
     </div>
