@@ -29,6 +29,7 @@
                     <option value="updateTicketStatus">Atualizar status de ingressos</option>
                     <option value="guestList">Consultar lista de convidados</option>
                     <option value="sales">Consultar Vendas</option>
+                    <option value="salesReport">Relatório de Vendas</option>
                     <option value="checkinReport">Relatório de Checkin</option>
                     <option value="visitsReport">Relatório de Visitas</option>
                     <option value="producerCostumers">Relatório de Clientes do Produtor</option>
@@ -523,6 +524,28 @@
                 <input type="number" ng-model="salesForm.page" />
 
                 <button class="venus button" type="submit" ng-disabled="!salesForm.$valid">Enviar</button>
+            </form>
+
+            <form  class="venus" novalidate name="salesReportForm" ng-show="selectedMethod === 'salesReport'" ng-submit="getSalesReport(salesReportForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" required disabled/>
+
+                <label>Event ID</label>
+                <input type="number" ng-model="salesReportForm.eventId" />
+
+                <label>Channel</label>
+                <select ng-model="salesReportForm.filters.channel">
+                    <option value="online">online</option>
+                    <option value="offline">offline</option>
+                </select>
+
+                <label>from</label>
+                <input type="text" ng-model="salesReportForm.filters.from">
+
+                <label>to</label>
+                <input type="text" ng-model="salesReportForm.filters.to">
+
+                <button class="venus button" type="submit" ng-disabled="!salesReportForm.$valid">Enviar</button>
             </form>
 
             <form  class="venus" novalidate name="refundForm" ng-show="selectedMethod === 'refund'" ng-submit="refund(refundForm)">

@@ -266,6 +266,22 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           });
       };
 
+      $scope.getSalesReport = function (form) {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Carregando relatório de vendas...');
+
+        ingresseAPI.getSalesReport(form.eventId, $scope.user.token, form.filters)
+          .then(function(response) {
+            $scope.result = response;
+          })
+          .catch(function (error) {
+            VenusActivityIndicatorService.error(error.message);
+          })
+          .finally(function () {
+            VenusActivityIndicatorService.stopActivity('Carregando relatório de vendas...');
+          });
+      };
+
       $scope.updateUser = function (form) {
         $scope.resetResponses();
         VenusActivityIndicatorService.startActivity('Atualizando dados do usuário...');

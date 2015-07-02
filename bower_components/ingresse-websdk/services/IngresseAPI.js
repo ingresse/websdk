@@ -682,6 +682,31 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
         },
 
 
+        getSalesReport: function (eventId, token, filters) {
+          var deferred = $q.defer();
+
+          var url = ingresseAPI_Preferences.getHost() + '/dashboard/' + eventId + '/' + this.generateAuthKey() + '&usertoken=' + token;
+
+          if (filters) {
+            angular.forEach(filters, function (value, key) {
+              if (value) {
+                url += '&' + key + '=' + value;
+              }
+            });
+          };
+
+          $http.get(url)
+            .success(function (response) {
+              deferred.resolve(response.responseData);
+            })
+            .catch(function (error) {
+              deferred.reject(error);
+            });
+
+          return deferred.promise;
+        },
+
+
 
         /* UPDATE USER INFO
 
