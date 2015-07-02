@@ -406,6 +406,31 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
+        getEventSalesTimeline: function (eventId, token, filters) {
+          var deferred = $q.defer();
+          var url;
+
+          url = ingresseAPI_Preferences.getHost() + '/dashboard/' + eventId + '/timeline' + this.generateAuthKey() + '&usertoken=' + token;
+
+          if (filters) {
+            angular.forEach(filters, function (value, key) {
+              if (value) {
+                url += '&' + key + '=' + value;
+              }
+            });
+          }
+
+          $http.get(url)
+            .success(function (response) {
+              deferred.resolve(response.responseData);
+            })
+            .catch(function (error) {
+              deferred.reject(error);
+            });
+
+          return deferred.promise;
+        },
+
 
         getError: function (errorClass) {
           var deferred = $q.defer();

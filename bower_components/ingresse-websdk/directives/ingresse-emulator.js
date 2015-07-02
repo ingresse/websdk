@@ -100,6 +100,22 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           });
       };
 
+      $scope.getEventSalesTimeline = function (form) {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Carregando vendas...');
+
+        ingresseAPI.getEventSalesTimeline(form.eventId, $scope.user.token, form.filters)
+          .then(function (response) {
+            $scope.result = response;
+          })
+          .catch(function (error) {
+            VenusActivityIndicatorService.error(error.message);
+          })
+          .finally(function () {
+            VenusActivityIndicatorService.stopActivity('Carregando vendas...');
+          });
+      };
+
       $scope.getError = function (errorClass) {
         $scope.resetResponses();
         VenusActivityIndicatorService.startActivity('Carregando lista de erros...');

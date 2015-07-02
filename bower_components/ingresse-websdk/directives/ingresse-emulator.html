@@ -30,6 +30,7 @@
                     <option value="guestList">Consultar lista de convidados</option>
                     <option value="sales">Consultar Vendas</option>
                     <option value="salesReport">Relatório de Vendas</option>
+                    <option value="salesTimeline">Reltório de Vendas por dia</option>
                     <option value="checkinReport">Relatório de Checkin</option>
                     <option value="visitsReport">Relatório de Visitas</option>
                     <option value="producerCostumers">Relatório de Clientes do Produtor</option>
@@ -547,6 +548,32 @@
                 <input type="text" ng-model="salesReportForm.filters.to">
 
                 <button class="venus button" type="submit" ng-disabled="!salesReportForm.$valid">Enviar</button>
+            </form>
+
+            <form  class="venus" novalidate name="salesTimelineForm" ng-show="selectedMethod === 'salesTimeline'" ng-submit="getEventSalesTimeline(salesTimelineForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" required disabled/>
+
+                <label>Event ID</label>
+                <input type="number" ng-model="salesTimelineForm.eventId" />
+
+                <label>Channel</label>
+                <select ng-model="salesTimelineForm.filters.channel">
+                    <option value="">Todas</option>
+                    <option value="online">online</option>
+                    <option value="offline">offline</option>
+                </select>
+
+                <label>session</label>
+                <input type="text" ng-model="salesTimelineForm.filters.session">
+
+                <label>from</label>
+                <input type="text" ng-model="salesTimelineForm.filters.from">
+
+                <label>to</label>
+                <input type="text" ng-model="salesTimelineForm.filters.to">
+
+                <button class="venus button" type="submit" ng-disabled="!salesTimelineForm.$valid">Enviar</button>
             </form>
 
             <form  class="venus" novalidate name="refundForm" ng-show="selectedMethod === 'refund'" ng-submit="refund(refundForm)">
