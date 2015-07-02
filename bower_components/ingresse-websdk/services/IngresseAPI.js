@@ -822,6 +822,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             if (filters.classification) {
               url += '&classification=' + filters.classification;
             }
+
+            if (filters.term) {
+              url += '&term=' + filters.term;
+            }
           }
 
           $http.get(url)
