@@ -4,91 +4,53 @@ angular.module('ingresseEmulatorApp')
       .when('/user', {
         templateUrl: 'views/emulator.html',
         controller: 'UserController'
-      })
+      });
   })
-  .controller('UserController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $routeParams, $mdSidenav, $mdDialog, $location) {
-    $scope.credentials = IngresseAPI_UserService.credentials;
-
-    $scope.$on('userHasLoggedOut', function () {
-      $scope.user = {};
-    });
-
+  .controller('UserController', function ($scope, $rootScope, ingresseAPI, IngresseAPI_UserService, EmulatorService, QueryService) {
     $scope.request = {};
-    $scope.result = {};
 
-    $scope.toastPosition = {
-      bottom: false,
-      top: true,
-      left: false,
-      right: true
-    };
-
-    $scope.$on('$viewContentLoaded', function() {
-      $scope.user = {
-        token: IngresseAPI_UserService.token,
-        id: IngresseAPI_UserService.userId
-      };
-
-      $scope.calls = ingresseAPI_Preferences.httpCalls;
-
-      if ($routeParams.id) {
-        $scope.request.id = $routeParams.id;
-      }
-
-      $scope.selectedIndex = 0;
+    $scope.$on('$viewContentLoaded', function () {
+      $scope.credentials = IngresseAPI_UserService.credentials;
+      QueryService.getSearchParams($scope.fields);
     });
 
     $scope.getFiltersByTab = function (tab) {
       var obj = {};
-      for (var i = tab.fields.length - 1; i >= 0; i--) {
-        if (!tab.fields[i].model) {
-          continue;
-        }
+      var i, day, month, year;
 
-        if (tab.fields[i].type === 'date') {
-          obj[tab.fields[i].label] = tab.fields[i].model.toISOString();
-          continue;
+      for (i = tab.fields.length - 1; i >= 0; i--) {
+        if (tab.fields[i].model) {
+          if (tab.fields[i].type === 'date') {
+            day = tab.fields[i].model.getDate().toString();
+            month = tab.fields[i].model.getMonth().toString();
+            if (month.length < 2) {
+              month = "0" + month;
+            }
+            year = tab.fields[i].model.getFullYear().toString();
+            obj[tab.fields[i].label] = year + "-" + month + "-" + day;
+          } else {
+            obj[tab.fields[i].label] = tab.fields[i].model;
+          }
         }
-
-        obj[tab.fields[i].label] = tab.fields[i].model;
-      };
+      }
 
       return obj;
     };
 
-    $scope.showError = function(text) {
-      alert = $mdDialog.alert({
-        title: 'Erro',
-        content: text,
-        ok: 'Close'
-      });
-      $mdDialog
-        .show( alert )
-        .finally(function() {
-          alert = undefined;
-        });
-
-      $scope.selectedIndex = 0;
-    };
-
-    $scope.openLeftMenu = function() {
-      $mdSidenav('left').toggle();
-    };
-
     $scope.getUser = function () {
-      $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields['user'].identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields['user']);
+      var identifier = $scope.fields.user.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.user);
+
+      QueryService.setSearchParams('user', $scope.fields.user.identifier, filters);
 
       ingresseAPI.getUser(identifier, filters, $scope.credentials.token)
         .then(function (response) {
-          $scope.request.userObj = angular.copy(response);
-          $scope.result = response;
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
-          $scope.result = error;
+          EmulatorService.addResponse(error, false);
         })
         .finally(function () {
           $scope.isLoading = false;
@@ -99,15 +61,17 @@ angular.module('ingresseEmulatorApp')
       $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields['userTickets'].identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields['userTickets']);
+      var identifier = $scope.fields.userTickets.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.userTickets);
+
+      QueryService.setSearchParams('userTickets', $scope.fields.userTickets.identifier, filters);
 
       ingresseAPI.getUserTickets(identifier, filters, $scope.credentials.token)
-      .then(function (response) {
-          $scope.result = response;
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
-          $scope.result = error;
+          EmulatorService.addResponse(error, false);
         })
         .finally(function () {
           $scope.isLoading = false;
@@ -118,15 +82,17 @@ angular.module('ingresseEmulatorApp')
       $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields['userEvents'].identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields['userEvents']);
+      var identifier = $scope.fields.userEvents.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.userEvents);
+
+      QueryService.setSearchParams('userEvents', $scope.fields.userEvents.identifier, filters);
 
       ingresseAPI.getUserEvents(identifier, filters, $scope.credentials.token)
-      .then(function (response) {
-          $scope.result = response;
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
-          $scope.result = error;
+          EmulatorService.addResponse(error, false);
         })
         .finally(function () {
           $scope.isLoading = false;
@@ -136,17 +102,21 @@ angular.module('ingresseEmulatorApp')
     $scope.getUserPhotoUrl = function () {
       $scope.result = {};
 
-      var identifier = $scope.fields['userPhoto'].identifier.model;
+      var identifier = $scope.fields.userPhoto.identifier.model;
+
+      QueryService.setSearchParams('userPhoto', $scope.fields.userPhoto.identifier, null);
 
       $scope.result = {url: ingresseAPI.getUserPhotoUrl(identifier)};
-    }
+    };
 
     $scope.updateUserInfo = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields['userUpdate'].identifier.model;
-      var obj = $scope.getFiltersByTab($scope.fields['userUpdate']);
+      var identifier = $scope.fields.userUpdate.identifier.model;
+      var obj = $scope.getFiltersByTab($scope.fields.userUpdate);
+
+      QueryService.setSearchParams('userUpdate', $scope.fields.userUpdate.identifier, null);
 
       ingresseAPI.updateUserInfo(identifier, obj, $scope.credentials.token)
         .then(function (response) {

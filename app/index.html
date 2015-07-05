@@ -28,32 +28,6 @@
                     <h1 class="md-toolbar-tools">Settings</h1>
                 </md-toolbar>
 
-                <md-button class="md-button" ng-click="login()" ng-hide="credentials.userId">Login</md-button>
-
-                <md-list class="fixedRows" ng-show="user.name">
-
-                    <md-list-item class="md-2-line contact-item">
-
-                        <img ng-src="{{user.photo}}" class="md-avatar" alt="{{user.name}}" />
-                        <div class="md-list-item-text compact">
-                            <h3>{{user.name}} {{user.lastname}}</h3>
-                            <p>{{user.mail}}</p>
-                            <p>{{credentials.userId}}</p>
-                            <p>
-                                <span ng-show="user.type === '1'">Admin</span>
-                                <span ng-show="user.type === '2'">Pro</span>
-                                <span ng-show="user.type === '3'">Free</span>
-                            </p>
-                        </div>
-
-                    </md-list-item>
-
-                </md-list>
-
-                <md-button class="md-button md-warn" ng-click="logout()" ng-show="credentials.userId">Logout</md-button>
-
-                <md-divider></md-divider>
-
                 <md-content layout-padding>
                     <md-input-container>
                         <label>Public Key</label>
@@ -68,33 +42,27 @@
             </div>
         </md-sidenav>
 
-        <md-toolbar layout-sm"column" layout-md="column" layout-gt-md="row" layout-align="start center" ng-controller="HeaderController">
+        <md-toolbar layout="row" layout-align="start center" ng-controller="HeaderController">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
                     <md-icon md-svg-icon="styles/images/icons/ic_settings_48px.svg"></md-icon>
                 </md-button>
                 <h2>Ingresse API</h2>
             </div>
-            <div flex></div>
-            <div layout-padding layout-sm"column" layout-md="column" layout-gt-md="row">
-                <md-input-container style="width: 400px;">
-                    <label>Domain</label>
-                    <input type="text" ng-model="domain" ng-blur="setHost(domain)">
-                </md-input-container>
-                <md-input-container style="width: 250px;">
-                    <md-select
-                        placeholder="method"
-                        ng-model="method"
-                        ng-change="methodSelected(method)">
-                        <md-option value="/event">/event</md-option>
-                        <md-option value="/user">/user</md-option>
-                        <md-option value="/sale">/sale</md-option>
-                        <md-option value="/error">/error</md-option>
-                        <md-option value="/dashboard">/dashboard</md-option>
-                        <md-option value="/producer">/producer</md-option>
-                    </md-select>
-                </md-input-container>
+            <div class="flex"></div>
+            <md-button class="md-button" ng-click="login()" ng-hide="credentials.userId">Login</md-button>
+
+            <div class="user" ng-show="user.name">
+                <img ng-src="{{user.photo}}" class="md-avatar" alt="{{user.name}}" />
+                <p class="name">{{user.name}} {{user.lastname}}</p>
+                <p class="type">
+                    <span ng-show="user.type === '1'">Admin</span>
+                    <span ng-show="user.type === '2'">Pro</span>
+                    <span ng-show="user.type === '3'">Free</span>
+                </p>
             </div>
+
+            <md-button class="md-button md-warn" ng-click="logout()" ng-show="credentials.userId">Logout</md-button>
         </md-toolbar>
         <div layout-sm"column" layout-md="column" layout-gt-md="row" ng-view=""></div>
 
@@ -130,6 +98,8 @@
     <script src="directives/ingresse-emulator.js"></script>
 
     <script src="scripts/app.js"></script>
+    <script src="scripts/EmulatorService.js"></script>
+    <script src="scripts/QueryService.js"></script>
     <script src="scripts/controllers/SidenavController.js"></script>
     <script src="scripts/controllers/HeaderController.js"></script>
     <script src="scripts/controllers/EventController.js"></script>
@@ -139,5 +109,6 @@
     <script src="scripts/controllers/DashboardController.js"></script>
     <script src="scripts/controllers/ProducerController.js"></script>
     <script src="directives/query-directive.js"></script>
+    <script src="directives/results-directive.js"></script>
 </body>
 </html>

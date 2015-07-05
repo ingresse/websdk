@@ -4,37 +4,35 @@ angular.module('ingresseEmulatorApp')
       .when('/producer', {
         templateUrl: 'views/emulator.html',
         controller: 'ProducerController'
-      })
+      });
   })
-  .controller('ProducerController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $routeParams, $mdSidenav, $mdDialog, $location) {
+  .controller('ProducerController', function ($scope, ingresseAPI, IngresseAPI_UserService, EmulatorService, QueryService) {
     $scope.request = {};
-    $scope.result = {};
 
-    $scope.$on('$viewContentLoaded', function() {
+    $scope.$on('$viewContentLoaded', function () {
       $scope.credentials = IngresseAPI_UserService.credentials;
-      $scope.calls = ingresseAPI_Preferences.httpCalls;
+      QueryService.getSearchParams($scope.fields);
     });
 
     $scope.getFiltersByTab = function (tab) {
       var obj = {};
-      for (var i = tab.fields.length - 1; i >= 0; i--) {
-        if (!tab.fields[i].model) {
-          continue;
-        }
+      var i, day, month, year;
 
-        if (tab.fields[i].type === 'date') {
-          var day = tab.fields[i].model.getDate().toString();
-          var month = tab.fields[i].model.getMonth().toString();
-          if (month.length < 2) {
-            month = "0" + month;
+      for (i = tab.fields.length - 1; i >= 0; i--) {
+        if (tab.fields[i].model) {
+          if (tab.fields[i].type === 'date') {
+            day = tab.fields[i].model.getDate().toString();
+            month = tab.fields[i].model.getMonth().toString();
+            if (month.length < 2) {
+              month = "0" + month;
+            }
+            year = tab.fields[i].model.getFullYear().toString();
+            obj[tab.fields[i].label] = year + "-" + month + "-" + day;
+          } else {
+            obj[tab.fields[i].label] = tab.fields[i].model;
           }
-          var year = tab.fields[i].model.getFullYear().toString();
-          obj[tab.fields[i].label] = year + "-" + month + "-" + day;
-          continue;
         }
-
-        obj[tab.fields[i].label] = tab.fields[i].model;
-      };
+      }
 
       return obj;
     };
@@ -43,15 +41,17 @@ angular.module('ingresseEmulatorApp')
       $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields['producerCustomers'].identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields['producerCustomers']);
+      var identifier = $scope.fields.producerCustomers.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.producerCustomers);
+
+      QueryService.setSearchParams('producerCustomers', $scope.fields.producerCustomers.identifier, filters);
 
       ingresseAPI.getProducerCustomerList(identifier, filters, $scope.credentials.token)
         .then(function (response) {
-          $scope.result = response;
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
-          $scope.result = error;
+          EmulatorService.addResponse(error, false);
         })
         .finally(function () {
           $scope.isLoading = false;

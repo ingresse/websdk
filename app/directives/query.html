@@ -1,62 +1,79 @@
-<md-card>
-    <md-card-content>
-        <md-tabs md-border-bottom md-dynamic-height>
-            <md-tab ng-repeat="tab in fields">
-                <md-tab-label>
-                {{tab.label}}
-                </md-tab-label>
-                <md-tab-body>
-                    <form name="queryForm" ng-submit="tab.action()">
-                        <md-input-container ng-if="tab.authentication">
-                            <label>User token</label>
-                            <input type="text" ng-model="credentials.token" required disabled/>
-                        </md-input-container>
+<div>
+    <div layout-sm"column" layout-md="column" layout-gt-md="row">
+        <md-input-container style="width: 400px;">
+            <label>Domain</label>
+            <input type="text" ng-model="domain" ng-blur="setHost(domain)">
+        </md-input-container>
+        <md-input-container style="width: 250px;">
+            <md-select
+                placeholder="method"
+                ng-model="method"
+                ng-change="methodSelected(method)">
+                <md-option value="/event">/event</md-option>
+                <md-option value="/user">/user</md-option>
+                <md-option value="/sale">/sale</md-option>
+                <md-option value="/error">/error</md-option>
+                <md-option value="/dashboard">/dashboard</md-option>
+                <md-option value="/producer">/producer</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+    <md-input-container>
+        <md-select
+            placeholder="method"
+            ng-model="tabSelected">
+            <md-option value="{{key}}" ng-repeat="(key, value) in fields">/{{value.label}}</md-option>
+        </md-select>
+    </md-input-container>
+    <div ng-repeat="tab in fields" ng-show="fields[tabSelected].label === tab.label">
+        <form name="queryForm" ng-submit="tab.action()">
+            <md-input-container ng-if="tab.authentication">
+                <label>User token</label>
+                <input type="text" ng-model="credentials.token" required disabled/>
+            </md-input-container>
 
-                        <md-input-container ng-if="tab.identifier">
-                            <label>{{tab.identifier.label}}</label>
-                            <input type="{{tab.identifier.type}}" ng-model="tab.identifier.model" ng-disabled="tab.identifier.disabled" ng-required="tab.identifier.required"/>
-                        </md-input-container>
+            <md-input-container ng-if="tab.identifier">
+                <label>{{tab.identifier.label}}</label>
+                <input type="{{tab.identifier.type}}" ng-model="tab.identifier.model" ng-disabled="tab.identifier.disabled" ng-required="tab.identifier.required"/>
+            </md-input-container>
 
-                        <md-input-container ng-repeat="input in tab.fields">
-                                <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'">{{input.label}}</label>
+            <md-input-container ng-repeat="input in tab.fields">
+                    <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'">{{input.label}}</label>
 
-                                <input name="{{input.label}}" ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled" ng-required="input.required"/>
+                    <input name="{{input.label}}" ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled" ng-required="input.required"/>
 
-                                <md-checkbox name="{{input.label}}"
-                                    ng-if="input.type === 'checkbox' && input.checkbox.trueValue"
-                                    ng-model="input.model"
-                                    ng-true-value="{{input.checkbox.trueValue}}"
-                                    ng-false-value="{{input.checkbox.falseValue}}">
-                                    {{input.label}}
-                                </md-checkbox>
+                    <md-checkbox name="{{input.label}}"
+                        ng-if="input.type === 'checkbox' && input.checkbox.trueValue"
+                        ng-model="input.model"
+                        ng-true-value="{{input.checkbox.trueValue}}"
+                        ng-false-value="{{input.checkbox.falseValue}}">
+                        {{input.label}}
+                    </md-checkbox>
 
-                                <md-checkbox name="{{input.label}}"
-                                    ng-if="input.type === 'checkbox' && !input.checkbox.trueValue"
-                                    ng-model="input.model">
-                                    {{input.label}}
-                                </md-checkbox>
+                    <md-checkbox name="{{input.label}}"
+                        ng-if="input.type === 'checkbox' && !input.checkbox.trueValue"
+                        ng-model="input.model">
+                        {{input.label}}
+                    </md-checkbox>
 
-                                <md-select
-                                    ng-if="input.type === 'option'"
-                                    placeholder="{{input.label}}"
-                                    ng-model="input.model"
-                                    ng-required="input.required">
-                                    <md-option value=""></md-option>
-                                    <md-option
-                                        ng-repeat="option in input.options"
-                                        value="{{option}}">
-                                        {{option}}
-                                    </md-option>
-                                </md-select>
-                            </span>
-                        </md-input-container>
+                    <md-select
+                        ng-if="input.type === 'option'"
+                        placeholder="{{input.label}}"
+                        ng-model="input.model"
+                        ng-required="input.required">
+                        <md-option value=""></md-option>
+                        <md-option
+                            ng-repeat="option in input.options"
+                            value="{{option}}">
+                            {{option}}
+                        </md-option>
+                    </md-select>
+                </span>
+            </md-input-container>
 
-                        <div class="md-actions" layout="row" layout-align="end center">
-                            <md-button ng-click="tab.action()" ng-disabled="!queryForm.$valid">Send</md-button>
-                        </div>
-                    </form>
-                </md-tab-body>
-            </md-tab>
-        </md-tabs>
-    </md-card-content>
-</md-card>
+            <div class="md-actions" layout="row" layout-align="end center">
+                <md-button ng-disabled="!queryForm.$valid">Send</md-button>
+            </div>
+        </form>
+    </div>
+</div>

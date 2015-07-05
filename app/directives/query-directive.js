@@ -8,16 +8,47 @@ angular.module('ingresseEmulatorApp')
             fields: '=',
             credentials: '='
         },
-        controller: function($scope, $element, $attrs, $transclude) {
+        controller: function($scope, ingresseAPI_Preferences, ipCookie, $location) {
+            $scope.domain = ingresseAPI_Preferences._host;
 
-        },
-        compile: function compile(tElement, tAttrs, transclude) {
-            return function postLink(scope, iElement, iAttrs, controller) {
+            $scope.method = $location.$$path;
 
-            }
-        },
-        link: function postLink(scope, iElement, iAttrs) {
+            $scope.setHost = function (host) {
+              if (!host || host === '') {
+                return;
+              }
 
+              ipCookie('host', host, {expires: 365});
+              ingresseAPI_Preferences.setHost(host);
+              $scope.domain = ingresseAPI_Preferences._host;
+            };
+
+            $scope.loadCookies = function () {
+              var host = ipCookie('host');
+
+              if (host) {
+                $scope.setHost(host);
+              }
+            };
+
+            $scope.methodSelected = function (method) {
+                $location.path(method);
+            };
+
+            $scope.getSearchParams = function () {
+              var params = $location.search();
+
+              if (!params.method) {
+                return;
+              }
+
+              if (params.method) {
+                $scope.tabSelected = params.method;
+              }
+            };
+
+            $scope.loadCookies();
+            $scope.getSearchParams();
         }
     };
 });

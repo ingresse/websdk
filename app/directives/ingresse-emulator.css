@@ -1,5 +1,5 @@
 html, body {
-  background-color: #EAE9E9;
+  background-color: #849CAE;
 }
 .cloak1{
     position: fixed;
@@ -9,6 +9,21 @@ html, body {
     left: 0px;
     z-index: 9;
     background: rgba(0,0,0,0.7);
+}
+
+.result-card.ng-enter,
+.result-card.ng-leave {
+
+}
+
+.result-card.ng-leave.ng-leave-active,
+.result-card.ng-enter {
+    -webkit-animation: fadeOutUp 0.5s;
+}
+
+.result-card.ng-enter.ng-enter-active,
+.result-card.ng-leave {
+    -webkit-animation: fadeInDown 0.5s;
 }
 
 .result {
@@ -23,6 +38,18 @@ html, body {
   box-shadow: 0 0 5px inset;
   color: rgb(59,195,247);
   overflow: hidden;
+}
+
+.result-card {
+  border-top: 10px solid #2196F3;
+}
+
+.result-card.error {
+  border-top: 10px solid #E52020;
+}
+
+.result-card .time {
+  float: right;
 }
 
 .userCard {
@@ -80,6 +107,31 @@ html, body {
   margin-right: 30px;
   border: 1px solid #ABABAB;
   border-radius: 100%;
+}
+
+.user {
+  width: 200px;
+  font-size: 12px;
+}
+
+.user p.name {
+  margin-top: 8px;
+}
+
+.user p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.user img.md-avatar {
+  height: 40px;
+  border-radius: 100%;
+  float: left;
+  margin-right: 10px;
+}
+
+.query {
+  padding: 30px;
 }
 
 

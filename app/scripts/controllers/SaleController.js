@@ -4,51 +4,50 @@ angular.module('ingresseEmulatorApp')
       .when('/sale', {
         templateUrl: 'views/emulator.html',
         controller: 'SaleController'
-      })
+      });
   })
-  .controller('SaleController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $routeParams, $mdSidenav, $mdDialog, $location) {
-    $scope.$on('$viewContentLoaded', function() {
+  .controller('SaleController', function ($scope, ingresseAPI, IngresseAPI_UserService, EmulatorService, QueryService) {
+    $scope.$on('$viewContentLoaded', function () {
       $scope.credentials = IngresseAPI_UserService.credentials;
-      $scope.request = {};
-      $scope.result = {};
-
-      $scope.calls = ingresseAPI_Preferences.httpCalls;
+      QueryService.getSearchParams($scope.fields);
     });
 
     $scope.getFiltersByTab = function (tab) {
       var obj = {};
-      for (var i = tab.fields.length - 1; i >= 0; i--) {
-        if (!tab.fields[i].model) {
-          continue;
-        }
+      var i, day, month, year;
 
-        if (tab.fields[i].type === 'date') {
-          obj[tab.fields[i].label] = tab.fields[i].model.toISOString();
-          continue;
+      for (i = tab.fields.length - 1; i >= 0; i--) {
+        if (tab.fields[i].model) {
+          if (tab.fields[i].type === 'date') {
+            day = tab.fields[i].model.getDate().toString();
+            month = tab.fields[i].model.getMonth().toString();
+            if (month.length < 2) {
+              month = "0" + month;
+            }
+            year = tab.fields[i].model.getFullYear().toString();
+            obj[tab.fields[i].label] = year + "-" + month + "-" + day;
+          } else {
+            obj[tab.fields[i].label] = tab.fields[i].model;
+          }
         }
-
-        obj[tab.fields[i].label] = tab.fields[i].model;
-      };
+      }
 
       return obj;
     };
 
-    $scope.openLeftMenu = function() {
-      $mdSidenav('left').toggle();
-    };
-
     $scope.getTransaction = function () {
-      $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields['transaction'].identifier.model;
+      var identifier = $scope.fields.transaction.identifier.model;
+
+      QueryService.setSearchParams('transaction', $scope.fields.transaction.identifier);
 
       ingresseAPI.getTransactionData(identifier, $scope.credentials.token)
         .then(function (response) {
-          $scope.result = response;
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
-          $scope.result = error;
+          EmulatorService.addResponse(error, false);
         })
         .finally(function () {
           $scope.isLoading = false;
@@ -56,17 +55,18 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.getSales = function () {
-      $scope.result = {};
       $scope.isLoading = true;
 
-      var filters = $scope.getFiltersByTab($scope.fields['sales']);
+      var filters = $scope.getFiltersByTab($scope.fields.sales);
+
+      QueryService.setSearchParams('sales', null, filters);
 
       ingresseAPI.getSales(filters, $scope.credentials.token)
         .then(function (response) {
-          $scope.result = response;
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
-          $scope.result = error;
+          EmulatorService.addResponse(error, false);
         })
         .finally(function () {
           $scope.isLoading = false;
@@ -77,15 +77,17 @@ angular.module('ingresseEmulatorApp')
       $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields['refund'].identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields['refund']);
+      var identifier = $scope.fields.refund.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.refund);
+
+      QueryService.setSearchParams('refund', $scope.fields.refund.identifier, filters);
 
       ingresseAPI.refund(identifier, filters, $scope.credentials.token)
         .then(function (response) {
-          $scope.result = response;
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
-          $scope.result = error;
+          EmulatorService.addResponse(error, false);
         })
         .finally(function () {
           $scope.isLoading = false;
@@ -175,7 +177,7 @@ angular.module('ingresseEmulatorApp')
             label: 'status',
             model: '',
             type: 'option',
-            options: ['approved','declined','pending'],
+            options: ['approved', 'declined', 'pending'],
             disabled: false
           },
           {
@@ -194,7 +196,7 @@ angular.module('ingresseEmulatorApp')
             label: 'paymentoption',
             model: '',
             type: 'option',
-            options: ['tdb','bankBillet','bankCheck','creditCard','debitCard','free','money','other','payPal','wireTransfer'],
+            options: ['tdb', 'bankBillet', 'bankCheck', 'creditCard', 'debitCard', 'free', 'money', 'other', 'payPal', 'wireTransfer'],
             disabled: false
           }
         ]

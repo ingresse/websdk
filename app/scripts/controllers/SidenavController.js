@@ -12,14 +12,6 @@ angular.module('ingresseEmulatorApp')
       }
     };
 
-    $scope.login = function () {
-      IngresseAPI_UserService.login();
-    };
-
-    $scope.logout = function () {
-      IngresseAPI_UserService.logout();
-    };
-
     $scope.showError = function(text) {
       alert = $mdDialog.alert({
         title: 'Erro',
@@ -38,16 +30,6 @@ angular.module('ingresseEmulatorApp')
     $scope.openLeftMenu = function() {
       $mdSidenav('left').toggle();
     };
-
-    $scope.$on('userSessionSaved', function () {
-      $scope.credentials = IngresseAPI_UserService.credentials;
-
-      ingresseAPI.getUser($scope.credentials.userId, {fields:'id,name,email,type'}, $scope.credentials.token)
-      .then(function (response) {
-        $scope.user = response;
-        $scope.user.photo = ingresseAPI.getUserPhotoUrl($scope.credentials.userId);
-      });
-    });
 
     $scope.updatePrivateKey = function (privateKey) {
       ipCookie('privatekey', privateKey, {expires: 365});
@@ -71,10 +53,6 @@ angular.module('ingresseEmulatorApp')
         ingresseAPI_Preferences.setPrivateKey(privateKey);
       }
     };
-
-    $scope.$on('userHasLoggedOut', function () {
-      $scope.user = null;
-    });
 
     $timeout(function () {
         //DOM has finished rendering
