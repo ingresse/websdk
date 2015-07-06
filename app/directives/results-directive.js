@@ -1,6 +1,6 @@
 angular.module('ingresseEmulatorApp').directive('results', function () {
     return {
-        templateUrl: '/directives/results.html',
+        templateUrl: 'directives/results.html',
         restrict: 'E',
         scope: {},
         controller: function($scope, EmulatorService) {
