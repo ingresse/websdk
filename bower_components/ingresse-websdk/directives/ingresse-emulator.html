@@ -19,30 +19,31 @@
             <form class="venus">
                 <label>Método</label>
                 <select ng-model='selectedMethod'>
-                    <option value="eventList">Buscar Eventos</option>
-                    <option value="event">Consultar Evento</option>
-                    <option value="eventCrew">Consultar Vendedores do Evento</option>
-                    <option value="eventTickets">Consultar Ingressos do Evento</option>
-                    <option value="user">Consultar Usuário</option>
-                    <option value="userEvents">Consultar Eventos do Usuário</option>
-                    <option value="userTickets">Consultar Ingressos do usuário</option>
-                    <option value="updateTicketStatus">Atualizar status de ingressos</option>
-                    <option value="guestList">Consultar lista de convidados</option>
-                    <option value="sales">Consultar Vendas</option>
-                    <option value="salesReport">Relatório de Vendas</option>
-                    <option value="salesTimeline">Reltório de Vendas por dia</option>
-                    <option value="checkinReport">Relatório de Checkin</option>
-                    <option value="visitsReport">Relatório de Visitas</option>
-                    <option value="producerCostumers">Relatório de Clientes do Produtor</option>
-                    <option value="producerSalesGroupReport">Relatório do Grupo de Vendas</option>
-                    <option value="transactionData">Consultar Transação</option>
-                    <option value="transactionReport">Relatório de Transações</option>
-                    <option value="updateUser">Atualizar Usuário</option>
-                    <option value="createTransaction">Criar Transação</option>
-                    <option value="payTransaction">Pagar Transação</option>
-                    <option value="refund">Estornar Transação</option>
-                    <option value="freepass">Enviar Cortesias</option>
-                    <option value="errorList">Erros</option>
+                    <option value="eventList">event/</option>
+                    <option value="event">event/id</option>
+                    <option value="eventCrew">event/id/crew</option>
+                    <option value="eventTickets">event/id/tickets</option>
+                    <option value="guestList">event/id/guestlist</option>
+                    <option value="checkinReport">event/id/guestlist?method=report</option>
+                    <option value="updateTicketStatus">event/id/guestlist?method=updatestatus</option>
+                    <option value="user">user/id</option>
+                    <option value="updateUser">user/id?method=update</option>
+                    <option value="userEvents">user/id/events</option>
+                    <option value="userTickets">user/id/tickets</option>
+                    <option value="sales">sale/</option>
+                    <option value="transactionData">sale/id</option>
+                    <option value="refund">sale/id?method=refund</option>
+                    <option value="salesReport">dashboard/id</option>
+                    <option value="salesTimeline">dashboard/id/timeline</option>
+                    <option value="visitsReport">dashboard/id/visitsReport</option>
+                    <option value="transactionReport">dashboard/id/transactionReport</option>
+                    <option value="producerCostumers">producer/id/customer</option>
+                    <option value="producerSalesForCostumer">producer/id/costumer/id/sale</option>
+                    <option value="producerSalesGroupReport">producer/id/salesgroupReport</option>
+                    <option value="createTransaction">shop/ (reservation)</option>
+                    <option value="payTransaction">shop/ (payment)</option>
+                    <option value="freepass">freepass/</option>
+                    <option value="errorList">error/</option>
                 </select>
             </form>
 
@@ -668,6 +669,22 @@
                 <input type="text" ng-model="producerSalesGroupReportForm.filters.session"/>
 
                 <button class="venus button" type="submit" ng-disabled="!producerSalesGroupReportForm.$valid">Send</button>
+            </form>
+
+            <form  class="venus" novalidate name="producerSalesForCostumerForm" ng-show="selectedMethod === 'producerSalesForCostumer'" ng-submit="getProducerSalesForCostumer(producerSalesForCostumerForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" required disabled/>
+
+                <label>Producer ID</label>
+                <input type="text" ng-model="producerSalesForCostumerForm.identifier.producerId" required/>
+
+                <label>Costumer ID</label>
+                <input type="text" ng-model="producerSalesForCostumerForm.identifier.costumerId" required/>
+
+                <label>Page</label>
+                <input type="number" ng-model="producerSalesForCostumerForm.filters.page"/>
+
+                <button class="venus button" type="submit" ng-disabled="!producerSalesForCostumerForm.$valid">Send</button>
             </form>
         </div>
     </div>
