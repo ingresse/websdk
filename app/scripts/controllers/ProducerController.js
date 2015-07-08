@@ -58,6 +58,31 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getProducerSalesForCostumer = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = {
+        producerId: $scope.fields.producerSalesForCustomers.identifier.model,
+        costumerId: $scope.fields.producerSalesForCustomers.fields[0].model
+      };
+
+      var filters = $scope.getFiltersByTab($scope.fields.producerSalesForCustomers);
+
+      QueryService.setSearchParams('producerSalesForCustomers', $scope.fields.producerSalesForCustomers.identifier, filters);
+
+      ingresseAPI.getProducerSalesForCostumer(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       producerCustomers: {
         label: 'Costumer',
@@ -97,6 +122,33 @@ angular.module('ingresseEmulatorApp')
           },
           {
             label: 'classification',
+            model: '',
+            type: 'number',
+            disabled: false
+          }
+        ]
+      },
+      producerSalesForCustomers: {
+        label: 'Producer Sales for Costumer',
+        action: $scope.getProducerSalesForCostumer,
+        authentication: true,
+        identifier: {
+          label: 'producerId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'costumerId',
+            model: '',
+            type: 'number',
+            disabled: false,
+            required: true
+          },
+          {
+            label: 'page',
             model: '',
             type: 'number',
             disabled: false

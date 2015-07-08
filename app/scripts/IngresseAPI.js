@@ -456,6 +456,31 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return this._get('producer', identifier, filters);
       };
 
+      API.getProducerSalesForCostumer = function (identifier, filters, token) {
+        var deferred = $q.defer();
+        var url;
+
+        url = ingresseAPI_Preferences.getHost() + '/producer/' + identifier.producerId + '/customer/' + identifier.costumerId + '/sale' +  this.generateAuthKey() + '&usertoken=' + token;
+
+        if (filters) {
+          angular.forEach(filters, function (value, key) {
+            if (value) {
+              url += '&' + key + '=' + value;
+            }
+          });
+        }
+
+        $http.get(url)
+          .success(function (response) {
+            deferred.resolve(response.responseData);
+          })
+          .catch(function (error) {
+            deferred.reject(error);
+          });
+
+        return deferred.promise;
+      };
+
       return API;
     }
   };
