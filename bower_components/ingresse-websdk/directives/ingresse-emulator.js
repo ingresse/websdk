@@ -360,6 +360,22 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           });
       };
 
+      $scope.getProducerCustomerProfile = function (form) {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Carregando perfil dos clientes...');
+
+        ingresseAPI.getProducerCustomerProfile(form.producerId, $scope.user.token)
+          .then(function (response) {
+            $scope.result = response;
+          })
+          .catch(function (error) {
+            VenusActivityIndicatorService.error(error.message);
+          })
+          .finally(function () {
+            VenusActivityIndicatorService.stopActivity('Carregando perfil dos clientes...');
+          });
+      };
+
       $scope.getProducerCostumers = function (form) {
         $scope.resetResponses();
         VenusActivityIndicatorService.startActivity('Carregando clientes...');
@@ -372,6 +388,22 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         })
         .finally(function () {
           VenusActivityIndicatorService.stopActivity('Carregando clientes...');
+        });
+      };
+
+      $scope.getProducerSalesForCostumer = function (form) {
+        $scope.resetResponses();
+        VenusActivityIndicatorService.startActivity('Carregando Vendas para o cliente...');
+
+        ingresseAPI.getProducerSalesForCostumer(form.identifier, $scope.user.token, form.filter)
+        .then(function (response) {
+          $scope.result = response;
+        })
+        .catch(function (error) {
+          VenusActivityIndicatorService.error(error.message);
+        })
+        .finally(function () {
+          VenusActivityIndicatorService.stopActivity('Carregando Vendas para o cliente...');
         });
       };
 
