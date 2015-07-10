@@ -83,6 +83,26 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getProducerCustomerProfile = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.producerCustomerProfile.identifier.model;
+
+      QueryService.setSearchParams('producerCustomerProfile', $scope.fields.producerCustomerProfile.identifier);
+
+      ingresseAPI.getProducerCustomerProfile(identifier, null, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       producerCustomers: {
         label: 'Costumer',
@@ -154,6 +174,19 @@ angular.module('ingresseEmulatorApp')
             disabled: false
           }
         ]
+      },
+      producerCustomerProfile: {
+        label: 'CustomerProfile',
+        action: $scope.getProducerCustomerProfile,
+        authentication: true,
+        identifier: {
+          label: 'producerId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: []
       }
     };
   });

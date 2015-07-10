@@ -2,7 +2,15 @@
     <div layout-sm"column" layout-md="column" layout-gt-md="row">
         <md-input-container style="width: 400px;">
             <label>Domain</label>
-            <input type="text" ng-model="domain" ng-blur="setHost(domain)">
+            <md-select
+                placeholder="domain"
+                ng-model="domain"
+                ng-change="setHost(domain)">
+                <md-option value="https://api.ingresse.com">https://api.ingresse.com</md-option>
+                <md-option value="https://apihml.ingresse.com">https://apihml.ingresse.com</md-option>
+                <md-option value="https://apistg.ingresse.com">https://apistg.ingresse.com</md-option>
+                <md-option value="https://private-3dc774-ingresseapi.apiary-mock.com">https://private-3dc774-ingresseapi.apiary-mock.com</md-option>
+            </md-select>
         </md-input-container>
         <md-input-container style="width: 250px;">
             <md-select

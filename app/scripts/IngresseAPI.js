@@ -481,6 +481,16 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return deferred.promise;
       };
 
+      API.getProducerCustomerProfile = function (producerId, token) {
+        var identifier = producerId + '/customerProfile';
+
+        var filters = {
+          usertoken: token
+        };
+
+        return this._get('producer', identifier);
+      };
+
       return API;
     }
   };
