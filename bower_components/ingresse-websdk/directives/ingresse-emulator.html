@@ -38,6 +38,7 @@
                     <option value="visitsReport">dashboard/id/visitsReport</option>
                     <option value="transactionReport">dashboard/id/transactionReport</option>
                     <option value="producerCostumers">producer/id/customer</option>
+                    <option value="producerCustomerProfile">producer/id/customerProfile</option>
                     <option value="producerSalesForCostumer">producer/id/costumer/id/sale</option>
                     <option value="producerSalesGroupReport">producer/id/salesgroupReport</option>
                     <option value="createTransaction">shop/ (reservation)</option>
@@ -685,6 +686,16 @@
                 <input type="number" ng-model="producerSalesForCostumerForm.filters.page"/>
 
                 <button class="venus button" type="submit" ng-disabled="!producerSalesForCostumerForm.$valid">Send</button>
+            </form>
+
+            <form  class="venus" novalidate name="producerCustomerProfileForm" ng-show="selectedMethod === 'producerCustomerProfile'" ng-submit="getProducerCustomerProfile(producerCustomerProfileForm)">
+                <label>User token</label>
+                <input type="text" ng-model="user.token" required disabled/>
+
+                <label>Producer ID</label>
+                <input type="text" ng-model="producerCustomerProfileForm.producerId" required/>
+
+                <button class="venus button" type="submit" ng-disabled="!producerCustomerProfileForm.$valid">Send</button>
             </form>
         </div>
     </div>
