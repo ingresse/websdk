@@ -913,10 +913,18 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
-        getProducerCostumers: function (producerId, token, filters) {
+        getProducerCostumers: function (producerId, token, filters, page, pageSize) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/producer/' + producerId + '/customer' + this.generateAuthKey() + '&usertoken=' + token;
+
+          if (page) {
+            url += '&page=' + page;
+          }
+
+          if (pageSize) {
+            url += '&pageSize=' + pageSize;
+          }
 
           if (filters) {
             if (filters.scorefrom) {
@@ -943,6 +951,8 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               url += '&term=' + filters.term;
             }
           }
+
+
 
           $http.get(url)
             .success(function (response) {
