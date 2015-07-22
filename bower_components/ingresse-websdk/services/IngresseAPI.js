@@ -913,6 +913,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return deferred.promise;
         },
 
+        getProducerCostumersCSV: function(producerId, token) {
+          return ingresseAPI_Preferences.getHost() + '/producer/' + producerId + '/customerExport' + this.generateAuthKey() + '&usertoken=' + token;
+        },
+
         getProducerCostumers: function (producerId, token, filters, page, pageSize) {
           var deferred = $q.defer();
 
