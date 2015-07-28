@@ -491,6 +491,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return this._get('producer', identifier);
       };
 
+      API.getFeaturedEvents = function(filters) {
+        return this._get('featured', null, filters);
+      };
+
       return API;
     }
   };
