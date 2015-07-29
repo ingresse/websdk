@@ -286,6 +286,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return this._get('sale', transactionId, filters);
       };
 
+      API.getRefundReasons = function () {
+        return this._get('refundReasons');
+      };
+
       API.getUserPhotoUrl = function (userid) {
         return ingresseAPI_Preferences.getHost() + '/user/' + userid + '/picture/' + this.generateAuthKey();
       };
