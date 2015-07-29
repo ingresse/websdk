@@ -146,6 +146,19 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return this._get('event', identifier, filters);
       };
 
+      // Legacy API code, different interface.
+      API.getTicketQRCodeUrl = function (ticketCode, usertoken) {
+        var url;
+
+        url = ingresseAPI_Preferences.getHost();
+        url += '/ticket/' + ticketCode + '/qrcode';
+
+        url += this.generateAuthKey();
+        url += '&usertoken=' + usertoken;
+
+        return url;
+      };
+
       API.getEventCrew = function (eventId, filters, usertoken) {
         var identifier = eventId + '/crew';
 
