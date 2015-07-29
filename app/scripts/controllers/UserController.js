@@ -170,6 +170,26 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.validateUserField = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var filters = $scope.getFiltersByTab($scope.fields.validateUserField);
+
+      QueryService.setSearchParams('validateUserField', null, filters);
+
+      ingresseAPI.validateUserField(filters)
+        .then(function (response) {
+          EmulatorService.addResponse(response, response.status);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       user: {
         label: 'User',
@@ -198,6 +218,32 @@ angular.module('ingresseEmulatorApp')
         fields: [
           {
             label: 'term',
+            model: '',
+            type: 'text',
+            disabled: false
+          }
+        ]
+      },
+      validateUserField: {
+        label: 'Validate Field',
+        action: $scope.validateUserField,
+        authentication: false,
+        fields: [
+          {
+            label: 'field-name',
+            model: '',
+            type: 'option',
+            options: ['name', 'email', 'username', 'cellphone', 'password', 'emailConfirm'],
+            disabled: false
+          },
+          {
+            label: 'field-value',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'field2-value',
             model: '',
             type: 'text',
             disabled: false

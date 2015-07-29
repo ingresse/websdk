@@ -184,6 +184,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return this._get('event', identifier, filters);
       };
 
+      API.validateUserField = function (field) {
+        return this._get('user/validate', null, field);
+      };
+
       API.searchUser = function (filters) {
         return this._get('user', null, filters);
       };
