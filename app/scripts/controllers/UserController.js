@@ -221,6 +221,18 @@ angular.module('ingresseEmulatorApp')
             model: '',
             type: 'text',
             disabled: false
+          },
+          {
+            label: 'page',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'pageSize',
+            model: '',
+            type: 'number',
+            disabled: false
           }
         ]
       },
