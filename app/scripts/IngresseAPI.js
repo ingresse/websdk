@@ -220,6 +220,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return this._get('sale', null, filters);
       };
 
+      API.createUser = function (userObj) {
+          return this._post('user', null, {method: 'create'}, userObj);
+      };
+
       API.updateUserInfo = function (userid, userObj, token) {
         if (token) {
           var filters = {

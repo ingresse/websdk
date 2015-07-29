@@ -106,7 +106,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('userPhoto', $scope.fields.userPhoto.identifier, null);
 
-      $scope.result = {url: ingresseAPI.getUserPhotoUrl(identifier)};
+      EmulatorService.addResponse({url: ingresseAPI.getUserPhotoUrl(identifier)}, true);
     };
 
     $scope.updateUserInfo = function () {
@@ -120,11 +120,30 @@ angular.module('ingresseEmulatorApp')
 
       ingresseAPI.updateUserInfo(identifier, obj, $scope.credentials.token)
         .then(function (response) {
-          $scope.request.userObj = angular.copy(response);
-          $scope.result = response;
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
-          $scope.result = error;
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
+    $scope.createUser = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var filters = $scope.getFiltersByTab($scope.fields.createUser);
+
+      QueryService.setSearchParams('createUser', null, filters);
+
+      ingresseAPI.createUser(filters)
+        .then(function (response) {
+          EmulatorService.addResponse(response, response.status);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
         })
         .finally(function () {
           $scope.isLoading = false;
@@ -341,6 +360,116 @@ angular.module('ingresseEmulatorApp')
             label: 'phone',
             model: '',
             type: 'phone',
+            disabled: false
+          }
+        ]
+      },
+      createUser: {
+        label: 'Create User',
+        action: $scope.createUser,
+        authentication: false,
+        identifier: null,
+        fields: [
+          {
+            label: 'name',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'lastname',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'email',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'emailConfirm',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'password',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'passCheck',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'acceptedTerms',
+            model: '',
+            type: 'checkbox',
+            disabled: false
+          },
+          {
+            label: 'username',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'fbUserId',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'cellPhone',
+            model: '',
+            type: 'phone',
+            disabled: false
+          },
+          {
+            label: 'street',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'number',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'complement',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'district',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'city',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'state',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'zip',
+            model: '',
+            type: 'text',
             disabled: false
           }
         ]

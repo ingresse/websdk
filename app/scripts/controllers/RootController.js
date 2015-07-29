@@ -6,13 +6,13 @@ angular.module('ingresseEmulatorApp')
         controller: 'RootController'
       });
   })
-  .controller('RootController', function ($scope, ingresseAPI, IngresseAPI_UserService, $routeParams, EmulatorService, QueryService) {
+  .controller('RootController', function ($scope, $rootScope, ingresseAPI, IngresseAPI_UserService, $routeParams, EmulatorService, QueryService) {
     $scope.request = {};
 
     $scope.$on('$viewContentLoaded', function () {
       $scope.credentials = IngresseAPI_UserService.credentials;
       QueryService.getSearchParams($scope.fields);
-      $scope.tabSelected = $scope.fields.eventCategory;
+      QueryService.setSelectedTab('eventCategory');
       $scope.isMethodSelectionHidden = true;
     });
 

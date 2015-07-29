@@ -1,5 +1,8 @@
 angular.module('ingresseEmulatorApp').service('QueryService', function ($location, $rootScope) {
   return {
+    setSelectedTab: function (tab) {
+      this.selectedTab = tab;
+    },
     setSearchParams: function (method, identifier, filters) {
       var key;
       var search = $location.search();

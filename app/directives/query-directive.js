@@ -9,32 +9,17 @@ angular.module('ingresseEmulatorApp')
             credentials: '=',
             isMethodSelectionHidden: '='
         },
-        controller: function($scope, ingresseAPI_Preferences, ipCookie, $location) {
+        controller: function($scope, ingresseAPI_Preferences, ipCookie, $location, QueryService) {
             $scope.domain = ingresseAPI_Preferences._host;
-
             $scope.method = $location.$$path;
+            $scope.selectedTabKey = QueryService.selectedTab;
 
-            $scope.$watch('fields', function(){
-              if (!$scope.fields) {
+            $scope.$watch('selectedTabKey', function () {
+              if (!$scope.selectedTabKey) {
                 return;
               }
 
-              var quantityOfMethods = 0;
-              var firstMethod = '';
-
-              for (key in $scope.fields) {
-                if ($scope.fields.hasOwnProperty(key)) {
-                  quantityOfMethods ++;
-
-                  if (!firstMethod) {
-                    firstMethod = key;
-                  }
-                }
-              }
-
-              if (firstMethod) {
-                $scope.tabSelected = firstMethod;
-              }
+              $scope.tabSelected = $scope.selectedTabKey;
             });
 
             $scope.setHost = function (host) {

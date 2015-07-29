@@ -11,6 +11,7 @@ angular.module('ingresseEmulatorApp')
       $scope.credentials = IngresseAPI_UserService.credentials;
       QueryService.getSearchParams($scope.fields);
       $scope.isMethodSelectionHidden = true;
+      QueryService.setSelectedTab('refundReasons');
     });
 
     $scope.getRefundReasons = function () {
