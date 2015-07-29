@@ -24,14 +24,9 @@ var app = angular
   .config(function ($routeProvider, ingresseAPI_PreferencesProvider, $mdThemingProvider) {
     ingresseAPI_PreferencesProvider.setTemplateDirectory('directives/');
 
-    $routeProvider
-      .otherwise({
-        redirectTo: '/event'
-      });
-
-      $mdThemingProvider.theme('default')
-        .primaryPalette('blue')
-        .accentPalette('orange');
+    $mdThemingProvider.theme('default')
+      .primaryPalette('blue')
+      .accentPalette('orange');
   });
 
 

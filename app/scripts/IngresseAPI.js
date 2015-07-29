@@ -85,7 +85,11 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         var deferred = $q.defer();
         var url;
 
-        url = ingresseAPI_Preferences.getHost() + '/' + method;
+        url = ingresseAPI_Preferences.getHost();
+
+        if (method) {
+          url += '/' + method;
+        }
 
         if (identifier) {
           url += '/' + identifier;
@@ -168,6 +172,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
 
       API.getEventList = function (filters) {
         return this._get('event',null, filters);
+      };
+
+      API.getEventCategory = function (category) {
+        return this._get(null, category);
       };
 
       API.getEventTicketTypes = function (eventId, filters, usertoken) {

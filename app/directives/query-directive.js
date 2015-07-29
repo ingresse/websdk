@@ -6,12 +6,36 @@ angular.module('ingresseEmulatorApp')
         transclude: true,
         scope: {
             fields: '=',
-            credentials: '='
+            credentials: '=',
+            isMethodSelectionHidden: '='
         },
         controller: function($scope, ingresseAPI_Preferences, ipCookie, $location) {
             $scope.domain = ingresseAPI_Preferences._host;
 
             $scope.method = $location.$$path;
+
+            $scope.$watch('fields', function(){
+              if (!$scope.fields) {
+                return;
+              }
+
+              var quantityOfMethods = 0;
+              var firstMethod = '';
+
+              for (key in $scope.fields) {
+                if ($scope.fields.hasOwnProperty(key)) {
+                  quantityOfMethods ++;
+
+                  if (!firstMethod) {
+                    firstMethod = key;
+                  }
+                }
+              }
+
+              if (firstMethod) {
+                $scope.tabSelected = firstMethod;
+              }
+            });
 
             $scope.setHost = function (host) {
               if (!host || host === '') {

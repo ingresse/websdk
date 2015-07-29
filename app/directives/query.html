@@ -16,6 +16,7 @@
                 placeholder="method"
                 ng-model="method"
                 ng-change="methodSelected(method)">
+                <md-option value="/">/</md-option>
                 <md-option value="/event">/event</md-option>
                 <md-option value="/user">/user</md-option>
                 <md-option value="/sale">/sale</md-option>
@@ -26,7 +27,7 @@
             </md-select>
         </md-input-container>
     </div>
-    <md-input-container>
+    <md-input-container ng-hide="isMethodSelectionHidden">
         <md-select
             placeholder="method"
             ng-model="tabSelected">
