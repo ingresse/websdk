@@ -532,6 +532,15 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return this._get('featured', null, filters);
       };
 
+      API.ticketBoothSell = function (postObject, token) {
+        filters = {
+          method: 'sell',
+          usertoken: token
+        }
+
+        return this._post('ticketbooth', null, filters, postObject);
+      };
+
       return API;
     }
   };

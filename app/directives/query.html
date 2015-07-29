@@ -21,6 +21,7 @@
                 <md-option value="/ticket">/ticket</md-option>
                 <md-option value="/user">/user</md-option>
                 <md-option value="/sale">/sale</md-option>
+                <md-option value="/ticketbooth">/ticketbooth</md-option>
                 <md-option value="/error">/error</md-option>
                 <md-option value="/dashboard">/dashboard</md-option>
                 <md-option value="/producer">/producer</md-option>
@@ -49,7 +50,7 @@
             </md-input-container>
 
             <md-input-container ng-repeat="input in tab.fields">
-                    <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'">{{input.label}}</label>
+                    <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone' || input.type === 'object'">{{input.label}}</label>
 
                     <input name="{{input.label}}" ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled" ng-required="input.required"/>
 
@@ -79,6 +80,8 @@
                             {{option}}
                         </md-option>
                     </md-select>
+
+                    <json-explorer ng-if="input.type === 'object'" class="result" json-data="{{input.model}}" collapsed="false"></json-explorer>
                 </span>
             </md-input-container>
 
