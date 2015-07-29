@@ -184,6 +184,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return this._get('event', identifier, filters);
       };
 
+      API.searchUser = function (filters) {
+        return this._get('user', null, filters);
+      };
+
       API.getUser = function (userid, filters, token) {
         if (token) {
           filters.usertoken = token;

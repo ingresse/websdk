@@ -150,6 +150,26 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.searchUser = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var filters = $scope.getFiltersByTab($scope.fields.searchUser);
+
+      QueryService.setSearchParams('searchUser', null, filters);
+
+      ingresseAPI.searchUser(filters)
+        .then(function (response) {
+          EmulatorService.addResponse(response, response.status);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       user: {
         label: 'User',
@@ -165,6 +185,19 @@ angular.module('ingresseEmulatorApp')
         fields: [
           {
             label: 'fields',
+            model: '',
+            type: 'text',
+            disabled: false
+          }
+        ]
+      },
+      searchUser: {
+        label: 'Search User',
+        action: $scope.searchUser,
+        authentication: false,
+        fields: [
+          {
+            label: 'term',
             model: '',
             type: 'text',
             disabled: false
