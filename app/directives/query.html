@@ -27,6 +27,8 @@
                 <md-option value="/producer">/producer</md-option>
                 <md-option value="/featured">/featured</md-option>
                 <md-option value="/refundReasons">/refundReasons</md-option>
+                <md-option value="/home">/home</md-option>
+                <md-option value="/freepass">/freepass</md-option>
             </md-select>
         </md-input-container>
     </div>
@@ -49,40 +51,76 @@
                 <input type="{{tab.identifier.type}}" ng-model="tab.identifier.model" ng-disabled="tab.identifier.disabled" ng-required="tab.identifier.required"/>
             </md-input-container>
 
+            <label ng-if="tab.fields.length > 0">GET PARAMS</label>
             <md-input-container ng-repeat="input in tab.fields">
-                    <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone' || input.type === 'object'">{{input.label}}</label>
+                <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone' || input.type === 'object'">{{input.label}}</label>
 
-                    <input name="{{input.label}}" ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled" ng-required="input.required"/>
+                <input name="{{input.label}}" ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled" ng-required="input.required"/>
 
-                    <md-checkbox name="{{input.label}}"
-                        ng-if="input.type === 'checkbox' && input.checkbox.trueValue"
-                        ng-model="input.model"
-                        ng-true-value="{{input.checkbox.trueValue}}"
-                        ng-false-value="{{input.checkbox.falseValue}}">
-                        {{input.label}}
-                    </md-checkbox>
+                <md-checkbox name="{{input.label}}"
+                    ng-if="input.type === 'checkbox' && input.checkbox.trueValue"
+                    ng-model="input.model"
+                    ng-true-value="{{input.checkbox.trueValue}}"
+                    ng-false-value="{{input.checkbox.falseValue}}">
+                    {{input.label}}
+                </md-checkbox>
 
-                    <md-checkbox name="{{input.label}}"
-                        ng-if="input.type === 'checkbox' && !input.checkbox.trueValue"
-                        ng-model="input.model">
-                        {{input.label}}
-                    </md-checkbox>
+                <md-checkbox name="{{input.label}}"
+                    ng-if="input.type === 'checkbox' && !input.checkbox.trueValue"
+                    ng-model="input.model">
+                    {{input.label}}
+                </md-checkbox>
 
-                    <md-select
-                        ng-if="input.type === 'option'"
-                        placeholder="{{input.label}}"
-                        ng-model="input.model"
-                        ng-required="input.required">
-                        <md-option value=""></md-option>
-                        <md-option
-                            ng-repeat="option in input.options"
-                            value="{{option}}">
-                            {{option}}
-                        </md-option>
-                    </md-select>
+                <md-select
+                    ng-if="input.type === 'option'"
+                    placeholder="{{input.label}}"
+                    ng-model="input.model"
+                    ng-required="input.required">
+                    <md-option value=""></md-option>
+                    <md-option
+                        ng-repeat="option in input.options"
+                        value="{{option}}">
+                        {{option}}
+                    </md-option>
+                </md-select>
 
-                    <json-explorer ng-if="input.type === 'object'" class="result" json-data="{{input.model}}" collapsed="false"></json-explorer>
-                </span>
+                <json-explorer ng-if="input.type === 'object'" class="result" json-data="{{input.model}}" collapsed="false"></json-explorer>
+            </md-input-container>
+
+            <label ng-if="tab.postParams.length > 0">POST PARAMS</label>
+            <md-input-container ng-repeat="input in tab.postParams">
+                <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone' || input.type === 'object'">{{input.label}}</label>
+
+                <input name="{{input.label}}" ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled" ng-required="input.required"/>
+
+                <md-checkbox name="{{input.label}}"
+                    ng-if="input.type === 'checkbox' && input.checkbox.trueValue"
+                    ng-model="input.model"
+                    ng-true-value="{{input.checkbox.trueValue}}"
+                    ng-false-value="{{input.checkbox.falseValue}}">
+                    {{input.label}}
+                </md-checkbox>
+
+                <md-checkbox name="{{input.label}}"
+                    ng-if="input.type === 'checkbox' && !input.checkbox.trueValue"
+                    ng-model="input.model">
+                    {{input.label}}
+                </md-checkbox>
+
+                <md-select
+                    ng-if="input.type === 'option'"
+                    placeholder="{{input.label}}"
+                    ng-model="input.model"
+                    ng-required="input.required">
+                    <md-option value=""></md-option>
+                    <md-option
+                        ng-repeat="option in input.options"
+                        value="{{option}}">
+                        {{option}}
+                    </md-option>
+                </md-select>
+
+                <json-explorer ng-if="input.type === 'object'" class="result" json-data="{{input.model}}" collapsed="false"></json-explorer>
             </md-input-container>
 
             <div class="md-actions" layout="row" layout-align="end center">

@@ -46,7 +46,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('producerCustomers', $scope.fields.producerCustomers.identifier, filters);
 
-      ingresseAPI.getProducerCustomerList(identifier, filters, $scope.credentials.token)
+      ingresseAPI.producer.getCustomerList(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -71,7 +71,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('producerSalesForCustomers', $scope.fields.producerSalesForCustomers.identifier, filters);
 
-      ingresseAPI.getProducerSalesForCostumer(identifier, filters, $scope.credentials.token)
+      ingresseAPI.producer.getSalesForCostumer(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -91,7 +91,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('producerCustomerProfile', $scope.fields.producerCustomerProfile.identifier);
 
-      ingresseAPI.getProducerCustomerProfile(identifier, null, $scope.credentials.token)
+      ingresseAPI.producer.getCustomerProfile(identifier, null, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })

@@ -1,16 +1,14 @@
 angular.module('ingresseEmulatorApp')
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/dashboard', {
+      .when('/home', {
         templateUrl: 'views/emulator.html',
-        controller: 'DashboardController'
+        controller: 'HomeController'
       });
   })
-  .controller('DashboardController', function ($scope, ingresseAPI, IngresseAPI_UserService, EmulatorService, QueryService) {
-    $scope.request = {};
-
+  .controller('HomeController', function ($scope, ingresseAPI, EmulatorService, QueryService) {
     $scope.$on('$viewContentLoaded', function () {
-      $scope.credentials = IngresseAPI_UserService.credentials;
+      $scope.request = {};
       QueryService.getSearchParams($scope.fields);
     });
 
@@ -37,16 +35,27 @@ angular.module('ingresseEmulatorApp')
       return obj;
     };
 
-    $scope.getVisitsReport = function () {
+    $scope.getSections = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields.visitsReport.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.visitsReport);
+      ingresseAPI.home.getSections()
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
 
-      QueryService.setSearchParams('visitsReport', $scope.fields.visitsReport.identifier, filters);
+     $scope.getCover = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
 
-      ingresseAPI.dashboard.getVisitsReport(identifier, filters, $scope.credentials.token)
+      ingresseAPI.home.getCover()
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -59,31 +68,15 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.fields = {
-      visitsReport: {
-        label: 'Visits Report',
-        action: $scope.getVisitsReport,
-        authentication: true,
-        identifier: {
-          label: 'eventId',
-          model: '',
-          type: 'number',
-          disabled: false,
-          required: true
-        },
-        fields: [
-          {
-            label: 'from',
-            model: '',
-            type: 'date',
-            disabled: false
-          },
-          {
-            label: 'to',
-            model: '',
-            type: 'date',
-            disabled: false
-          }
-        ]
+      sections: {
+        label: 'sections',
+        action: $scope.getSections,
+        authentication: false
+      },
+      cover: {
+        label: 'cover',
+        action: $scope.getCover,
+        authentication: false
       }
     };
   });

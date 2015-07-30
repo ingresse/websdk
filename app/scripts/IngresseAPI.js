@@ -17,7 +17,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
     $get: function ($http, $q, ingresseAPI_Preferences) {
       var API = {};
 
-      API.urlencode = function (str) {
+      API._urlencode = function (str) {
         str = str.toString();
 
         return encodeURIComponent(str)
@@ -29,7 +29,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           .replace(/%20/g, '+');
       };
 
-      API.generateAuthKey = function () {
+      API._generateAuthKey = function () {
         /*  GENERATES THE PROPER AUTHENTICATION KEY FOR API CALLS, NEED THE PRIVATE AND PUBLIC KEYS OF APPLICATION SETTED WITH ingresseAPIProvider.
 
           Ex:
@@ -63,12 +63,12 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         var data1 = ingresseAPI_Preferences.publickey + timestamp;
         var data2 = CryptoJS.HmacSHA1(data1, ingresseAPI_Preferences.privatekey);
         var computedSignature = data2.toString(CryptoJS.enc.Base64);
-        var authenticationString = "?publickey=" + ingresseAPI_Preferences.publickey + "&signature=" + this.urlencode(computedSignature) + "&timestamp=" + this.urlencode(timestamp);
+        var authenticationString = "?publickey=" + ingresseAPI_Preferences.publickey + "&signature=" + this._urlencode(computedSignature) + "&timestamp=" + this._urlencode(timestamp);
 
         return authenticationString;
       };
 
-      API.getUrlParameters = function (filters) {
+      API._getUrlParameters = function (filters) {
         var parameters = '';
         var key;
 
@@ -95,8 +95,8 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           url += '/' + identifier;
         }
 
-        url += this.generateAuthKey();
-        url += this.getUrlParameters(parameters);
+        url += API._generateAuthKey();
+        url += API._getUrlParameters(parameters);
 
         $http.get(url)
           .success(function (response) {
@@ -119,8 +119,8 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           url += '/' + identifier;
         }
 
-        url += this.generateAuthKey();
-        url += this.getUrlParameters(parameters);
+        url += API._generateAuthKey();
+        url += API._getUrlParameters(parameters);
 
         $http.post(url, postParameters)
           .success(function (response) {
@@ -133,214 +133,307 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return deferred.promise;
       };
 
-      API.getEvent = function (eventId, filters) {
-        var identifier;
+      API.event = {
+        get : function (eventId, filters) {
+          var identifier;
 
-        if (angular.isNumber(parseInt(eventId, 10)) && !isNaN(eventId)) {
-          identifier = eventId;
-        } else {
-          filters.method = 'identify';
-          filters.link = eventId;
-        }
+          if (angular.isNumber(parseInt(eventId, 10)) && !isNaN(eventId)) {
+            identifier = eventId;
+          } else {
+            filters.method = 'identify';
+            filters.link = eventId;
+          }
 
-        return this._get('event', identifier, filters);
-      };
+          return API._get('event', identifier, filters);
+        },
 
-      // Legacy API code, different interface.
-      API.getTicketQRCodeUrl = function (ticketCode, usertoken) {
-        var url;
+        getCrew : function (eventId, filters, usertoken) {
+          var identifier = eventId + '/crew';
 
-        url = ingresseAPI_Preferences.getHost();
-        url += '/ticket/' + ticketCode + '/qrcode';
+          if (usertoken) {
+            filters.usertoken = usertoken;
+          }
 
-        url += this.generateAuthKey();
-        url += '&usertoken=' + usertoken;
+          return API._get('event', identifier, filters);
+        },
 
-        return url;
-      };
+        search : function (filters) {
+          return API._get('event',null, filters);
+        },
 
-      API.getEventCrew = function (eventId, filters, usertoken) {
-        var identifier = eventId + '/crew';
+        getTicketTypes : function (eventId, filters, usertoken) {
+          var identifier = eventId + '/tickets';
 
-        if (usertoken) {
-          filters.usertoken = usertoken;
-        }
+          return API._get('event', identifier, filters);
+        },
 
-        return this._get('event', identifier, filters);
-      };
+        updateTicketStatus : function (eventId, ticket, token) {
+          var filters = {
+            method: 'updatestatus',
+            usertoken: token
+          }
 
-      API.getVisitsReport = function (eventId, filters, usertoken) {
-        var identifier = eventId + '/visitsReport';
+          var identifier = eventId + '/guestlist';
 
-        if (usertoken) {
-          filters.usertoken = usertoken;
-        }
+          var postObject = {
+            tickets: [ticket]
+          }
 
-        return this._get('dashboard', identifier, filters);
-      };
+          return API._post('event', identifier, filters, postObject);
+        },
 
-      API.getError = function (errorClass) {
-        return this._get('error', errorClass);
-      };
+        getCheckinReport : function (eventId, token) {
+          var identifier = eventId + '/guestlist';
 
-      API.getEventList = function (filters) {
-        return this._get('event',null, filters);
-      };
-
-      API.getEventCategory = function (category) {
-        return this._get(null, category);
-      };
-
-      API.getEventTicketTypes = function (eventId, filters, usertoken) {
-        var identifier = eventId + '/tickets';
-
-        return this._get('event', identifier, filters);
-      };
-
-      API.validateUserField = function (field) {
-        return this._get('user/validate', null, field);
-      };
-
-      API.searchUser = function (filters) {
-        return this._get('user', null, filters);
-      };
-
-      API.getUser = function (userid, filters, token) {
-        if (token) {
-          filters.usertoken = token;
-        }
-
-        return this._get('user',userid, filters);
-      };
-
-      API.getUserTickets = function (userid, filters, token) {
-        var identifier = userid + '/tickets';
-
-        if (token) {
-          filters.usertoken = token;
-        }
-
-        return this._get('user',identifier, filters);
-      };
-
-      API.getUserEvents = function (userid, filters, token) {
-        var identifier = userid + '/events';
-
-        if (token) {
-          filters.usertoken = token;
-        }
-
-        return this._get('user', identifier, filters);
-      };
-
-      API.getSales = function (filters, token) {
-        if (token) {
-          filters.usertoken = token;
-        }
-
-        return this._get('sale', null, filters);
-      };
-
-      API.createUser = function (userObj) {
-          return this._post('user', null, {method: 'create'}, userObj);
-      };
-
-      API.updateUserInfo = function (userid, userObj, token) {
-        if (token) {
           var filters = {
             usertoken: token
           }
-        }
 
-        return this._post('user', userid, filters, userObj);
+          return API._get('event', identifier, filters);
+        },
+
+        getGuestList : function (eventId, filters, token) {
+          var identifier = eventId + '/guestlist';
+
+          if (token) {
+            filters.usertoken = token;
+          }
+
+          return API._get('event', identifier, filters);
+        }
       };
 
-      API.refund = function (transactionId, reason, token) {
-        var postObject = {
-          reason: reason
-        }
+      API.producer = {
+        getCustomerProfile: function (producerId, token) {
+          var identifier = producerId + '/customerProfile';
 
-        var filters = {
-          method: 'refund',
-          usertoken: token
-        }
+          var filters = {
+            usertoken: token
+          };
 
-        return this._post('sale', transactionId, filters, postObject);
-      };
+          return API._get('producer', identifier);
+        },
+        getSalesForCostumer: function (identifier, filters, token) {
+          var deferred = $q.defer();
+          var url;
 
-      API.updateTicketStatus = function (eventId, ticket, token) {
-        var filters = {
-          method: 'updatestatus',
-          usertoken: token
-        }
+          url = ingresseAPI_Preferences.getHost() + '/producer/' + identifier.producerId + '/customer/' + identifier.costumerId + '/sale' +  API._generateAuthKey() + '&usertoken=' + token;
 
-        var identifier = eventId + '/guestlist';
+          if (filters) {
+            angular.forEach(filters, function (value, key) {
+              if (value) {
+                url += '&' + key + '=' + value;
+              }
+            });
+          }
 
-        var postObject = {
-          tickets: [ticket]
-        }
+          $http.get(url)
+            .success(function (response) {
+              deferred.resolve(response.responseData);
+            })
+            .catch(function (error) {
+              deferred.reject(error);
+            });
 
-        return this._post('event', identifier, filters, postObject);
-      };
+          return deferred.promise;
+        },
+        getCustomerList: function (producerId, filters, token) {
+          var identifier = producerId + '/customer';
 
-      API.getCheckinReport = function (eventId, token) {
-        var identifier = eventId + '/guestlist';
-
-        var filters = {
-          usertoken: token
-        }
-
-        return this._get('event', identifier, filters);
-      };
-
-      API.getGuestList = function (eventId, filters, token) {
-        var identifier = eventId + '/guestlist';
-
-        if (token) {
           filters.usertoken = token;
-        }
 
-        return this._get('event', identifier, filters);
+          return API._get('producer', identifier, filters);
+        }
       };
 
-      API.getTransactionData = function (transactionId, token) {
-        var filters = {
-          usertoken: token
-        };
+      API.ticketBooth = {
+        sell: function (postObject, token) {
+          filters = {
+            method: 'sell',
+            usertoken: token
+          }
 
-        return this._get('sale', transactionId, filters);
+          return API._post('ticketbooth', null, filters, postObject);
+        },
+        getPrintData: function (transactionId, filters, token) {
+          filters.method = 'print';
+          filters.usertoken = token;
+
+          return API._get('ticketbooth', transactionId, filters)
+        }
+      };
+
+      API.ticket = {
+        // Legacy API code, different interface.
+        getQRCodeUrl: function (ticketCode, usertoken) {
+          var url;
+
+          url = ingresseAPI_Preferences.getHost();
+          url += '/ticket/' + ticketCode + '/qrcode';
+
+          url += API._generateAuthKey();
+          url += '&usertoken=' + usertoken;
+
+          return url;
+        }
+      };
+
+      API.dashboard = {
+        getVisitsReport: function (eventId, filters, usertoken) {
+          var identifier = eventId + '/visitsReport';
+
+          if (usertoken) {
+            filters.usertoken = usertoken;
+          }
+
+          return API._get('dashboard', identifier, filters);
+        }
+      };
+
+      API.error = {
+        get: function (errorClass) {
+          return API._get('error', errorClass);
+        }
+      };
+
+      API.user = {
+        get: function (userid, filters, token) {
+          if (token) {
+            filters.usertoken = token;
+          }
+
+          return API._get('user',userid, filters);
+        },
+
+        create: function (userObj) {
+          return API._post('user', null, {method: 'create'}, userObj);
+        },
+
+        update: function (userid, userObj, token) {
+          if (token) {
+            var filters = {
+              usertoken: token
+            }
+          }
+
+          return API._post('user', userid, filters, userObj);
+        },
+
+        search: function (filters) {
+          return API._get('user', null, filters);
+        },
+
+        validateField: function (field) {
+          return API._get('user/validate', null, field);
+        },
+
+        getTickets: function (userid, filters, token) {
+          var identifier = userid + '/tickets';
+
+          if (token) {
+            filters.usertoken = token;
+          }
+
+          return API._get('user',identifier, filters);
+        },
+
+        getEvents: function (userid, filters, token) {
+          var identifier = userid + '/events';
+
+          if (token) {
+            filters.usertoken = token;
+          }
+
+          return API._get('user', identifier, filters);
+        },
+
+        getPhotoUrl: function (userid) {
+          return ingresseAPI_Preferences.getHost() + '/user/' + userid + '/picture/' + API._generateAuthKey();
+        }
+      };
+
+      API.sale = {
+        getReport: function (filters, token) {
+          if (token) {
+            filters.usertoken = token;
+          }
+
+          return API._get('sale', null, filters);
+        },
+
+        get: function (transactionId, token) {
+          var filters = {
+            usertoken: token
+          };
+
+          return API._get('sale', transactionId, filters);
+        },
+
+        refund: function (transactionId, reason, token) {
+          var postObject = {
+            reason: reason
+          }
+
+          var filters = {
+            method: 'refund',
+            usertoken: token
+          }
+
+          return API._post('sale', transactionId, filters, postObject);
+        }
+      };
+
+      API.home = {
+        getSections:  function() {
+          return API._get('home', 'sections');
+        },
+        getCover: function() {
+          return API._get('home', 'cover');
+        }
+      };
+
+      API.freepass = {
+        send: function(filters, postObject, token) {
+          filters.usertoken = token;
+
+          return API._post('freepass', null, filters, postObject);
+        }
+      };
+
+      API.getFeaturedEvents = function(filters) {
+        return API._get('featured', null, filters);
+      };
+
+      API.getEventCategory = function (category) {
+        return API._get(null, category);
       };
 
       API.getRefundReasons = function () {
-        return this._get('refundReasons');
-      };
-
-      API.getUserPhotoUrl = function (userid) {
-        return ingresseAPI_Preferences.getHost() + '/user/' + userid + '/picture/' + this.generateAuthKey();
+        return API._get('refundReasons');
       };
 
       API.login = function () {
-        var url = ingresseAPI_Preferences.getHost() + '/authorize/' + this.generateAuthKey();
-        return url + '&returnurl=' + this.urlencode(ingresseAPI_Preferences.login_return_url);
+        var url = ingresseAPI_Preferences.getHost() + '/authorize/' + API._generateAuthKey();
+        return url + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
       };
 
       API.logout = function () {
-        var url = ingresseAPI_Preferences.getHost() + '/logout' + this.generateAuthKey();
-        return url + '&returnurl=' + this.urlencode(ingresseAPI_Preferences.login_return_url);
+        var url = ingresseAPI_Preferences.getHost() + '/logout' + API._generateAuthKey();
+        return url + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
       };
 
       API.register = function () {
-        var url = ingresseAPI_Preferences.getHost() + '/register' + this.generateAuthKey();
-        return url + '&returnurl=' + this.urlencode(ingresseAPI_Preferences.login_return_url);
+        var url = ingresseAPI_Preferences.getHost() + '/register' + API._generateAuthKey();
+        return url + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
       };
 
       API.getLoginWithFacebookUrl = function () {
-        var url = ingresseAPI_Preferences.getHost() + '/authorize/facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode(ingresseAPI_Preferences.login_return_url);
+        var url = ingresseAPI_Preferences.getHost() + '/authorize/facebook' + API._generateAuthKey() + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
         return url;
       };
 
       API.getRegisterWithFacebookUrl = function () {
-        var url = ingresseAPI_Preferences.getHost() + '/register-from-facebook' + this.generateAuthKey() + '&returnurl=' + this.urlencode(ingresseAPI_Preferences.login_return_url);
+        var url = ingresseAPI_Preferences.getHost() + '/register-from-facebook' + API._generateAuthKey() + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
         return url;
       };
 
@@ -358,7 +451,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           discountCode: discountCode
         };
 
-        return this._post('shop', null, filters, postObject);
+        return API._post('shop', null, filters, postObject);
       };
 
       API.createPagarmeCard = function (transaction) {
@@ -421,7 +514,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
             tickets: tickets
           };
 
-          url = ingresseAPI_Preferences.getHost() + '/shop/' + self.generateAuthKey() + '&usertoken=' + token;
+          url = ingresseAPI_Preferences.getHost() + '/shop/' + self._generateAuthKey() + '&usertoken=' + token;
 
           $http.post(url, currentTransaction)
             .success(function (response) {
@@ -471,7 +564,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
             cpf: transactionDTO.creditcard.cpf
           };
 
-          url = ingresseAPI_Preferences.getHost() + '/shop/' + self.generateAuthKey() + '&usertoken=' + token;
+          url = ingresseAPI_Preferences.getHost() + '/shop/' + self._generateAuthKey() + '&usertoken=' + token;
 
           $http.post(url, transactionDTO)
             .success(function (response) {
@@ -483,62 +576,6 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         });
 
         return deferred.promise;
-      };
-
-      API.getProducerCustomerList = function (producerId, filters, token) {
-        var identifier = producerId + '/customer';
-
-        filters.usertoken = token;
-
-        return this._get('producer', identifier, filters);
-      };
-
-      API.getProducerSalesForCostumer = function (identifier, filters, token) {
-        var deferred = $q.defer();
-        var url;
-
-        url = ingresseAPI_Preferences.getHost() + '/producer/' + identifier.producerId + '/customer/' + identifier.costumerId + '/sale' +  this.generateAuthKey() + '&usertoken=' + token;
-
-        if (filters) {
-          angular.forEach(filters, function (value, key) {
-            if (value) {
-              url += '&' + key + '=' + value;
-            }
-          });
-        }
-
-        $http.get(url)
-          .success(function (response) {
-            deferred.resolve(response.responseData);
-          })
-          .catch(function (error) {
-            deferred.reject(error);
-          });
-
-        return deferred.promise;
-      };
-
-      API.getProducerCustomerProfile = function (producerId, token) {
-        var identifier = producerId + '/customerProfile';
-
-        var filters = {
-          usertoken: token
-        };
-
-        return this._get('producer', identifier);
-      };
-
-      API.getFeaturedEvents = function(filters) {
-        return this._get('featured', null, filters);
-      };
-
-      API.ticketBoothSell = function (postObject, token) {
-        filters = {
-          method: 'sell',
-          usertoken: token
-        }
-
-        return this._post('ticketbooth', null, filters, postObject);
       };
 
       return API;

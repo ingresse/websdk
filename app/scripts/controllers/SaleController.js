@@ -42,7 +42,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('transaction', $scope.fields.transaction.identifier);
 
-      ingresseAPI.getTransactionData(identifier, $scope.credentials.token)
+      ingresseAPI.sale.get(identifier, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -54,14 +54,14 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.getSales = function () {
+    $scope.getReport = function () {
       $scope.isLoading = true;
 
       var filters = $scope.getFiltersByTab($scope.fields.sales);
 
       QueryService.setSearchParams('sales', null, filters);
 
-      ingresseAPI.getSales(filters, $scope.credentials.token)
+      ingresseAPI.sale.getReport(filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -82,7 +82,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('refund', $scope.fields.refund.identifier, filters);
 
-      ingresseAPI.refund(identifier, filters, $scope.credentials.token)
+      ingresseAPI.sale.refund(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -96,8 +96,8 @@ angular.module('ingresseEmulatorApp')
 
     $scope.fields = {
       transaction: {
-        label: 'Transaction',
-        action: $scope.getTransaction,
+        label: 'Sale',
+        action: $scope.get,
         authentication: true,
         identifier: {
           label: 'transactionId',
@@ -131,7 +131,7 @@ angular.module('ingresseEmulatorApp')
       },
       sales: {
         label: 'Sales',
-        action: $scope.getSales,
+        action: $scope.getReport,
         authentication: true,
         identifier: null,
         fields: [

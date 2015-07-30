@@ -37,7 +37,7 @@ angular.module('ingresseEmulatorApp')
       return obj;
     };
 
-    $scope.getUser = function () {
+    $scope.get = function () {
       $scope.isLoading = true;
 
       var identifier = $scope.fields.user.identifier.model;
@@ -45,7 +45,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('user', $scope.fields.user.identifier, filters);
 
-      ingresseAPI.getUser(identifier, filters, $scope.credentials.token)
+      ingresseAPI.user.get(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -57,7 +57,7 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.getUserTickets = function () {
+    $scope.getTickets = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
@@ -66,7 +66,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('userTickets', $scope.fields.userTickets.identifier, filters);
 
-      ingresseAPI.getUserTickets(identifier, filters, $scope.credentials.token)
+      ingresseAPI.user.getTickets(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -78,7 +78,7 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.getUserEvents = function () {
+    $scope.getEvents = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
@@ -87,7 +87,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('userEvents', $scope.fields.userEvents.identifier, filters);
 
-      ingresseAPI.getUserEvents(identifier, filters, $scope.credentials.token)
+      ingresseAPI.user.getEvents(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -99,17 +99,17 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.getUserPhotoUrl = function () {
+    $scope.getPhotoUrl = function () {
       $scope.result = {};
 
       var identifier = $scope.fields.userPhoto.identifier.model;
 
       QueryService.setSearchParams('userPhoto', $scope.fields.userPhoto.identifier, null);
 
-      EmulatorService.addResponse({url: ingresseAPI.getUserPhotoUrl(identifier)}, true);
+      EmulatorService.addResponse({url: ingresseAPI.user.getPhotoUrl(identifier)}, true);
     };
 
-    $scope.updateUserInfo = function () {
+    $scope.update = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
@@ -118,7 +118,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('userUpdate', $scope.fields.userUpdate.identifier, null);
 
-      ingresseAPI.updateUserInfo(identifier, obj, $scope.credentials.token)
+      ingresseAPI.user.update(identifier, obj, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -130,7 +130,7 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.createUser = function () {
+    $scope.create = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
@@ -138,7 +138,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('createUser', null, filters);
 
-      ingresseAPI.createUser(filters)
+      ingresseAPI.user.create(filters)
         .then(function (response) {
           EmulatorService.addResponse(response, response.status);
         })
@@ -150,7 +150,7 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.searchUser = function () {
+    $scope.search = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
@@ -158,7 +158,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('searchUser', null, filters);
 
-      ingresseAPI.searchUser(filters)
+      ingresseAPI.user.search(filters)
         .then(function (response) {
           EmulatorService.addResponse(response, response.status);
         })
@@ -170,7 +170,7 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.validateUserField = function () {
+    $scope.validateField = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
@@ -178,7 +178,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('validateUserField', null, filters);
 
-      ingresseAPI.validateUserField(filters)
+      ingresseAPI.user.validateField(filters)
         .then(function (response) {
           EmulatorService.addResponse(response, response.status);
         })
@@ -193,7 +193,7 @@ angular.module('ingresseEmulatorApp')
     $scope.fields = {
       user: {
         label: 'User',
-        action: $scope.getUser,
+        action: $scope.get,
         authentication: true,
         identifier: {
           label: 'userid',
@@ -213,7 +213,7 @@ angular.module('ingresseEmulatorApp')
       },
       searchUser: {
         label: 'Search User',
-        action: $scope.searchUser,
+        action: $scope.search,
         authentication: false,
         fields: [
           {
@@ -238,7 +238,7 @@ angular.module('ingresseEmulatorApp')
       },
       validateUserField: {
         label: 'Validate Field',
-        action: $scope.validateUserField,
+        action: $scope.validateField,
         authentication: false,
         fields: [
           {
@@ -264,7 +264,7 @@ angular.module('ingresseEmulatorApp')
       },
       userPhoto: {
         label: 'Photo',
-        action: $scope.getUserPhotoUrl,
+        action: $scope.getPhotoUrl,
         authentication: true,
         identifier: {
           label: 'userid',
@@ -277,7 +277,7 @@ angular.module('ingresseEmulatorApp')
       },
       userEvents: {
         label: 'Events',
-        action: $scope.getUserEvents,
+        action: $scope.getEvents,
         authentication: true,
         identifier: {
           label: 'userid',
@@ -345,7 +345,7 @@ angular.module('ingresseEmulatorApp')
       },
       userTickets: {
         label: 'Tickets',
-        action: $scope.getUserTickets,
+        action: $scope.getTickets,
         authentication: true,
         identifier: {
           label: 'userid',
@@ -383,7 +383,7 @@ angular.module('ingresseEmulatorApp')
       },
       userUpdate: {
         label: 'Update',
-        action: $scope.updateUserInfo,
+        action: $scope.update,
         authentication: true,
         identifier: {
           label: 'userid',
@@ -457,7 +457,7 @@ angular.module('ingresseEmulatorApp')
       },
       createUser: {
         label: 'Create User',
-        action: $scope.createUser,
+        action: $scope.create,
         authentication: false,
         identifier: null,
         fields: [

@@ -37,7 +37,7 @@ angular.module('ingresseEmulatorApp')
       return obj;
     };
 
-    $scope.getEvent = function () {
+    $scope.get = function () {
       $scope.isLoading = true;
 
       var identifier = $scope.fields.event.identifier.model;
@@ -45,7 +45,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('event', $scope.fields.event.identifier, filters);
 
-      ingresseAPI.getEvent(identifier, filters, $scope.credentials.token)
+      ingresseAPI.event.get(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -64,7 +64,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('checkinReport', $scope.fields.checkinReport.identifier);
 
-      ingresseAPI.getCheckinReport(identifier, $scope.credentials.token)
+      ingresseAPI.event.getCheckinReport(identifier, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -86,7 +86,7 @@ angular.module('ingresseEmulatorApp')
 
       filters.ticketTimestamp = new Date().toISOString();
 
-      ingresseAPI.updateTicketStatus(identifier, filters, $scope.credentials.token)
+      ingresseAPI.event.updateTicketStatus(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -98,7 +98,7 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.getEventTicketTypes = function () {
+    $scope.getTicketTypes = function () {
       $scope.isLoading = true;
 
       var identifier = $scope.fields.eventTicketTypes.identifier.model;
@@ -106,7 +106,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('eventTicketTypes', $scope.fields.eventTicketTypes.identifier, filters);
 
-      ingresseAPI.getEventTicketTypes(identifier, filters, $scope.credentials.token)
+      ingresseAPI.event.getTicketTypes(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -126,7 +126,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('guestList', $scope.fields.guestList.identifier, filters);
 
-      ingresseAPI.getGuestList(identifier, filters, $scope.credentials.token)
+      ingresseAPI.event.getGuestList(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -138,7 +138,7 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.getEventCrew = function () {
+    $scope.getCrew = function () {
       $scope.isLoading = true;
 
       var identifier = $scope.fields.crew.identifier.model;
@@ -146,7 +146,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('crew', $scope.fields.crew.identifier, filters);
 
-      ingresseAPI.getEventCrew(identifier, filters, $scope.credentials.token)
+      ingresseAPI.event.getCrew(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -158,14 +158,14 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
-    $scope.getEventList = function () {
+    $scope.getList = function () {
       $scope.isLoading = true;
 
       var filters = $scope.getFiltersByTab($scope.fields.eventSearch);
 
       QueryService.setSearchParams('user', null, filters);
 
-      ingresseAPI.getEventList(filters)
+      ingresseAPI.event.getList(filters)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -180,7 +180,7 @@ angular.module('ingresseEmulatorApp')
     $scope.fields = {
       event: {
         label: 'Event',
-        action: $scope.getEvent,
+        action: $scope.get,
         authentication: false,
         identifier: {
           label: 'eventId',
@@ -212,7 +212,7 @@ angular.module('ingresseEmulatorApp')
       },
       eventSearch: {
         label: 'Event Search',
-        action: $scope.getEventList,
+        action: $scope.getList,
         fields: [
           {
             label: 'fields',
@@ -272,7 +272,7 @@ angular.module('ingresseEmulatorApp')
       },
       eventTicketTypes: {
         label: 'Ticket Types',
-        action: $scope.getEventTicketTypes,
+        action: $scope.getTicketTypes,
         authentication: true,
         identifier: {
           label: 'eventId',
@@ -392,7 +392,7 @@ angular.module('ingresseEmulatorApp')
       },
       crew: {
         label: 'Crew',
-        action: $scope.getEventCrew,
+        action: $scope.getCrew,
         authentication: true,
         identifier: {
           label: 'eventId',

@@ -46,7 +46,28 @@ angular.module('ingresseEmulatorApp')
 
       // QueryService.setSearchParams('sell', null, postObject);
 
-      ingresseAPI.ticketBoothSell(postObject, $scope.credentials.token)
+      ingresseAPI.ticketBooth.sell(postObject, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
+    $scope.print = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.print.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.print);
+
+      QueryService.setSearchParams('print', identifier, filters);
+
+      ingresseAPI.ticketBooth.getPrintData(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -86,6 +107,26 @@ angular.module('ingresseEmulatorApp')
             type: 'object',
             model: [],
             disabled: true
+          }
+        ]
+      },
+      print: {
+        label: 'print',
+        action: $scope.print,
+        authentication: true,
+        identifier: {
+          label: 'transactionId',
+          model: '',
+          type: 'text',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'from',
+            type: 'number',
+            model: '',
+            disabled: false
           }
         ]
       }
