@@ -19,7 +19,8 @@ var app = angular
     'ingresseSDK',
     'gd.ui.jsonexplorer',
     'ingresse.emulator',
-    'ngMaterial'
+    'ngMaterial',
+    'ngMessages'
   ])
   .config(function ($routeProvider, ingresseAPI_PreferencesProvider, $mdThemingProvider) {
     ingresseAPI_PreferencesProvider.setTemplateDirectory('directives/');

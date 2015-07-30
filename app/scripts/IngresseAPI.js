@@ -243,6 +243,13 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           filters.usertoken = token;
 
           return API._get('producer', identifier, filters);
+        },
+        getSalesGroupReport: function (identifier, filters, token) {
+          identifier += '/salesgroupReport';
+
+          filters.usertoken = token;
+
+          return API._get('producer', identifier, filters);
         }
       };
 

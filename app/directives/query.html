@@ -48,8 +48,12 @@
 
             <md-input-container ng-if="tab.identifier">
                 <label>{{tab.identifier.label}}</label>
-                <input type="{{tab.identifier.type}}" ng-model="tab.identifier.model" ng-disabled="tab.identifier.disabled" ng-required="tab.identifier.required"/>
+                <input name="identifier" type="{{tab.identifier.type}}" ng-model="tab.identifier.model" ng-disabled="tab.identifier.disabled" ng-required="tab.identifier.required"/>
+                <div ng-messages="queryForm.identifier.$error">
+                  <div ng-message="required, pristine, dirty">{{tab.identifier.requiredMessage}}</div>
+                </div>
             </md-input-container>
+
 
             <label ng-if="tab.fields.length > 0">GET PARAMS</label>
             <md-input-container ng-repeat="input in tab.fields">
@@ -85,6 +89,10 @@
                 </md-select>
 
                 <json-explorer ng-if="input.type === 'object'" class="result" json-data="{{input.model}}" collapsed="false"></json-explorer>
+
+                <div ng-messages="queryForm[input.label].$error" ng-if="input.required">
+                  <div ng-message="required, pristine, dirty">{{input.requiredMessage}}</div>
+                </div>
             </md-input-container>
 
             <label ng-if="tab.postParams.length > 0">POST PARAMS</label>
@@ -121,6 +129,10 @@
                 </md-select>
 
                 <json-explorer ng-if="input.type === 'object'" class="result" json-data="{{input.model}}" collapsed="false"></json-explorer>
+
+                <div ng-messages="queryForm[input.label].$error" ng-if="input.required">
+                  <div ng-message="required, pristine, dirty">{{input.requiredMessage}}</div>
+                </div>
             </md-input-container>
 
             <div class="md-actions" layout="row" layout-align="end center">

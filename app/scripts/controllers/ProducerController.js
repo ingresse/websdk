@@ -103,6 +103,30 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+
+    $scope.getSalesGroupReport = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.salesGroupReport.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.salesGroupReport);
+
+      QueryService.setSearchParams('salesGroupReport', $scope.fields.salesGroupReport.identifier, filters);
+
+      ingresseAPI.producer.getSalesGroupReport(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
+
+
     $scope.fields = {
       producerCustomers: {
         label: 'Costumer',
@@ -187,6 +211,45 @@ angular.module('ingresseEmulatorApp')
           required: true
         },
         fields: []
+      },
+      salesGroupReport: {
+        label: 'Sales Group Report',
+        action: $scope.getSalesGroupReport,
+        authentication: true,
+        identifier: {
+          label: 'producerId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true,
+          requiredMessage: 'Producer Id is required'
+        },
+        fields: [
+          {
+            label: 'from',
+            model: '',
+            type: 'date',
+            disabled: false
+          },
+          {
+            label: 'to',
+            model: '',
+            type: 'date',
+            disabled: false
+          },
+          {
+            label: 'event',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'session',
+            model: '',
+            type: 'number',
+            disabled: false
+          }
+        ]
       }
     };
   });
