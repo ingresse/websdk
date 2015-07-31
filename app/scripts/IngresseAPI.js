@@ -244,6 +244,9 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
 
           return API._get('producer', identifier, filters);
         },
+        getCustomerListCSVExportURL: function (producerId, token) {
+          return ingresseAPI_Preferences.getHost() + '/producer/' + producerId + '/customerExport' + API._generateAuthKey() + '&usertoken=' + token;
+        },
         getSalesGroupReport: function (identifier, filters, token) {
           identifier += '/salesgroupReport';
 

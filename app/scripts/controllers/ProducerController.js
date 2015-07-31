@@ -11,7 +11,7 @@ angular.module('ingresseEmulatorApp')
 
     $scope.$on('$viewContentLoaded', function () {
       $scope.credentials = IngresseAPI_UserService.credentials;
-      QueryService.getSearchParams($scope.fields);
+      // QueryService.getSearchParams($scope.fields);
     });
 
     $scope.getFiltersByTab = function (tab) {
@@ -144,6 +144,16 @@ angular.module('ingresseEmulatorApp')
         .finally(function () {
           $scope.isLoading = false;
         });
+    };
+
+    $scope.getCustomerListCSVExportURL = function () {
+      $scope.result = {};
+
+      var identifier = $scope.fields.getCustomerListCSVExportURL.identifier.model;
+
+      // QueryService.setSearchParams('getCustomerListCSVExportURL', $scope.fields.getCustomerListCSVExportURL.identifier);
+
+      EmulatorService.addResponse({url: ingresseAPI.producer.getCustomerListCSVExportURL(identifier, $scope.credentials.token)}, true);
     };
 
 
@@ -304,6 +314,19 @@ angular.module('ingresseEmulatorApp')
             disabled: false
           }
         ]
+      },
+      getCustomerListCSVExportURL: {
+        label: 'Customer List CSV Export',
+        action: $scope.getCustomerListCSVExportURL,
+        authentication: true,
+        identifier: {
+          label: 'producerId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true,
+          requiredMessage: 'Producer Id is required'
+        }
       }
     };
   });
