@@ -89,9 +89,9 @@ angular.module('ingresseEmulatorApp')
 
       var identifier = $scope.fields.producerCustomerProfile.identifier.model;
 
-      QueryService.setSearchParams('producerCustomerProfile', $scope.fields.producerCustomerProfile.identifier);
+      QueryService.setSearchParams('producerCustomerProfile', $scope.fields.producerCustomerProfile.identifier, $scope.credentials.token);
 
-      ingresseAPI.producer.getCustomerProfile(identifier, null, $scope.credentials.token)
+      ingresseAPI.producer.getCustomerProfile(identifier, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })

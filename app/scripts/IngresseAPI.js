@@ -158,11 +158,15 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         },
 
         search : function (filters) {
-          return API._get('event',null, filters);
+          return API._get('event', null, filters);
         },
 
         getTicketTypes : function (eventId, filters, usertoken) {
           var identifier = eventId + '/tickets';
+
+          if (usertoken) {
+            filters.usertoken = usertoken;
+          }
 
           return API._get('event', identifier, filters);
         },
@@ -171,13 +175,13 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           var filters = {
             method: 'updatestatus',
             usertoken: token
-          }
+          };
 
           var identifier = eventId + '/guestlist';
 
           var postObject = {
             tickets: [ticket]
-          }
+          };
 
           return API._post('event', identifier, filters, postObject);
         },
@@ -187,7 +191,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
 
           var filters = {
             usertoken: token
-          }
+          };
 
           return API._get('event', identifier, filters);
         },
@@ -211,7 +215,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
             usertoken: token
           };
 
-          return API._get('producer', identifier);
+          return API._get('producer', identifier, filters);
         },
         getSalesForCostumer: function (identifier, filters, token) {
           var deferred = $q.defer();
@@ -265,10 +269,10 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
 
       API.ticketBooth = {
         sell: function (postObject, token) {
-          filters = {
+          var filters = {
             method: 'sell',
             usertoken: token
-          }
+          };
 
           return API._post('ticketbooth', null, filters, postObject);
         },
@@ -276,7 +280,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           filters.method = 'print';
           filters.usertoken = token;
 
-          return API._get('ticketbooth', transactionId, filters)
+          return API._get('ticketbooth', transactionId, filters);
         }
       };
 
@@ -330,7 +334,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
             filters.usertoken = token;
           }
 
-          return API._get('user',userid, filters);
+          return API._get('user', userid, filters);
         },
 
         create: function (userObj) {
@@ -338,10 +342,12 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         },
 
         update: function (userid, userObj, token) {
+          var filters;
+
           if (token) {
-            var filters = {
+            filters = {
               usertoken: token
-            }
+            };
           }
 
           return API._post('user', userid, filters, userObj);
@@ -362,7 +368,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
             filters.usertoken = token;
           }
 
-          return API._get('user',identifier, filters);
+          return API._get('user', identifier, filters);
         },
 
         getEvents: function (userid, filters, token) {
@@ -400,35 +406,35 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         refund: function (transactionId, reason, token) {
           var postObject = {
             reason: reason
-          }
+          };
 
           var filters = {
             method: 'refund',
             usertoken: token
-          }
+          };
 
           return API._post('sale', transactionId, filters, postObject);
         }
       };
 
       API.home = {
-        getSections:  function() {
+        getSections:  function () {
           return API._get('home', 'sections');
         },
-        getCover: function() {
+        getCover: function () {
           return API._get('home', 'cover');
         }
       };
 
       API.freepass = {
-        send: function(filters, postObject, token) {
+        send: function (filters, postObject, token) {
           filters.usertoken = token;
 
           return API._post('freepass', null, filters, postObject);
         }
       };
 
-      API.getFeaturedEvents = function(filters) {
+      API.getFeaturedEvents = function (filters) {
         return API._get('featured', null, filters);
       };
 
@@ -449,11 +455,11 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           var url = ingresseAPI_Preferences.getHost() + '/logout' + API._generateAuthKey();
           return url + '&returnurl=' + API._urlencode(ingresseAPI_Preferences.login_return_url);
         },
-        direct: function(postObject) {
+        direct: function (postObject) {
           return API._post('login', null, null, postObject);
         },
         facebook: function (postObject) {
-          return API._post('login','facebook', null, postObject)
+          return API._post('login', 'facebook', null, postObject);
         }
       };
 
@@ -473,8 +479,6 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
       };
 
       API.ticketReservation = function (eventId, userId, token, tickets, discountCode) {
-        var deferred = $q.defer();
-
         var filters = {
           usertoken: token
         };
