@@ -10,12 +10,12 @@ angular.module('ingresseSDK').directive('ingresseLogin', function (ingresseAPI_P
             };
 
             $scope.$on('showLogin',function(){
-                $scope.url = $sce.trustAsResourceUrl(ingresseAPI.login());
+                $scope.url = $sce.trustAsResourceUrl(ingresseAPI.login.getAuthorizeUrl());
                 $scope.isVisible = true;
             });
 
             $scope.$on('showLogout',function() {
-                $scope.url = $sce.trustAsResourceUrl(ingresseAPI.logout());
+                $scope.url = $sce.trustAsResourceUrl(ingresseAPI.login.getLogoutURL());
                 $scope.isVisible = true;
             });
 

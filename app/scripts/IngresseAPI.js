@@ -63,7 +63,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         var data1 = ingresseAPI_Preferences.publickey + timestamp;
         var data2 = CryptoJS.HmacSHA1(data1, ingresseAPI_Preferences.privatekey);
         var computedSignature = data2.toString(CryptoJS.enc.Base64);
-        var authenticationString = "?publickey=" + ingresseAPI_Preferences.publickey + "&signature=" + this._urlencode(computedSignature) + "&timestamp=" + this._urlencode(timestamp);
+        var authenticationString = "?publickey=" + ingresseAPI_Preferences.publickey + "&signature=" + API._urlencode(computedSignature) + "&timestamp=" + API._urlencode(timestamp);
 
         return authenticationString;
       };
@@ -426,28 +426,35 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
         return API._get('refundReasons');
       };
 
-      API.login = function () {
-        var url = ingresseAPI_Preferences.getHost() + '/authorize/' + API._generateAuthKey();
-        return url + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
-      };
-
-      API.logout = function () {
-        var url = ingresseAPI_Preferences.getHost() + '/logout' + API._generateAuthKey();
-        return url + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
+      API.login = {
+        getAuthorizeUrl: function () {
+          var url = ingresseAPI_Preferences.getHost() + '/authorize/' + API._generateAuthKey();
+          return url + '&returnurl=' + API._urlencode(ingresseAPI_Preferences.login_return_url);
+        },
+        getLogoutURL: function () {
+          var url = ingresseAPI_Preferences.getHost() + '/logout' + API._generateAuthKey();
+          return url + '&returnurl=' + API._urlencode(ingresseAPI_Preferences.login_return_url);
+        },
+        direct: function(postObject) {
+          return API._post('login', null, null, postObject);
+        },
+        facebook: function (postObject) {
+          return API._post('login','facebook', null, postObject)
+        }
       };
 
       API.register = function () {
         var url = ingresseAPI_Preferences.getHost() + '/register' + API._generateAuthKey();
-        return url + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
+        return url + '&returnurl=' + API._urlencode(ingresseAPI_Preferences.login_return_url);
       };
 
       API.getLoginWithFacebookUrl = function () {
-        var url = ingresseAPI_Preferences.getHost() + '/authorize/facebook' + API._generateAuthKey() + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
+        var url = ingresseAPI_Preferences.getHost() + '/authorize/facebook' + API._generateAuthKey() + '&returnurl=' + API._urlencode(ingresseAPI_Preferences.login_return_url);
         return url;
       };
 
       API.getRegisterWithFacebookUrl = function () {
-        var url = ingresseAPI_Preferences.getHost() + '/register-from-facebook' + API._generateAuthKey() + '&returnurl=' + this._urlencode(ingresseAPI_Preferences.login_return_url);
+        var url = ingresseAPI_Preferences.getHost() + '/register-from-facebook' + API._generateAuthKey() + '&returnurl=' + API._urlencode(ingresseAPI_Preferences.login_return_url);
         return url;
       };
 
