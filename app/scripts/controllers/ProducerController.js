@@ -125,6 +125,27 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getSalesGroupPaymentReport = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.salesGroupPaymentReport.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.salesGroupPaymentReport);
+
+      QueryService.setSearchParams('salesGroupPaymentReport', $scope.fields.salesGroupPaymentReport.identifier, filters);
+
+      ingresseAPI.producer.getSalesGroupPaymentReport(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
 
 
     $scope.fields = {
@@ -247,6 +268,39 @@ angular.module('ingresseEmulatorApp')
             label: 'session',
             model: '',
             type: 'number',
+            disabled: false
+          }
+        ]
+      },
+      salesGroupPaymentReport: {
+        label: 'Sales Group Payment Report',
+        action: $scope.getSalesGroupPaymentReport,
+        authentication: true,
+        identifier: {
+          label: 'producerId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true,
+          requiredMessage: 'Producer Id is required'
+        },
+        fields: [
+          {
+            label: 'from',
+            model: '',
+            type: 'date',
+            disabled: false
+          },
+          {
+            label: 'to',
+            model: '',
+            type: 'date',
+            disabled: false
+          },
+          {
+            label: 'event',
+            model: '',
+            type: 'text',
             disabled: false
           }
         ]
