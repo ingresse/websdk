@@ -58,6 +58,27 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getEventSalesTimeline = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.getEventSalesTimeline.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.getEventSalesTimeline);
+
+      QueryService.setSearchParams('getEventSalesTimeline', $scope.fields.getEventSalesTimeline.identifier, filters);
+
+      ingresseAPI.dashboard.getEventSalesTimeline(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+      };
+
     $scope.fields = {
       visitsReport: {
         label: 'Visits Report',
@@ -71,6 +92,45 @@ angular.module('ingresseEmulatorApp')
           required: true
         },
         fields: [
+          {
+            label: 'from',
+            model: '',
+            type: 'date',
+            disabled: false
+          },
+          {
+            label: 'to',
+            model: '',
+            type: 'date',
+            disabled: false
+          }
+        ]
+      },
+      getEventSalesTimeline: {
+        label: 'Event Sales Timeline',
+        action: $scope.getEventSalesTimeline,
+        authentication: true,
+        identifier: {
+          label: 'eventId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'channel',
+            model: '',
+            type: 'option',
+            options: ['online','offline'],
+            disabled: false
+          },
+          {
+            label: 'session',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
           {
             label: 'from',
             model: '',

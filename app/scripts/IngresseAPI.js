@@ -304,6 +304,12 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
           }
 
           return API._get('dashboard', identifier, filters);
+        },
+        getEventSalesTimeline: function (identifier, filters, token) {
+          identifier += '/timeline';
+          filters.usertoken = token;
+
+          return API._get('dashboard', identifier, filters);
         }
       };
 
