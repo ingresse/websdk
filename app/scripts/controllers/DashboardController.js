@@ -77,7 +77,28 @@ angular.module('ingresseEmulatorApp')
         .finally(function () {
           $scope.isLoading = false;
         });
-      };
+    };
+
+    $scope.getEventReport = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.getEventReport.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.getEventReport);
+
+      QueryService.setSearchParams('getEventReport', $scope.fields.getEventReport.identifier, filters);
+
+      ingresseAPI.dashboard.getEventReport(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
 
     $scope.fields = {
       visitsReport: {
@@ -109,6 +130,45 @@ angular.module('ingresseEmulatorApp')
       getEventSalesTimeline: {
         label: 'Event Sales Timeline',
         action: $scope.getEventSalesTimeline,
+        authentication: true,
+        identifier: {
+          label: 'eventId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'channel',
+            model: '',
+            type: 'option',
+            options: ['online','offline'],
+            disabled: false
+          },
+          {
+            label: 'session',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
+            label: 'from',
+            model: '',
+            type: 'date',
+            disabled: false
+          },
+          {
+            label: 'to',
+            model: '',
+            type: 'date',
+            disabled: false
+          }
+        ]
+      },
+      getEventReport: {
+        label: 'Event Report',
+        action: $scope.getEventReport,
         authentication: true,
         identifier: {
           label: 'eventId',

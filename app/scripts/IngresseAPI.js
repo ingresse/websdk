@@ -296,6 +296,11 @@ angular.module('ingresseSDK').provider('ingresseAPI', function () {
       };
 
       API.dashboard = {
+        getEventReport: function (identifier, filters, token) {
+          filters.usertoken = token;
+
+          return API._get('dashboard', identifier, filters);
+        },
         getVisitsReport: function (eventId, filters, usertoken) {
           var identifier = eventId + '/visitsReport';
 
