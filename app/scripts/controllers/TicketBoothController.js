@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('ingresseEmulatorApp')
   .config(function ($routeProvider) {
     $routeProvider
@@ -6,11 +8,11 @@ angular.module('ingresseEmulatorApp')
         controller: 'TicketboothController'
       });
   })
-  .controller('TicketboothController', function ($scope, $rootScope, ingresseAPI, IngresseAPI_UserService, $routeParams, EmulatorService, QueryService) {
+  .controller('TicketboothController', function ($scope, $rootScope, ingresseAPI, IngresseApiUserService, $routeParams, EmulatorService, QueryService) {
     $scope.request = {};
 
     $scope.$on('$viewContentLoaded', function () {
-      $scope.credentials = IngresseAPI_UserService.credentials;
+      $scope.credentials = IngresseApiUserService.credentials;
       QueryService.getSearchParams($scope.fields);
       QueryService.setSelectedTab('sell');
     });
@@ -25,10 +27,10 @@ angular.module('ingresseEmulatorApp')
             day = tab.fields[i].model.getDate().toString();
             month = tab.fields[i].model.getMonth().toString();
             if (month.length < 2) {
-              month = "0" + month;
+              month = '0' + month;
             }
             year = tab.fields[i].model.getFullYear().toString();
-            obj[tab.fields[i].label] = year + "-" + month + "-" + day;
+            obj[tab.fields[i].label] = year + '-' + month + '-' + day;
           } else {
             obj[tab.fields[i].label] = tab.fields[i].model;
           }
@@ -147,7 +149,7 @@ angular.module('ingresseEmulatorApp')
             if (response[i].status === 'available') {
               availableTicket = response[i];
             }
-          };
+          }
 
           if (!availableTicket) {
             $scope.fields.sell.fields[3].model = 'Não há tickets disponíveis para o evento';
@@ -163,6 +165,6 @@ angular.module('ingresseEmulatorApp')
 
           $scope.fields.sell.fields[3].model.push(ticket);
           console.log($scope.fields.sell.fields[3].model);
-        })
+        });
     });
   });

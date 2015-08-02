@@ -18,9 +18,9 @@ Antes de mais nada adicione a dependência no seu módulo
 
 Todo APP integrado com a ingresse precisa de sua chave privada e pública para fazer chamadas a api, para configurar fica assim:
 
-    angular.module('SEU_APP').config(function(ingresseAPI_PreferencesProvider) {
-        ingresseAPI_PreferencesProvider.setPublicKey('sua chave pública');
-	    ingresseAPI_PreferencesProvider.setPrivateKey('sua chave privada');
+    angular.module('SEU_APP').config(function(ingresseApiPreferencesProvider) {
+        ingresseApiPreferencesProvider.setPublicKey('sua chave pública');
+	    ingresseApiPreferencesProvider.setPrivateKey('sua chave privada');
     });
 
 Ai é só injetar nas suas controllers

@@ -1,19 +1,21 @@
+'use strict';
+
 angular.module('ingresseEmulatorApp')
-  .controller('HeaderController', function ($scope, $mdSidenav, ingresseAPI, IngresseAPI_UserService) {
+  .controller('HeaderController', function ($scope, $mdSidenav, ingresseAPI, IngresseApiUserService) {
     $scope.openLeftMenu = function () {
       $mdSidenav('left').toggle();
     };
 
     $scope.login = function () {
-      IngresseAPI_UserService.login();
+      IngresseApiUserService.login();
     };
 
     $scope.logout = function () {
-      IngresseAPI_UserService.logout();
+      IngresseApiUserService.logout();
     };
 
     $scope.$on('userSessionSaved', function () {
-      $scope.credentials = IngresseAPI_UserService.credentials;
+      $scope.credentials = IngresseApiUserService.credentials;
 
       ingresseAPI.user.get($scope.credentials.userId, {fields: 'id,name,email,type'}, $scope.credentials.token)
         .then(function (response) {

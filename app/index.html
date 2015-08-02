@@ -5,20 +5,22 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
-    <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
-    <link rel="stylesheet" href="bower_components/ng-json-explorer/src/gd-ui-jsonexplorer.css" />
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="directives/ingresse-login.css" />
+
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+    <link rel="stylesheet" href="bower_components/ng-json-explorer/dist/angular-json-explorer.css" />
+    <link rel="stylesheet" href="directives/ingresse-login.css" />
     <link rel="stylesheet" href="directives/ingresse-emulator.css" />
+    <!-- endbuild -->
   </head>
   <body ng-app="ingresseEmulatorApp">
 
     <div ingresse-login></div>
 
     <div layout="column" layout-fill>
-
         <md-sidenav layout-fill class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
 
             <div ng-controller="SidenavController" layout="column">
@@ -40,7 +42,6 @@
 
             </div>
         </md-sidenav>
-
         <md-toolbar layout="row" layout-align="start center" ng-controller="HeaderController">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
@@ -64,59 +65,73 @@
             <md-button class="md-button md-raised md-warn" ng-click="logout()" ng-show="credentials.userId">Logout</md-button>
         </md-toolbar>
         <div layout-sm"column" layout-md="column" layout-gt-md="row" ng-view=""></div>
-
     </div>
 
+    <!-- build:js({.tmp,app}) scripts/vendor.js -->
     <script src="bower_components/crypto-js/rollups/hmac-sha1.js"></script>
     <script src="bower_components/crypto-js/components/enc-base64-min.js"></script>
+    <!-- bower:js -->
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/pagar-me/index.js"></script>
-    <script src="bower_components/moment/min/moment.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
-    <script src="bower_components/angular-cookie/angular-cookie.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookie/angular-cookie.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-ui-scroll/dist/ui-scroll.js"></script>
+    <script src="bower_components/angular-ui-scrollpoint/dist/scrollpoint.js"></script>
+    <script src="bower_components/angular-ui-event/dist/event.js"></script>
+    <script src="bower_components/angular-ui-mask/dist/mask.js"></script>
+    <script src="bower_components/angular-ui-validate/dist/validate.js"></script>
+    <script src="bower_components/angular-ui-indeterminate/dist/indeterminate.js"></script>
+    <script src="bower_components/angular-ui-uploader/dist/uploader.js"></script>
     <script src="bower_components/angular-ui-utils/index.js"></script>
-    <script src="bower_components/angular-messages/angular-messages.min.js"></script>
-    <script src="bower_components/ng-json-explorer/src/gd-ui-jsonexplorer.js"></script>
+    <script src="bower_components/angularjs/angular.js"></script>
+    <script src="bower_components/ng-json-explorer/dist/angular-json-explorer.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
 
-    <script src="scripts/IngresseAPI.Preferences.js"></script>
-    <script src="scripts/IngresseAPI.UserService.js"></script>
-    <script src="scripts/IngresseAPI.EventService.js"></script>
-    <script src="scripts/IngresseAPI.Freepass.js"></script>
-    <script src="scripts/IngresseAPI.ErrorInterceptor.js"></script>
-    <script src="scripts/IngresseAPI.WWWFormUrlEnconded.js"></script>
-    <script src="scripts/IngresseAPI.js"></script>
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/IngresseAPI.Preferences.js"></script>
+        <script src="scripts/IngresseAPI.UserService.js"></script>
+        <script src="scripts/IngresseAPI.EventService.js"></script>
+        <script src="scripts/IngresseAPI.Freepass.js"></script>
+        <script src="scripts/IngresseAPI.ErrorInterceptor.js"></script>
+        <script src="scripts/IngresseAPI.WWWFormUrlEnconded.js"></script>
+        <script src="scripts/IngresseAPI.js"></script>
 
-    <script src="scripts/app.js"></script>
-    <script src="scripts/EmulatorService.js"></script>
-    <script src="scripts/QueryService.js"></script>
-    <script src="scripts/controllers/SidenavController.js"></script>
-    <script src="scripts/controllers/HeaderController.js"></script>
-    <script src="scripts/controllers/EventController.js"></script>
-    <script src="scripts/controllers/UserController.js"></script>
-    <script src="scripts/controllers/ErrorController.js"></script>
-    <script src="scripts/controllers/SaleController.js"></script>
-    <script src="scripts/controllers/DashboardController.js"></script>
-    <script src="scripts/controllers/ProducerController.js"></script>
-    <script src="scripts/controllers/FeaturedController.js"></script>
-    <script src="scripts/controllers/RootController.js"></script>
-    <script src="scripts/controllers/RefundReasonsController.js"></script>
-    <script src="scripts/controllers/TicketController.js"></script>
-    <script src="scripts/controllers/TicketBoothController.js"></script>
-    <script src="scripts/controllers/HomeController.js"></script>
-    <script src="scripts/controllers/FreepassController.js"></script>
-    <script src="scripts/controllers/LoginController.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="scripts/EmulatorService.js"></script>
+        <script src="scripts/QueryService.js"></script>
+        <script src="scripts/controllers/SidenavController.js"></script>
+        <script src="scripts/controllers/HeaderController.js"></script>
+        <script src="scripts/controllers/EventController.js"></script>
+        <script src="scripts/controllers/UserController.js"></script>
+        <script src="scripts/controllers/ErrorController.js"></script>
+        <script src="scripts/controllers/SaleController.js"></script>
+        <script src="scripts/controllers/DashboardController.js"></script>
+        <script src="scripts/controllers/ProducerController.js"></script>
+        <script src="scripts/controllers/FeaturedController.js"></script>
+        <script src="scripts/controllers/RootController.js"></script>
+        <script src="scripts/controllers/RefundReasonsController.js"></script>
+        <script src="scripts/controllers/TicketController.js"></script>
+        <script src="scripts/controllers/TicketBoothController.js"></script>
+        <script src="scripts/controllers/HomeController.js"></script>
+        <script src="scripts/controllers/FreepassController.js"></script>
+        <script src="scripts/controllers/LoginController.js"></script>
 
-    <script src="directives/ingresse-login.js"></script>
-    <script src="directives/ingresse-user.js"></script>
-    <script src="directives/ingresse-emulator.js"></script>
-    <script src="directives/query-directive.js"></script>
-    <script src="directives/results-directive.js"></script>
+        <script src="directives/ingresse-login.js"></script>
+        <script src="directives/ingresse-user.js"></script>
+        <script src="directives/ingresse-emulator.js"></script>
+        <script src="directives/query-directive.js"></script>
+        <script src="directives/results-directive.js"></script>
+        <!-- endbuild -->
 </body>
 </html>

@@ -1,7 +1,7 @@
-angular.module('ingresseSDK').directive('ingresseLogin', function (ingresseAPI_Preferences) {
+angular.module('ingresseSDK').directive('ingresseLogin', function (ingresseApiPreferences) {
     return {
         scope: {}, // {} = isolate, true = child, false/undefined = no change
-        controller: function($scope, $rootScope, $element, $attrs, $transclude, ingresseAPI, IngresseAPI_UserService, $sce) {
+        controller: function($scope, $rootScope, $element, $attrs, $transclude, ingresseAPI, IngresseApiUserService, $sce) {
             $scope.isVisible = false;
             $scope.url = null;
 
@@ -27,15 +27,15 @@ angular.module('ingresseSDK').directive('ingresseLogin', function (ingresseAPI_P
             $scope.$on('ingresseAPI.userHasLogged',function(event,data){
                 $scope.isVisible = false;
                 if (data.token && data.userId) {
-                    IngresseAPI_UserService.saveCredentials(data.token, data.userId);
+                    IngresseApiUserService.saveCredentials(data.token, data.userId);
                 } else {
-                    IngresseAPI_UserService.userHasLoggedOut();
+                    IngresseApiUserService.userHasLoggedOut();
                 }
                 $scope.$apply();
             });
         },
         restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
-        templateUrl: ingresseAPI_Preferences.templates_directory + 'ingresse-login.html',
+        templateUrl: ingresseApiPreferences.templates_directory + 'ingresse-login.html',
         link: function($scope, iElm, iAttrs, controller) {
 
         }

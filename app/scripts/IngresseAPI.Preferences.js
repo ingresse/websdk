@@ -1,8 +1,10 @@
-angular.module('ingresseSDK',[]).provider('ingresseAPI_Preferences',function () {
+'use strict';
+
+angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
   PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
   var publickey;
   var privatekey;
-  var templates_directory = '/bower_components/ingresse-websdk/bower_components/ingresse-websdk/directives/';
+  var templatesDirectory = '/bower_components/ingresse-websdk/bower_components/ingresse-websdk/directives/';
   return{
     setPublicKey: function(key){
       publickey = key;
@@ -10,14 +12,14 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI_Preferences',function () 
     setPrivateKey: function(key){
       privatekey = key;
     },
-    setTemplateDirectory: function (template_directory) {
-      templates_directory = template_directory;
+    setTemplateDirectory: function (templateDirectory) {
+      templatesDirectory = templateDirectory;
     },
     $get: function() {
       return{
         publickey: publickey,
         privatekey: privatekey,
-        templates_directory: templates_directory,
+        templatesDirectory: templatesDirectory,
         setPublicKey: function(key){
           this.publickey = key;
         },
@@ -26,11 +28,11 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI_Preferences',function () 
         },
         // PRIVATE
         _host: 'https://api.ingresse.com',
-        login_return_url: 'https://dk57nqppwurwj.cloudfront.net/parseResponse.html',
+        loginReturnUrl: 'https://dk57nqppwurwj.cloudfront.net/parseResponse.html',
         httpCalls: [],
 
         // PUBLIC
-        pagarme_encription_key: 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ',
+        pagarmeEncriptionKey: 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ',
         getHost: function() {
           return this._host;
         },
@@ -48,7 +50,7 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI_Preferences',function () 
             } else {
               parameters[i] = '&' + parameters[i];
             }
-          };
+          }
 
           this.httpCalls.unshift({
             url: url,
@@ -59,17 +61,17 @@ angular.module('ingresseSDK',[]).provider('ingresseAPI_Preferences',function () 
         },
         httpCallStoped: function (url, success) {
           for (var i = this.httpCalls.length - 1; i >= 0; i--) {
-            if (this.httpCalls[i].url == url) {
+            if (this.httpCalls[i].url === url) {
               this.httpCalls[i].stopTime = new Date();
               this.httpCalls[i].success = success;
               this.httpCalls[i].requestTime = (this.httpCalls[i].stopTime - this.httpCalls[i].startTime) / 1000;
             }
-          };
+          }
         },
         clearHttpHistory: function () {
           this.httpCalls.splice(0,this.httpCalls.length);
         }
-      }
+      };
     }
-  }
+  };
 });

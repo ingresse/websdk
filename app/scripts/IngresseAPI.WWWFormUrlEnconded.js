@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('ingresseSDK')
   .provider('wwwFormUrlEnconded', function ($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';

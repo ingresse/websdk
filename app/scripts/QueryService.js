@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('ingresseEmulatorApp').service('QueryService', function ($location, $rootScope) {
   return {
     setSelectedTab: function (tab) {
@@ -9,7 +11,7 @@ angular.module('ingresseEmulatorApp').service('QueryService', function ($locatio
 
       for (key in search) {
         $location.search(key, null);
-      };
+      }
 
       $location.search('method', method);
       if (identifier) {
@@ -53,9 +55,9 @@ angular.module('ingresseEmulatorApp').service('QueryService', function ($locatio
               }
               break;
             }
-          };
+          }
         }
       }
     }
-  }
+  };
 });

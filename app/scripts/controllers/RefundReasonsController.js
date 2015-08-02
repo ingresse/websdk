@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('ingresseEmulatorApp')
   .config(function ($routeProvider) {
     $routeProvider
@@ -6,9 +8,9 @@ angular.module('ingresseEmulatorApp')
         controller: 'RefundReasonsController'
       });
   })
-  .controller('RefundReasonsController', function ($scope, ingresseAPI, IngresseAPI_UserService, EmulatorService, QueryService) {
+  .controller('RefundReasonsController', function ($scope, ingresseAPI, IngresseApiUserService, EmulatorService, QueryService) {
     $scope.$on('$viewContentLoaded', function () {
-      $scope.credentials = IngresseAPI_UserService.credentials;
+      $scope.credentials = IngresseApiUserService.credentials;
       QueryService.getSearchParams($scope.fields);
       $scope.isMethodSelectionHidden = true;
       QueryService.setSelectedTab('refundReasons');

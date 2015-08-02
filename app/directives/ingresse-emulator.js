@@ -6,20 +6,20 @@
 * Description
 */
 
-angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator', function (ingresseAPI_Preferences) {
+angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator', function (ingresseApiPreferences) {
   // Runs during compile
   return {
     scope: {}, // {} = isolate, true = child, false/undefined = no change
-    controller: function ($scope, ipCookie, ingresseAPI, ingresseAPI_Preferences, IngresseAPI_UserService, IngresseAPI_Freepass, VenusActivityIndicatorService) {
+    controller: function ($scope, ipCookie, ingresseAPI, ingresseApiPreferences, IngresseApiUserService, IngresseAPI_Freepass, VenusActivityIndicatorService) {
       $scope.domain = ipCookie('host');
 
       if (!$scope.domain) {
-        $scope.domain = ingresseAPI_Preferences._host;
+        $scope.domain = ingresseApiPreferences._host;
       } else {
-        ingresseAPI_Preferences.setHost($scope.domain);
+        ingresseApiPreferences.setHost($scope.domain);
       }
 
-      $scope.httpCalls = ingresseAPI_Preferences.httpCalls;
+      $scope.httpCalls = ingresseApiPreferences.httpCalls;
       $scope.result = {};
       $scope.collapsed = false;
       $scope.user = {};
@@ -37,20 +37,20 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         }
 
         ipCookie('host', host, {expires: 365});
-        ingresseAPI_Preferences.setHost(host);
-        $scope.domain = ingresseAPI_Preferences._host;
+        ingresseApiPreferences.setHost(host);
+        $scope.domain = ingresseApiPreferences._host;
       };
 
       $scope.setPrivateKey = function (key) {
-        ingresseAPI_Preferences.setPrivateKey(key);
+        ingresseApiPreferences.setPrivateKey(key);
       };
 
       $scope.setPublicKey = function (key) {
-        ingresseAPI_Preferences.setPublicKey(key);
+        ingresseApiPreferences.setPublicKey(key);
       };
 
       $scope.clearHttpHistory = function () {
-        ingresseAPI_Preferences.clearHttpHistory();
+        ingresseApiPreferences.clearHttpHistory();
       };
 
       $scope.updateTicketStatusAddTicket = function () {
@@ -361,11 +361,11 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
       };
 
       $scope.login = function () {
-        IngresseAPI_UserService.login();
+        IngresseApiUserService.login();
       };
 
       $scope.logout = function () {
-        IngresseAPI_UserService.logout();
+        IngresseApiUserService.logout();
       };
 
       $scope.refund = function (form) {
@@ -416,8 +416,8 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
 
       $scope.$on('userSessionSaved', function () {
         $scope.user = {
-          token: IngresseAPI_UserService.token,
-          id: IngresseAPI_UserService.userId
+          token: IngresseApiUserService.token,
+          id: IngresseApiUserService.userId
         };
       });
 
@@ -442,21 +442,21 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
       });
 
       if (ipCookie('publickey') !== "") {
-        ingresseAPI_Preferences.setPublicKey(ipCookie('publickey'));
+        ingresseApiPreferences.setPublicKey(ipCookie('publickey'));
       }
 
       if (ipCookie('privatekey') !== "") {
-        ingresseAPI_Preferences.setPrivateKey(ipCookie('privatekey'));
+        ingresseApiPreferences.setPrivateKey(ipCookie('privatekey'));
       }
 
       if (ipCookie.host !== "") {
         $scope.setHost(ipCookie.host);
       }
 
-      $scope.privateKey = ingresseAPI_Preferences.privatekey;
-      $scope.publicKey = ingresseAPI_Preferences.publickey;
+      $scope.privateKey = ingresseApiPreferences.privatekey;
+      $scope.publicKey = ingresseApiPreferences.publickey;
     },
     restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
-    templateUrl: ingresseAPI_Preferences.templates_directory + 'ingresse-emulator.html'
+    templateUrl: ingresseApiPreferences.templates_directory + 'ingresse-emulator.html'
   };
 });

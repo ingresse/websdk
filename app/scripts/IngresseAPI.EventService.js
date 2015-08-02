@@ -1,5 +1,7 @@
+'use strict';
+
 angular.module('ingresseSDK')
-.service('IngresseAPI_EventService', function EventService(ingresseAPI, $log, $q) {
+.service('IngresseApiEventService', function EventService(ingresseAPI, $log) {
   return {
     convertAPIEventObject: function(apiEvent) {
       var appEvent = {
@@ -34,7 +36,7 @@ angular.module('ingresseSDK')
       appEvent.nextAvailableDate = this._getNextAvailableDate(appEvent.sessions);
 
       if (!appEvent.nextAvailableDate) {
-        appEvent.nextAvailableDate = "Não há sessões disponíveis";
+        appEvent.nextAvailableDate = 'Não há sessões disponíveis';
         appEvent.saleAvailable = false;
       }
 
@@ -46,7 +48,7 @@ angular.module('ingresseSDK')
     _addMomentToSessions: function(apiEventDateArray) {
       for (var i = 0; i < apiEventDateArray.length; i++) {
         apiEventDateArray[i].moment = this._convertApiDateTimeToMoment(apiEventDateArray[i].dateTime);
-      };
+      }
 
       return apiEventDateArray;
     },
@@ -62,7 +64,7 @@ angular.module('ingresseSDK')
         if (eventDateArray[i].moment.isAfter(now) && (hi === undefined || hi.moment.isAfter(eventDateArray[i].moment))) {
           hi = eventDateArray[i];
         }
-      };
+      }
 
       if(hi) {
         return hi;
@@ -72,26 +74,24 @@ angular.module('ingresseSDK')
     },
     _getNextAvailableDate: function(sessionArray) {
       var availableDates = [];
-      var nextAvailableDate = "";
+      var nextAvailableDate = '';
 
       // Filter all sessions with the available status and convert the date to moment.
       for (var i = 0; i < sessionArray.length; i++) {
-        if (sessionArray[i].status === "available" && !sessionArray[i].moment.isBefore(moment())) {
+        if (sessionArray[i].status === 'available' && !sessionArray[i].moment.isBefore(moment())) {
           availableDates.push(sessionArray[i]);
         }
-      };
-
-      var sevenDaysLatter = moment().add(7, 'days');
+      }
 
       // Format the response based on the quantity of available dates.
       if(availableDates.length > 1){
         // Format the response based on time.
-        nextAvailableDate = availableDates[0].moment.calendar() + " e mais " + (availableDates.length - 1);
+        nextAvailableDate = availableDates[0].moment.calendar() + ' e mais ' + (availableDates.length - 1);
 
         if(availableDates.length < 3){
-          nextAvailableDate += " data"
+          nextAvailableDate += ' data';
         }else{
-          nextAvailableDate += " datas"
+          nextAvailableDate += ' datas';
         }
         return nextAvailableDate;
       }
@@ -99,7 +99,7 @@ angular.module('ingresseSDK')
       if(availableDates.length === 1){
         // Just one available date.
         nextAvailableDate = availableDates[0].moment.calendar();
-        nextAvailableDate += ' ás ' + availableDates[0].moment.format("HH:mm");
+        nextAvailableDate += ' ás ' + availableDates[0].moment.format('HH:mm');
       }
 
       if (availableDates.length === 0) {
@@ -109,25 +109,25 @@ angular.module('ingresseSDK')
 
       return nextAvailableDate;
     },
-    _getEventStatus: function(private,status) {
-      if (status === "published" && !private) {
-        return "Público";
+    _getEventStatus: function (isPrivate, status) {
+      if (status === 'published' && !isPrivate) {
+        return 'Público';
       }
 
-      if (status === "published" && private) {
-        return "Privado";
+      if (status === 'published' && isPrivate) {
+        return 'Privado';
       }
 
-      if (status === "hidden") {
-        return "Escondido";
+      if (status === 'hidden') {
+        return 'Escondido';
       }
 
-      if (status === "draft") {
-        return "Rascunho";
+      if (status === 'draft') {
+        return 'Rascunho';
       }
     },
     _convertApiDateTimeToMoment: function (apiDateTime) {
-      return moment(apiDateTime.date + " " + apiDateTime.time,"DD/MM/YYYY HH:mm:ss");
+      return moment(apiDateTime.date + ' ' + apiDateTime.time,'DD/MM/YYYY HH:mm:ss');
     }
-  }
+  };
 });

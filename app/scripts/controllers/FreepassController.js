@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('ingresseEmulatorApp')
   .config(function ($routeProvider) {
     $routeProvider
@@ -6,10 +8,10 @@ angular.module('ingresseEmulatorApp')
         controller: 'FreepassController'
       });
   })
-  .controller('FreepassController', function ($scope, ingresseAPI, EmulatorService, QueryService, IngresseAPI_UserService) {
+  .controller('FreepassController', function ($scope, ingresseAPI, EmulatorService, QueryService, IngresseApiUserService) {
 
     $scope.$on('$viewContentLoaded', function () {
-      $scope.credentials = IngresseAPI_UserService.credentials;
+      $scope.credentials = IngresseApiUserService.credentials;
       QueryService.getSearchParams($scope.fields);
       $scope.isMethodSelectionHidden = true;
       QueryService.setSelectedTab('send');
@@ -25,10 +27,10 @@ angular.module('ingresseEmulatorApp')
             day = fields[i].model.getDate().toString();
             month = fields[i].model.getMonth().toString();
             if (month.length < 2) {
-              month = "0" + month;
+              month = '0' + month;
             }
             year = fields[i].model.getFullYear().toString();
-            obj[fields[i].label] = year + "-" + month + "-" + day;
+            obj[fields[i].label] = year + '-' + month + '-' + day;
           } else {
             obj[fields[i].label] = fields[i].model;
           }

@@ -8,22 +8,21 @@
  *
  * Main module of the application.
  */
-var app = angular
-  .module('ingresseEmulatorApp', [
-    'ngAnimate',
-    'ipCookie',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'ingresseSDK',
-    'gd.ui.jsonexplorer',
-    'ingresse.emulator',
-    'ngMaterial',
-    'ngMessages'
-  ])
-  .config(function ($routeProvider, ingresseAPI_PreferencesProvider, $mdThemingProvider) {
-    ingresseAPI_PreferencesProvider.setTemplateDirectory('directives/');
+angular.module('ingresseEmulatorApp', [
+  'ngAnimate',
+  'ipCookie',
+  'ngResource',
+  'ngRoute',
+  'ngSanitize',
+  'ngTouch',
+  'ingresseSDK',
+  'ngJsonExplorer',
+  'ingresse.emulator',
+  'ngMaterial',
+  'ngMessages'
+])
+  .config(function (ingresseApiPreferencesProvider, $mdThemingProvider) {
+    ingresseApiPreferencesProvider.setTemplateDirectory('directives/');
 
     $mdThemingProvider.theme('default')
       .primaryPalette('blue')
@@ -31,8 +30,8 @@ var app = angular
   });
 
 
-angular.module('ingresseEmulatorApp').filter('momentum', function() {
-  return function(input,format) {
+angular.module('ingresseEmulatorApp').filter('momentum', function () {
+  return function (input, format) {
     var momentDate = moment(input);
     var output = null;
     if(format) {
@@ -41,6 +40,6 @@ angular.module('ingresseEmulatorApp').filter('momentum', function() {
     }
 
     output = momentDate.format('DD/MM/YYYY');
-    return output
+    return output;
   };
 });

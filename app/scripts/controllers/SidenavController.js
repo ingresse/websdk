@@ -1,10 +1,12 @@
+'use strict';
+
 angular.module('ingresseEmulatorApp')
-  .controller('SidenavController', function ($scope, ingresseAPI, IngresseAPI_UserService, ingresseAPI_Preferences, ipCookie, $mdSidenav, $mdDialog, $timeout) {
+  .controller('SidenavController', function ($scope, ingresseApiPreferences, ipCookie, $mdSidenav, $mdDialog, $timeout) {
     $scope.init = function () {
       $scope.loadCookies();
 
-      $scope.privateKey = ingresseAPI_Preferences.privatekey;
-      $scope.publicKey = ingresseAPI_Preferences.publickey;
+      $scope.privateKey = ingresseApiPreferences.privatekey;
+      $scope.publicKey = ingresseApiPreferences.publickey;
 
       if (!$scope.privateKey || !$scope.publicKey) {
         $mdSidenav('left').toggle();
@@ -12,33 +14,33 @@ angular.module('ingresseEmulatorApp')
       }
     };
 
-    $scope.showError = function(text) {
-      alert = $mdDialog.alert({
+    $scope.showError = function (text) {
+      var alert = $mdDialog.alert({
         title: 'Erro',
         content: text,
         ok: 'Close'
       });
       $mdDialog
-        .show( alert )
-        .finally(function() {
+        .show(alert)
+        .finally(function () {
           alert = undefined;
         });
 
       $scope.selectedIndex = 0;
     };
 
-    $scope.openLeftMenu = function() {
+    $scope.openLeftMenu = function () {
       $mdSidenav('left').toggle();
     };
 
     $scope.updatePrivateKey = function (privateKey) {
       ipCookie('privatekey', privateKey, {expires: 365});
-      ingresseAPI_Preferences.setPrivateKey(privateKey);
+      ingresseApiPreferences.setPrivateKey(privateKey);
     };
 
     $scope.updatePublicKey = function (publicKey) {
       ipCookie('publickey', publicKey, {expires: 365});
-      ingresseAPI_Preferences.setPublicKey(publicKey);
+      ingresseApiPreferences.setPublicKey(publicKey);
     };
 
     $scope.loadCookies = function () {
@@ -46,16 +48,16 @@ angular.module('ingresseEmulatorApp')
       var privateKey = ipCookie('privatekey');
 
       if (publicKey) {
-        ingresseAPI_Preferences.setPublicKey(publicKey);
+        ingresseApiPreferences.setPublicKey(publicKey);
       }
 
       if (privateKey) {
-        ingresseAPI_Preferences.setPrivateKey(privateKey);
+        ingresseApiPreferences.setPrivateKey(privateKey);
       }
     };
 
     $timeout(function () {
-        //DOM has finished rendering
-        $scope.init();
+      //DOM has finished rendering
+      $scope.init();
     });
   });

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('ingresseEmulatorApp')
   .config(function ($routeProvider) {
     $routeProvider
@@ -6,11 +8,11 @@ angular.module('ingresseEmulatorApp')
         controller: 'EventController'
       });
   })
-  .controller('EventController', function ($scope, ingresseAPI, IngresseAPI_UserService, $routeParams, EmulatorService, QueryService) {
+  .controller('EventController', function ($scope, ingresseAPI, IngresseApiUserService, EmulatorService, QueryService) {
     $scope.request = {};
 
     $scope.$on('$viewContentLoaded', function () {
-      $scope.credentials = IngresseAPI_UserService.credentials;
+      $scope.credentials = IngresseApiUserService.credentials;
       QueryService.getSearchParams($scope.fields);
     });
 
@@ -24,10 +26,10 @@ angular.module('ingresseEmulatorApp')
             day = tab.fields[i].model.getDate().toString();
             month = tab.fields[i].model.getMonth().toString();
             if (month.length < 2) {
-              month = "0" + month;
+              month = '0' + month;
             }
             year = tab.fields[i].model.getFullYear().toString();
-            obj[tab.fields[i].label] = year + "-" + month + "-" + day;
+            obj[tab.fields[i].label] = year + '-' + month + '-' + day;
           } else {
             obj[tab.fields[i].label] = tab.fields[i].model;
           }
@@ -107,26 +109,6 @@ angular.module('ingresseEmulatorApp')
       QueryService.setSearchParams('eventTicketTypes', $scope.fields.eventTicketTypes.identifier, filters);
 
       ingresseAPI.event.getTicketTypes(identifier, filters, $scope.credentials.token)
-        .then(function (response) {
-          EmulatorService.addResponse(response, true);
-        })
-        .catch(function (error) {
-          EmulatorService.addResponse(error, false);
-        })
-        .finally(function () {
-          $scope.isLoading = false;
-        });
-    };
-
-    $scope.getGuestList = function () {
-      $scope.isLoading = true;
-
-      var identifier = $scope.fields.guestList.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.guestList);
-
-      QueryService.setSearchParams('guestList', $scope.fields.guestList.identifier, filters);
-
-      ingresseAPI.event.getGuestList(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -316,76 +298,6 @@ angular.module('ingresseEmulatorApp')
               trueValue: '1',
               falseValue: '0'
             },
-            disabled: false
-          }
-        ]
-      },
-      guestList: {
-        label: 'Guest List',
-        action: $scope.getGuestList,
-        authentication: true,
-        identifier: {
-          label: 'eventId',
-          model: '',
-          type: 'text',
-          disabled: false,
-          required: true
-        },
-        fields: [
-          {
-            label: 'fields',
-            model: '',
-            type: 'text',
-            disabled: false
-          },
-          {
-            label: 'page',
-            model: '',
-            type: 'number',
-            disabled: false
-          },
-          {
-            label: 'pageSize',
-            model: '',
-            type: 'number',
-            disabled: false
-          },
-          {
-            label: 'status',
-            model: '',
-            type: 'option',
-            options: ['all', 'checked', 'unchecked'],
-            disabled: false
-          },
-          {
-            label: 'term',
-            model: '',
-            type: 'text',
-            disabled: false
-          },
-          {
-            label: 'channel',
-            model: '',
-            type: 'option',
-            options: ['online', 'offline'],
-            disabled: false
-          },
-          {
-            label: 'tickettypeid',
-            model: '',
-            type: 'number',
-            disabled: false
-          },
-          {
-            label: 'sessionid',
-            model: '',
-            type: 'number',
-            disabled: false
-          },
-          {
-            label: 'from',
-            model: '',
-            type: 'date',
             disabled: false
           }
         ]
