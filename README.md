@@ -7,7 +7,7 @@ Nosso SDK é um módulo do angular, basta baixar o sdk, adicionar a referência 
 
 ## Instalando ##
 O ingresse-websdk esta disponível no bower
-    
+
     bower install ingresse-websdk -S
 
 ## Utilização ##
@@ -18,15 +18,15 @@ Antes de mais nada adicione a dependência no seu módulo
 
 Todo APP integrado com a ingresse precisa de sua chave privada e pública para fazer chamadas a api, para configurar fica assim:
 
-    angular.module('SEU_APP').config(function(ingresseAPIProvider) {
-        ingresseAPIProvider.setPublicKey('sua chave pública');
-	    ingresseAPIProvider.setPrivateKey('sua chave privada');
+    angular.module('SEU_APP').config(function(ingresseApiPreferencesProvider) {
+        ingresseApiPreferencesProvider.setPublicKey('sua chave pública');
+	    ingresseApiPreferencesProvider.setPrivateKey('sua chave privada');
     });
 
 Ai é só injetar nas suas controllers
 
     angular.module('SEU_APP').controller('SuaController',['ingresseAPI',function(ingresseAPI){
-        ... seu código ... 
+        ... seu código ...
     }]);
 
 ## Chamadas ##
@@ -41,8 +41,9 @@ Ai é só injetar nas suas controllers
 [Veja no doc](http://dev.ingresse.com/#/references/event/get-unique-event "Title")
 
 #### Exemplo: ####
-    ingresseAPI.getEvent(eventId, fields).then(function(response){
-        if(!result){
-			return;
-		}
-	});
+    ingresseAPI.getEvent(eventId, fields)
+        .then(function(response){
+            if(!result){
+    			return;
+    		}
+    	});

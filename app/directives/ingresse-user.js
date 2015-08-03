@@ -1,12 +1,12 @@
-angular.module('ingresseSDK').directive('ingresseUser', function (ingresseAPI, ingresseAPI_Preferences) {
+angular.module('ingresseSDK').directive('ingresseUser', function (ingresseAPI, ingresseApiPreferences) {
   return {
-    templateUrl: ingresseAPI_Preferences.templates_directory + 'ingresse-user.html',
+    templateUrl: ingresseApiPreferences.templates_directory + 'ingresse-user.html',
     restrict: 'A',
     scope: {
       user: '=',
       requestToken: '='
     },
-    controller: function($scope, ingresseAPI, IngresseAPI_UserService) {
+    controller: function($scope, ingresseAPI, IngresseApiUserService) {
       $scope.$watch('user.id', function () {
         if (!$scope.user) {
           return;

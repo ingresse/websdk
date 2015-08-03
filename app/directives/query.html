@@ -1,0 +1,144 @@
+<div>
+    <div layout-sm"column" layout-md="column" layout-gt-md="row">
+        <md-input-container style="width: 400px;">
+            <md-select
+                placeholder="domain"
+                ng-model="domain"
+                ng-change="setHost(domain)">
+                <md-option value="https://api.ingresse.com">https://api.ingresse.com</md-option>
+                <md-option value="https://apihml.ingresse.com">https://apihml.ingresse.com</md-option>
+                <md-option value="https://apistg.ingresse.com">https://apistg.ingresse.com</md-option>
+                <md-option value="https://private-3dc774-ingresseapi.apiary-mock.com">https://private-3dc774-ingresseapi.apiary-mock.com</md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container style="width: 250px;">
+            <md-select
+                placeholder="method"
+                ng-model="method"
+                ng-change="methodSelected(method)">
+                <md-option value="/">/</md-option>
+                <md-option value="/event">/event</md-option>
+                <md-option value="/ticket">/ticket</md-option>
+                <md-option value="/user">/user</md-option>
+                <md-option value="/sale">/sale</md-option>
+                <md-option value="/ticketbooth">/ticketbooth</md-option>
+                <md-option value="/error">/error</md-option>
+                <md-option value="/dashboard">/dashboard</md-option>
+                <md-option value="/producer">/producer</md-option>
+                <md-option value="/featured">/featured</md-option>
+                <md-option value="/refundReasons">/refundReasons</md-option>
+                <md-option value="/home">/home</md-option>
+                <md-option value="/freepass">/freepass</md-option>
+                <md-option value="/login">/login</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+    <md-input-container ng-hide="isMethodSelectionHidden">
+        <md-select
+            placeholder="method"
+            ng-model="tabSelected">
+            <md-option value="{{key}}" ng-repeat="(key, value) in fields">/{{value.label}}</md-option>
+        </md-select>
+    </md-input-container>
+    <div ng-repeat="tab in fields" ng-show="fields[tabSelected].label === tab.label">
+        <form name="queryForm" ng-submit="tab.action()">
+            <md-input-container ng-if="tab.authentication">
+                <label>User token</label>
+                <input type="text" ng-model="credentials.token" required/>
+            </md-input-container>
+
+            <md-input-container ng-if="tab.identifier">
+                <label>{{tab.identifier.label}}</label>
+                <input name="identifier" type="{{tab.identifier.type}}" ng-model="tab.identifier.model" ng-disabled="tab.identifier.disabled" ng-required="tab.identifier.required"/>
+                <div ng-messages="queryForm.identifier.$error">
+                  <div ng-message="required, pristine, dirty">{{tab.identifier.requiredMessage}}</div>
+                </div>
+            </md-input-container>
+
+
+            <label ng-if="tab.fields.length > 0">GET PARAMS</label>
+            <md-input-container ng-repeat="input in tab.fields">
+                <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone' || input.type === 'object'">{{input.label}}</label>
+
+                <input name="{{input.label}}" ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled" ng-required="input.required"/>
+
+                <md-checkbox name="{{input.label}}"
+                    ng-if="input.type === 'checkbox' && input.checkbox.trueValue"
+                    ng-model="input.model"
+                    ng-true-value="{{input.checkbox.trueValue}}"
+                    ng-false-value="{{input.checkbox.falseValue}}">
+                    {{input.label}}
+                </md-checkbox>
+
+                <md-checkbox name="{{input.label}}"
+                    ng-if="input.type === 'checkbox' && !input.checkbox.trueValue"
+                    ng-model="input.model">
+                    {{input.label}}
+                </md-checkbox>
+
+                <md-select
+                    ng-if="input.type === 'option'"
+                    placeholder="{{input.label}}"
+                    ng-model="input.model"
+                    ng-required="input.required">
+                    <md-option value=""></md-option>
+                    <md-option
+                        ng-repeat="option in input.options"
+                        value="{{option}}">
+                        {{option}}
+                    </md-option>
+                </md-select>
+
+                <json-explorer ng-if="input.type === 'object'" class="result" json-data="{{input.model}}" collapsed="false"></json-explorer>
+
+                <div ng-messages="queryForm[input.label].$error" ng-if="input.required">
+                  <div ng-message="required, pristine, dirty">{{input.requiredMessage}}</div>
+                </div>
+            </md-input-container>
+
+            <label ng-if="tab.postParams.length > 0">POST PARAMS</label>
+            <md-input-container ng-repeat="input in tab.postParams">
+                <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone' || input.type === 'object'">{{input.label}}</label>
+
+                <input name="{{input.label}}" ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone'" type="{{input.type}}" ng-model="input.model" ng-disabled="input.disabled" ng-required="input.required"/>
+
+                <md-checkbox name="{{input.label}}"
+                    ng-if="input.type === 'checkbox' && input.checkbox.trueValue"
+                    ng-model="input.model"
+                    ng-true-value="{{input.checkbox.trueValue}}"
+                    ng-false-value="{{input.checkbox.falseValue}}">
+                    {{input.label}}
+                </md-checkbox>
+
+                <md-checkbox name="{{input.label}}"
+                    ng-if="input.type === 'checkbox' && !input.checkbox.trueValue"
+                    ng-model="input.model">
+                    {{input.label}}
+                </md-checkbox>
+
+                <md-select
+                    ng-if="input.type === 'option'"
+                    placeholder="{{input.label}}"
+                    ng-model="input.model"
+                    ng-required="input.required">
+                    <md-option value=""></md-option>
+                    <md-option
+                        ng-repeat="option in input.options"
+                        value="{{option}}">
+                        {{option}}
+                    </md-option>
+                </md-select>
+
+                <json-explorer ng-if="input.type === 'object'" class="result" json-data="{{input.model}}" collapsed="false"></json-explorer>
+
+                <div ng-messages="queryForm[input.label].$error" ng-if="input.required">
+                  <div ng-message="required, pristine, dirty">{{input.requiredMessage}}</div>
+                </div>
+            </md-input-container>
+
+            <div class="md-actions" layout="row" layout-align="end center">
+                <md-button ng-disabled="!queryForm.$valid">Send</md-button>
+            </div>
+        </form>
+    </div>
+</div>

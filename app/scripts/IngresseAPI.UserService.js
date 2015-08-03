@@ -1,8 +1,9 @@
-angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserService($rootScope, ipCookie){
+'use strict';
+
+angular.module('ingresseSDK').service('IngresseApiUserService', function UserService($rootScope, ipCookie){
     return {
         data: null,
-        userId: null,
-        token: null,
+        credentials: {},
         userHasLoggedOut: function () {
             $rootScope.$broadcast('userHasLoggedOut');
         },
@@ -13,10 +14,10 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
             }
         },
         getSavedLogin: function () {
-            this.userId = ipCookie('userId');
-            this.token = ipCookie('token');
+            this.credentials.userId = ipCookie('userId');
+            this.credentials.token = ipCookie('token');
 
-            if(this.userId || this.token){
+            if(this.credentials.userId || this.credentials.token){
                 $rootScope.$broadcast('userSessionSaved');
                 return true;
             }
@@ -27,19 +28,19 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
             $rootScope.$broadcast('showRegister');
         },
         logout: function(){
-            ipCookie('userId', "", { expires: -1, domain: '.ingresse.com' });
-            ipCookie('token', "", { expires: -1, domain: '.ingresse.com' });
-            ipCookie('userId', "", { expires: -1});
-            ipCookie('token', "", { expires: -1});
+            ipCookie('userId', '', { expires: -1, domain: '.ingresse.com' });
+            ipCookie('token', '', { expires: -1, domain: '.ingresse.com' });
+            ipCookie('userId', '', { expires: -1});
+            ipCookie('token', '', { expires: -1});
             $rootScope.$broadcast('showLogout');
 
             this.data = null;
-            this.userId = null;
-            this.token = null;
+            this.credentials.userId = null;
+            this.credentials.token = null;
         },
         saveCredentials: function (token, userId){
-            this.userId = userId;
-            this.token = token;
+            this.credentials.userId = userId;
+            this.credentials.token = token;
             ipCookie('userId', userId, { expires: 7, domain: '.ingresse.com' });
             ipCookie('token', token, { expires: 7, domain: '.ingresse.com' });
             $rootScope.$broadcast('userSessionSaved');
@@ -56,5 +57,5 @@ angular.module('ingresseSDK').service('IngresseAPI_UserService', function UserSe
 
             return this.city;
         }
-    }
+    };
 });
