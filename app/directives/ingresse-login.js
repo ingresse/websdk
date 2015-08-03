@@ -35,7 +35,7 @@ angular.module('ingresseSDK').directive('ingresseLogin', function (ingresseApiPr
             });
         },
         restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
-        templateUrl: ingresseApiPreferences.templates_directory + 'ingresse-login.html',
+        templateUrl: ingresseApiPreferences.templatesDirectory + 'ingresse-login.html',
         link: function($scope, iElm, iAttrs, controller) {
 
         }

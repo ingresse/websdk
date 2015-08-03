@@ -105,15 +105,10 @@ module.exports = function (grunt) {
       dist: {
         options: {
           open: true,
-          base: '<%= yeoman.dist %>',
           middleware: function (connect) {
             return [
               connect.static('.tmp'),
-              connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
-              ),
-              connect.static(appConfig.app)
+              connect.static(appConfig.dist)
             ];
           }
         }
@@ -352,7 +347,8 @@ module.exports = function (grunt) {
             'views/{,*/}*.html',
             'scripts/{,*/}*.html',
             'scripts/{,*/}*.json',
-            'styles/{,*/}*.{webp,svg,gif}',
+            'directives/**/*',
+            'styles/**/*.{webp,svg,gif}',
             'styles/fonts/*'
           ]
         }, {
@@ -360,18 +356,6 @@ module.exports = function (grunt) {
           cwd: '.tmp/styles',
           dest: '<%= yeoman.dist %>/styles',
           src: ['generated/*']
-        }]
-      },
-      dependencies: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: 'bower_components',
-          dest: '<%= yeoman.dist %>/bower_components',
-          src: [
-            '**/*.{html,css}',
-            'venus/**/*.{eot,svg,ttf,woff,woff2,gif}'
-          ]
         }]
       },
       styles: {
@@ -444,7 +428,6 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    'copy:dependencies',
     'cdnify',
     'cssmin',
     'uglify',

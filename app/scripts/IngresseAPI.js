@@ -43,11 +43,11 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
     var now = new Date();
     var UTCYear = now.getUTCFullYear();
-    var UTCMonth = this.formatTwoCaracters(now.getUTCMonth() + 1);
-    var UTCDay = this.formatTwoCaracters(now.getUTCDate());
-    var UTCHours = this.formatTwoCaracters(now.getUTCHours());
-    var UTCMinutes = this.formatTwoCaracters(now.getUTCMinutes());
-    var UTCSeconds = this.formatTwoCaracters(now.getUTCSeconds());
+    var UTCMonth = this._formatTwoCaracters(now.getUTCMonth() + 1);
+    var UTCDay = this._formatTwoCaracters(now.getUTCDate());
+    var UTCHours = this._formatTwoCaracters(now.getUTCHours());
+    var UTCMinutes = this._formatTwoCaracters(now.getUTCMinutes());
+    var UTCSeconds = this._formatTwoCaracters(now.getUTCSeconds());
 
     var timestamp = UTCYear + '-' + UTCMonth + '-' + UTCDay + 'T' + UTCHours + ':' + UTCMinutes + ':' + UTCSeconds + 'Z';
     var data1 = ingresseApiPreferences.publickey + timestamp;

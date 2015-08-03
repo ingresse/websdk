@@ -27,16 +27,7 @@ html, body {
 }
 
 .result {
-  background-image: url(https://s3.amazonaws.com/ingresse-static/ticket_b.png);
-  background-repeat: no-repeat;
-  background-position: 97% 14px;
-  background-size: 30px;
   display: block;
-  padding: 20px;
-  background-color: #000;
-  border-radius: 5px;
-  box-shadow: 0 0 5px inset;
-  color: rgb(59,195,247);
   overflow: hidden;
 }
 
