@@ -269,6 +269,12 @@ angular.module('ingresseEmulatorApp')
             model: '',
             type: 'checkbox',
             disabled: false
+          },
+          {
+            label: 'passkey',
+            model: '',
+            type: 'text',
+            disabled: false
           }
         ]
       },
