@@ -17,7 +17,7 @@ var app = angular
     'ngSanitize',
     'ngTouch',
     'ingresseSDK',
-    'gd.ui.jsonexplorer',
+    'ngJsonExplorer',
     'ingresse.emulator',
     'venusUI'
   ])
