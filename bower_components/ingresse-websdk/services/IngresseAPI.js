@@ -1125,7 +1125,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           return url;
         },
 
-        ticketReservation: function (eventId, userId, token, tickets, discountCode) {
+        ticketReservation: function (eventId, userId, token, tickets, discountCode, passkey) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/shop/' + this.generateAuthKey() + '&usertoken=' + token;
@@ -1133,9 +1133,16 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           var reservation = {
             eventId: eventId,
             userId: userId,
-            tickets: tickets,
-            discountCode: discountCode
+            tickets: tickets
           };
+          
+          if (discountCode) {
+            reservation.discountCode = discountCode;
+          }
+          
+          if (passkey) {
+            reservation.passkey = passkey;
+          }
 
           $http.post(url, reservation)
             .success(function (response) {
