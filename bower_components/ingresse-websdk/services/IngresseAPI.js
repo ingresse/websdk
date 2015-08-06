@@ -1135,11 +1135,11 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             userId: userId,
             tickets: tickets
           };
-          
+
           if (discountCode) {
             reservation.discountCode = discountCode;
           }
-          
+
           if (passkey) {
             reservation.passkey = passkey;
           }
@@ -1214,7 +1214,7 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             month: Mês de expiração
           }
         */
-        payReservation: function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments) {
+        payReservation: function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments, passkey) {
 
           var deferred = $q.defer();
           var transactionDTO = {};
@@ -1227,7 +1227,8 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
               userId: userId,
               paymentMethod: paymentMethod,
               eventId: eventId,
-              tickets: tickets
+              tickets: tickets,
+              passkey: passkey
             };
 
             url = ingresseAPI_Preferences.getHost() + '/shop/' + self.generateAuthKey() + '&usertoken=' + token;
@@ -1260,7 +1261,8 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
             paymentMethod: paymentMethod,
             creditcard: creditCard,
             eventId: eventId,
-            tickets: tickets
+            tickets: tickets,
+            passkey: passkey
           };
 
           if (installments) {
