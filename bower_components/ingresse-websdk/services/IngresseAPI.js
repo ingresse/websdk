@@ -1,3 +1,4 @@
+/* global angular */
 /*jslint browser: true*/
 /*global PagarMe:true, CryptoJS: true*/
 
@@ -558,13 +559,17 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           Ingressos de um evento
           eventId: int
         */
-        getEventTickets: function (eventId, usertoken, pos) {
+        getEventTickets: function (eventId, usertoken, pos, passkey) {
           var deferred = $q.defer();
 
           var url = ingresseAPI_Preferences.getHost() + '/event/' + eventId + '/tickets/' + this.generateAuthKey();
 
           if (usertoken) {
             url += '&usertoken=' + usertoken;
+          }
+
+          if (passkey) {
+            url += '&passkey=' + passkey;
           }
 
           if (pos) {
