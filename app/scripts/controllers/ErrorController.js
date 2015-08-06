@@ -45,7 +45,7 @@ angular.module('ingresseEmulatorApp')
 
       QueryService.setSearchParams('error', $scope.fields.error.identifier);
 
-      ingresseAPI.getError(identifier)
+      ingresseAPI.error.get(identifier)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
