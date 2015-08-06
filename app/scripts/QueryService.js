@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ingresseEmulatorApp').service('QueryService', function ($location, $rootScope) {
+angular.module('ingresseEmulatorApp').service('QueryService', function ($location) {
   return {
     setSelectedTab: function (tab) {
       this.selectedTab = tab;
@@ -30,10 +30,6 @@ angular.module('ingresseEmulatorApp').service('QueryService', function ($locatio
 
       if (!params.method || !fields[params.method]) {
         return;
-      }
-
-      if (params.method) {
-        $rootScope.$broadcast('selectedTab', params.method);
       }
 
       if (fields[params.method].identifier) {
