@@ -99,7 +99,7 @@ angular.module('ingresseSDK')
       if(availableDates.length === 1){
         // Just one available date.
         nextAvailableDate = availableDates[0].moment.calendar();
-        nextAvailableDate += ' ás ' + availableDates[0].moment.format('HH:mm');
+        nextAvailableDate += ' às ' + availableDates[0].moment.format('HH:mm');
       }
 
       if (availableDates.length === 0) {

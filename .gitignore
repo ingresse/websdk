@@ -5,3 +5,5 @@ node_modules
 .buildignore
 .htaccess
 bower_components
+.settings
+typings

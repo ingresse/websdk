@@ -64,12 +64,12 @@ angular.module('ingresseSDK')
             }
 
             if (error.code === 1029 || error.code === 1030) {
-              error.message = 'O código de desconto inforado não esta correto.';
+              error.message = 'O código de desconto informado não esta correto.';
               return $q.reject(error);
             }
 
             if (error.code === 1031) {
-              error.message = 'Esta faltando alguma informação do cartão de crédito, verifique se você não esqueceu de preencher algo.';
+              error.message = 'Está faltando alguma informação do cartão de crédito, verifique se você não esqueceu de preencher algo.';
               return $q.reject(error);
             }
 
@@ -119,7 +119,7 @@ angular.module('ingresseSDK')
             }
 
             if (error.code === 2008) {
-              error.message = 'Sua conexão não esta segura (https)';
+              error.message = 'Sua conexão não está segura (https)';
               return $q.reject(error);
             }
 

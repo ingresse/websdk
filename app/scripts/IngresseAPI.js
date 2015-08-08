@@ -1,13 +1,14 @@
+/// <reference path="../../typings/angularjs/angular.d.ts"/>
 'use strict';
 
-function receiveMessage(event) {
+function receiveMessage (event) {
   if (event.origin !== 'https://dk57nqppwurwj.cloudfront.net' && event.origin !== 'https://compra.ingresse.com') {
     return;
   }
 
   var obj = JSON.parse(event.data);
   angular.element(document.body).scope().$broadcast('ingresseAPI.userHasLogged', obj);
-}
+};
 
 window.addEventListener('message', receiveMessage, false);
 
