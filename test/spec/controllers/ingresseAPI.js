@@ -181,4 +181,49 @@ describe('Service: ingresesAPI', function () {
     var url = apisdk.producer.getCustomerListCSVExportURL(producerId, usertoken);
     expect(url).toBe(preferences._host + '/producer/' + producerId + '/customerExport' + apisdk._generateAuthKey() + '&usertoken=usertoken');
   });
+  
+  it('should GET Sales Group Report', function () {
+    var identifier = 'test';
+    var filters = {
+      teste: 'teste'
+    };
+    var usertoken = 'usertoken';
+
+    apisdk.producer.getSalesGroupReport(identifier, filters, usertoken);
+    httpBackend.expectGET(preferences._host + '/producer/' + identifier + '/salesgroupReport' + apisdk._generateAuthKey() + '&test=test&usertoken=usertoken');
+  });
+  
+  it('should GET Sales Group Payment Report', function () {
+    var identifier = 'test';
+    var filters = {
+      teste: 'teste'
+    };
+    var usertoken = 'usertoken';
+
+    apisdk.producer.getSalesGroupReport(identifier, filters, usertoken);
+    httpBackend.expectGET(preferences._host + '/producer/' + identifier + '/salesgroupPaymentReport' + apisdk._generateAuthKey() + '&test=test&usertoken=usertoken');
+  });
+  
+  it('should GET sell from ticketbooth', function () {
+    var postObject = {
+      eventId: '12291',
+      payment: 'boleto',
+      userEmal: 'daniel.borlino@ingrese.com',
+      tickets: [
+        {
+          session: {
+            date: '24/10/2015',
+            time: '23:00:00'
+          },
+          ticketTypeId: 12345,
+          halfPrice: 0,
+          quantity: 1
+        }
+      ]
+    };
+    var usertoken = 'usertoken';
+
+    apisdk.ticketBooth.sell(postObject, usertoken);
+    httpBackend.expectPOST(preferences._host + '/ticketbooth/' + apisdk._generateAuthKey() + '&method=sell&usertoken=usertoken', postObject);
+  });
 });
