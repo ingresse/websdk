@@ -22,11 +22,14 @@ angular.module('ingresseEmulatorApp', [
   'ngMessages'
 ])
   .config(function (ingresseApiPreferencesProvider, $mdThemingProvider) {
-    ingresseApiPreferencesProvider.setTemplateDirectory('directives/');
-
     $mdThemingProvider.theme('default')
       .primaryPalette('blue')
       .accentPalette('orange');
+  })
+  .run(function ($rootScope) {
+    $rootScope.$on('$viewContentLoaded', function () {
+      $rootScope.ready = true;
+    });
   });
 
 

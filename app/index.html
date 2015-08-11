@@ -12,15 +12,12 @@
     <!-- build:css({./,app}) styles/main.css -->
     <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
     <link rel="stylesheet" href="bower_components/ng-json-explorer/dist/angular-json-explorer.css" />
-    <link rel="stylesheet" href="directives/ingresse-login.css" />
     <link rel="stylesheet" href="directives/ingresse-emulator.css" />
     <!-- endbuild -->
   </head>
   <body ng-app="ingresseEmulatorApp">
-
-    <div ingresse-login></div>
-
-    <div layout="column" layout-fill>
+    <div class="loading-app" ng-hide="ready">Loading...</div>
+    <div class="ng-cloak" layout="column" layout-fill>
         <md-sidenav layout-fill class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
 
             <div ng-controller="SidenavController" layout="column">
@@ -122,7 +119,6 @@
         <script src="scripts/controllers/FreepassController.js"></script>
         <script src="scripts/controllers/LoginController.js"></script>
 
-        <script src="directives/ingresse-login.js"></script>
         <script src="directives/ingresse-emulator.js"></script>
         <script src="directives/query-directive.js"></script>
         <script src="directives/results-directive.js"></script>

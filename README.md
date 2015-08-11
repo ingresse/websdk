@@ -6,9 +6,8 @@ Para facilitar a vida de desenvolvedores que queiram criar web-apps integrados a
 Nosso SDK é um módulo do angular, basta baixar o sdk, adicionar a referência nas dependências do seu APP e pronto!
 
 ## Instalando ##
-O ingresse-websdk esta disponível no bower
-
-    bower install ingresse-websdk -S
+Adicione no header do seu site:
+<script href="http://cdn.ingresse.com/websdk/scripts/websdk.js"></script>
 
 ## Utilização ##
 
@@ -18,32 +17,40 @@ Antes de mais nada adicione a dependência no seu módulo
 
 Todo APP integrado com a ingresse precisa de sua chave privada e pública para fazer chamadas a api, para configurar fica assim:
 
-    angular.module('SEU_APP').config(function(ingresseApiPreferencesProvider) {
-        ingresseApiPreferencesProvider.setPublicKey('sua chave pública');
-	    ingresseApiPreferencesProvider.setPrivateKey('sua chave privada');
-    });
+```javascript
+angular.module('SEU_APP').config(function(ingresseApiPreferencesProvider) {
+    ingresseApiPreferencesProvider.setPublicKey('sua chave pública');
+    ingresseApiPreferencesProvider.setPrivateKey('sua chave privada');
+});
+```
 
 Ai é só injetar nas suas controllers
+    
+```javascript
+angular.module('SEU_APP').controller('SuaController',['ingresseAPI',function(ingresseAPI){
+    ... seu código ...
+}]);
+```
 
-    angular.module('SEU_APP').controller('SuaController',['ingresseAPI',function(ingresseAPI){
-        ... seu código ...
-    }]);
+## Módulos ##
 
-## Chamadas ##
-
-### Get Event ###
-
-#### Parâmetros ####
-    eventid: (number) or (string) //numero do identificador do evento ou link.
-    fields: [(string) array] // Informações que devem ser retornadas do evento.
-
-#### Retorno ####
-[Veja no doc](http://dev.ingresse.com/#/references/event/get-unique-event "Title")
-
-#### Exemplo: ####
-    ingresseAPI.getEvent(eventId, fields)
-        .then(function(response){
-            if(!result){
-    			return;
-    		}
-    	});
+### ingresseAPI ###
+Este módulo é responsável por facilitar a comunicação com nossa API.
+    
+Exemplo:
+```javascript
+ingresseAPI.event.get(eventID, filters)
+    .then(function (event) {
+        // Do something... 
+    })
+    .catch(function (error) {
+        // Something got wrong...
+    });
+```
+### ingresseApiPreferences ###
+```javascript
+ingresseApiPreferences.setHost(host); // Define o host que será usado para comunicação (api.ingresse.com | apistg.ingresse.com | apihml.ingresse.com);
+ingresseApiPreferences.getHost(); // retorna o host que esta sendo usado no momento.
+ingresseApiPreferences.httpCalls // Array com o histórico de chamadas http.
+ingresseApiPreferences.clearHttpHistory() //Limpra o histórico de chamadas http.
+```

@@ -2,38 +2,23 @@
 
 angular.module('ingresseSDK').service('IngresseApiUserService', function UserService($rootScope, ipCookie){
     return {
-        data: null,
+        data: {},
         credentials: {},
-        userHasLoggedOut: function () {
-            $rootScope.$broadcast('userHasLoggedOut');
-        },
-        login: function(){
-            if(!this.getSavedLogin()){
-                $rootScope.$broadcast('showLogin');
-                return;
-            }
-        },
-        getSavedLogin: function () {
+        getCredentials: function () {
             this.credentials.userId = ipCookie('userId');
             this.credentials.token = ipCookie('token');
 
-            if(this.credentials.userId || this.credentials.token){
-                $rootScope.$broadcast('userSessionSaved');
-                return true;
+            if (this.credentials.userId || this.credentials.token) {
+                return this.credentials;
             }
 
             return false;
         },
-        register: function(){
-            $rootScope.$broadcast('showRegister');
-        },
-        logout: function(){
+        clearCredentials: function(){
             ipCookie('userId', '', { expires: -1, domain: '.ingresse.com' });
             ipCookie('token', '', { expires: -1, domain: '.ingresse.com' });
             ipCookie('userId', '', { expires: -1});
             ipCookie('token', '', { expires: -1});
-            $rootScope.$broadcast('showLogout');
-
             this.data = null;
             this.credentials.userId = null;
             this.credentials.token = null;

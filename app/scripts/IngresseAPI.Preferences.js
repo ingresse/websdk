@@ -4,7 +4,6 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
   PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
   var publickey;
   var privatekey;
-  var templatesDirectory = '/bower_components/ingresse-websdk/bower_components/ingresse-websdk/directives/';
   return{
     setPublicKey: function(key){
       publickey = key;
@@ -12,14 +11,10 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
     setPrivateKey: function(key){
       privatekey = key;
     },
-    setTemplateDirectory: function (templateDirectory) {
-      templatesDirectory = templateDirectory;
-    },
     $get: function() {
       return{
         publickey: publickey,
         privatekey: privatekey,
-        templatesDirectory: templatesDirectory,
         setPublicKey: function(key){
           this.publickey = key;
         },
@@ -32,7 +27,6 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
         httpCalls: [],
 
         // PUBLIC
-        pagarmeEncriptionKey: 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ',
         getHost: function() {
           return this._host;
         },

@@ -1,7 +1,12 @@
 html, body {
   background-color: #D4D7D9;
 }
-.cloak1{
+
+.ng-cloak {
+  display: none !important;
+}
+
+.cloak1 {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -9,6 +14,28 @@ html, body {
     left: 0px;
     z-index: 9;
     background: rgba(0,0,0,0.7);
+}
+
+.loading-app {
+    line-height: 100%;
+    display: block;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    padding-top: 40%;
+    text-align: center;
+    width: 100%;
+    margin: 0px;
+    font-size: 38px;
+    text-transform: uppercase;
+    color: #969595;
+    animation: fadeIn 0.5s;
+}
+
+.loading-app.ng-hide-add {
+    -webkit-animation: fadeOut 0.5s;
+    display: block !important;
 }
 
 .result-card.ng-enter,
