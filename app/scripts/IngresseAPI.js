@@ -8,7 +8,7 @@ function receiveMessage (event) {
 
   var obj = JSON.parse(event.data);
   angular.element(document.body).scope().$broadcast('ingresseAPI.userHasLogged', obj);
-};
+}
 
 window.addEventListener('message', receiveMessage, false);
 
@@ -329,7 +329,8 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
       if (token) {
         filters = {
-          usertoken: token
+          usertoken: token,
+          method: 'update'
         };
       }
 
@@ -576,7 +577,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
     try {
       transactionDTO = this.createPagarmeCard(currentTransaction);
     } catch (err) {
-      deferred.reject(err.message);
+      deferred.reject(err);
       return deferred.promise;
     }
 
