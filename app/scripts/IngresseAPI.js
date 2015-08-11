@@ -462,7 +462,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
     return url;
   };
 
-  API.ticketReservation = function (eventId, userId, token, tickets, discountCode) {
+  API.ticketReservation = function (eventId, userId, token, tickets, discountCode, passkey) {
     var filters = {
       usertoken: token
     };
@@ -471,7 +471,8 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
       eventId: eventId,
       userId: userId,
       tickets: tickets,
-      discountCode: discountCode
+      discountCode: discountCode,
+      passkey: passkey
     };
 
     return API._post('shop', null, filters, postObject);
@@ -521,7 +522,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
     return transaction;
   };
 
-  API.payReservation = function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments) {
+  API.payReservation = function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments, passkey) {
 
     var deferred = $q.defer();
     var transactionDTO = {};
@@ -534,7 +535,8 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
         userId: userId,
         paymentMethod: paymentMethod,
         eventId: eventId,
-        tickets: tickets
+        tickets: tickets,
+        passkey: passkey
       };
 
       url = ingresseApiPreferences.getHost() + '/shop/' + self._generateAuthKey() + '&usertoken=' + token;
@@ -567,7 +569,8 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
       paymentMethod: paymentMethod,
       creditcard: creditCard,
       eventId: eventId,
-      tickets: tickets
+      tickets: tickets,
+      passkey: passkey
     };
 
     if (installments) {

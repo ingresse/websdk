@@ -5,7 +5,8 @@ angular.module('ingresseEmulatorApp')
     $routeProvider
       .when('/user', {
         templateUrl: 'views/emulator.html',
-        controller: 'UserController'
+        controller: 'UserController',
+        reloadOnSearch: false
       });
   })
   .controller('UserController', function ($scope, ingresseAPI, IngresseApiUserService, EmulatorService, QueryService) {

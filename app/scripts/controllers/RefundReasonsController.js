@@ -5,7 +5,8 @@ angular.module('ingresseEmulatorApp')
     $routeProvider
       .when('/refundReasons', {
         templateUrl: 'views/emulator.html',
-        controller: 'RefundReasonsController'
+        controller: 'RefundReasonsController',
+        reloadOnSearch: false
       });
   })
   .controller('RefundReasonsController', function ($scope, ingresseAPI, IngresseApiUserService, EmulatorService, QueryService) {

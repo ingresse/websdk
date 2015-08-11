@@ -40,9 +40,8 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
           this._host = host;
         },
         httpCallStarted: function (url) {
-          var decodedUrl = decodeURIComponent(url);
-          var domain = decodedUrl.split('?')[0];
-          var parameters = decodedUrl.split('?')[1].split('&');
+          var domain = url.split('?')[0];
+          var parameters = url.split('?')[1].split('&');
 
           for (var i = parameters.length - 1; i >= 0; i--) {
             if (i === 0) {

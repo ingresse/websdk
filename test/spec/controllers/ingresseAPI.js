@@ -108,10 +108,11 @@ describe('Service: ingresesAPI', function () {
     var eventId = 'test';
     var usertoken = 'usertoken';
     var filters = {
-      term: 'test'
+      term: 'test',
+      passkey: 'hidden'
     };
 
-    httpBackend.expectGET(preferences._host + '/event/' + eventId + '/tickets' + apisdk._generateAuthKey() + '&term=test&usertoken=usertoken').respond({responseData: true});
+    httpBackend.expectGET(preferences._host + '/event/' + eventId + '/tickets' + apisdk._generateAuthKey() + '&term=test&passkey=hidden&usertoken=usertoken').respond({responseData: true});
     apisdk.event.getTicketTypes(eventId, filters, usertoken);
     httpBackend.flush();
   });
@@ -531,6 +532,7 @@ describe('Service: ingresesAPI', function () {
       eventId: '12291',
       userId: '123456',
       discountCode: 'desconto',
+      passkey: 'hidden',
       tickets: [
         {
           session: {
@@ -545,7 +547,7 @@ describe('Service: ingresesAPI', function () {
     };
     var usertoken = 'usertoken';
 
-    apisdk.ticketReservation(postObject.eventId, postObject.userId, usertoken, postObject.tickets, postObject.discountCode);
+    apisdk.ticketReservation(postObject.eventId, postObject.userId, usertoken, postObject.tickets, postObject.discountCode, postObject.passkey);
     httpBackend.expectPOST(preferences._host + '/shop' + apisdk._generateAuthKey() + '&usertoken=usertoken', postObject).respond({responseData: true});
     httpBackend.flush();
   });
@@ -594,6 +596,7 @@ describe('Service: ingresesAPI', function () {
       transactionId: '123456789',
       userId: '123456',
       paymentMethod: 'CreditCard',
+      passkey: 'hidden',
       creditcard: {
         name: 'DANIEL B OLIVEIRA',
         month: '10',
@@ -625,7 +628,7 @@ describe('Service: ingresesAPI', function () {
         cpf: transactionDTO.creditcard.cpf
       };
       
-      apisdk.payReservation(currentTransaction.eventId, currentTransaction.userId, usertoken, currentTransaction.transactionId, currentTransaction.tickets, currentTransaction.paymentMethod, currentTransaction.creditcard, installments);
+      apisdk.payReservation(currentTransaction.eventId, currentTransaction.userId, usertoken, currentTransaction.transactionId, currentTransaction.tickets, currentTransaction.paymentMethod, currentTransaction.creditcard, installments, currentTransaction.passkey);
       httpBackend.expectPOST(preferences._host + '/shop' + apisdk._generateAuthKey() + '&usertoken=usertoken', transactionDTO).respond({responseData: true});
       httpBackend.flush();
     });

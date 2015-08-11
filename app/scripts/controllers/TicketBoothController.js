@@ -5,7 +5,8 @@ angular.module('ingresseEmulatorApp')
     $routeProvider
       .when('/ticketbooth', {
         templateUrl: 'views/emulator.html',
-        controller: 'TicketboothController'
+        controller: 'TicketboothController',
+        reloadOnSearch: false
       });
   })
   .controller('TicketboothController', function ($scope, $rootScope, ingresseAPI, IngresseApiUserService, $routeParams, EmulatorService, QueryService) {

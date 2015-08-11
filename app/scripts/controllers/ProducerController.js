@@ -5,7 +5,8 @@ angular.module('ingresseEmulatorApp')
     $routeProvider
       .when('/producer', {
         templateUrl: 'views/emulator.html',
-        controller: 'ProducerController'
+        controller: 'ProducerController',
+        reloadOnSearch: false
       });
   })
   .controller('ProducerController', function ($scope, ingresseAPI, IngresseApiUserService, EmulatorService, QueryService) {

@@ -5,7 +5,8 @@ angular.module('ingresseEmulatorApp')
     $routeProvider
       .when('/freepass', {
         templateUrl: 'views/emulator.html',
-        controller: 'FreepassController'
+        controller: 'FreepassController',
+        reloadOnSearch: false
       });
   })
   .controller('FreepassController', function ($scope, ingresseAPI, EmulatorService, QueryService, IngresseApiUserService) {
