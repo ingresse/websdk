@@ -2,7 +2,8 @@
 'use strict';
 
 function receiveMessage (event) {
-  if (event.origin !== 'https://dk57nqppwurwj.cloudfront.net' && event.origin !== 'https://compra.ingresse.com') {
+  console.log(event.origin);
+  if (event.origin !== 'http://cdn.ingresse.com') {
     return;
   }
 

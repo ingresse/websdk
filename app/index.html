@@ -73,23 +73,22 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
 
     <!-- build:js(./) scripts/vendor.js -->
-    <script src="bower_components/crypto-js/rollups/hmac-sha1.js"></script>
-    <script src="bower_components/crypto-js/components/enc-base64-min.js"></script>
-    <!-- bower:js -->
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/pagar-me/index.js"></script>
     <script src="bower_components/json3/lib/json3.js"></script>
     <script src="bower_components/angularjs/angular.js"></script>
     <script src="bower_components/angular-cookie/angular-cookie.js"></script>
-    <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
     <script src="bower_components/ng-json-explorer/dist/angular-json-explorer.js"></script>
-    <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/websdk.js -->
+        <!-- build:js({./,.tmp,app}) scripts/websdk.js -->
+        <script src="bower_components/crypto-js/rollups/hmac-sha1.js"></script>
+        <script src="bower_components/crypto-js/components/enc-base64-min.js"></script>
+        <script src="bower_components/es5-shim/es5-shim.js"></script>
+        <script src="bower_components/pagar-me/index.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
+
         <script src="scripts/IngresseAPI.Preferences.js"></script>
         <script src="scripts/IngresseAPI.UserService.js"></script>
         <script src="scripts/IngresseAPI.EventService.js"></script>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Teste Login</title>
+</head>
+<script type="text/javascript">
+	var getParameterByName = function getParameterByName(name) {
+	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
+	var responseData = {
+		token: getParameterByName('token'),
+		userId: getParameterByName('userId')
+	}
+
+	if(window.opener){
+		window.opener.postMessage(JSON.stringify(responseData),'*');
+		window.close();
+	}
+
+	parent.postMessage(JSON.stringify(responseData),'*');
+
+</script>
+<body>
+<p>Este popup vai fechar a qualquer momento...</p>
+</body>
+</html>

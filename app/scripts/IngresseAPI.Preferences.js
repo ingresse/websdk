@@ -23,7 +23,7 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
         },
         // PRIVATE
         _host: 'https://api.ingresse.com',
-        loginReturnUrl: 'https://dk57nqppwurwj.cloudfront.net/parseResponse.html',
+        loginReturnUrl: 'http://cdn.ingresse.com/websdk/parse-response.html',
         httpCalls: [],
 
         // PUBLIC
