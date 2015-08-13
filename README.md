@@ -25,7 +25,7 @@ angular.module('SEU_APP').config(function(ingresseApiPreferencesProvider) {
 ```
 
 Ai é só injetar nas suas controllers
-    
+
 ```javascript
 angular.module('SEU_APP').controller('SuaController',['ingresseAPI',function(ingresseAPI){
     ... seu código ...
@@ -36,12 +36,12 @@ angular.module('SEU_APP').controller('SuaController',['ingresseAPI',function(ing
 
 ### ingresseAPI ###
 Este módulo é responsável por facilitar a comunicação com nossa API.
-    
+
 Exemplo:
 ```javascript
 ingresseAPI.event.get(eventID, filters)
     .then(function (event) {
-        // Do something... 
+        // Do something...
     })
     .catch(function (error) {
         // Something got wrong...

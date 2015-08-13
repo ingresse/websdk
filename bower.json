@@ -37,11 +37,14 @@
     "angular-messages": "~1.4.*",
     "animate.css": "https://github.com/daneden/animate.css.git#~3.3.0",
     "angular-ui-utils": "~3.0.0",
-    "ng-json-explorer": "*"
+    "ng-json-explorer": "ErwanPigneul/ng-json-explorer"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.*",
     "angular-scenario": "~1.4.*"
   },
-  "appPath": "app"
+  "appPath": "app",
+  "resolutions": {
+    "angular": "~1.4.*"
+  }
 }

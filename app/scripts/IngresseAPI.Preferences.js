@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
+  var publickey, privatekey;
+  var prefHost = 'https://api.ingresse.com';
   PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
-  var publickey;
-  var privatekey;
+
   return{
     setPublicKey: function(key){
       publickey = key;
@@ -11,18 +12,30 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
     setPrivateKey: function(key){
       privatekey = key;
     },
+    setHost: function (host) {
+      prefHost = host;
+
+      if (prefHost === 'https://api.ingresse.com' || prefHost === 'https://apistg.ingresse.com') {
+        PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
+      }
+
+      if (prefHost === 'https://apihml.ingresse.com') {
+        PagarMe.encryption_key = 'ek_test_lwfVXNqRg3tpN7IPPXtatdMYhQG96N';
+      }
+    },
     $get: function() {
       return{
-        publickey: publickey,
-        privatekey: privatekey,
         setPublicKey: function(key){
           this.publickey = key;
         },
         setPrivateKey: function(key){
           this.privatekey = key;
         },
+        publickey: publickey,
+        privatekey: privatekey,
+        _host: prefHost,
+
         // PRIVATE
-        _host: 'https://api.ingresse.com',
         loginReturnUrl: 'http://cdn.ingresse.com/websdk/parse-response.html',
         httpCalls: [],
 
@@ -32,6 +45,14 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
         },
         setHost: function (host) {
           this._host = host;
+
+          if (this._host === 'https://api.ingresse.com' || this._host === 'https://apistg.ingresse.com') {
+            PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
+          }
+
+          if (this._host === 'https://apihml.ingresse.com') {
+            PagarMe.encryption_key = 'ek_test_lwfVXNqRg3tpN7IPPXtatdMYhQG96N';
+          }
         },
         httpCallStarted: function (url) {
           var domain = url.split('?')[0];
