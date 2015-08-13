@@ -1280,7 +1280,8 @@ angular.module('ingresseSDK').provider('ingresseAPI', function ($httpProvider) {
           transactionDTO.creditcard.pagarme.generateHash(function (hash) {
             transactionDTO.creditcard = {
               cardHash: hash,
-              cpf: transactionDTO.creditcard.cpf
+              cpf: transactionDTO.creditcard.cpf,
+              birthdate: transactionDTO.creditcard.birthdate
             };
 
             url = ingresseAPI_Preferences.getHost() + '/shop/' + self.generateAuthKey() + '&usertoken=' + token;
