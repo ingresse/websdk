@@ -23,7 +23,7 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
         PagarMe.encryption_key = 'ek_test_lwfVXNqRg3tpN7IPPXtatdMYhQG96N';
       }
     },
-    $get: function() {
+    $get: function($rootScope) {
       return{
         setPublicKey: function(key){
           this.publickey = key;
@@ -53,6 +53,8 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
           if (this._host === 'https://apihml.ingresse.com') {
             PagarMe.encryption_key = 'ek_test_lwfVXNqRg3tpN7IPPXtatdMYhQG96N';
           }
+
+          $rootScope.$broadcast('preferences.hostChanged');
         },
         httpCallStarted: function (url) {
           var domain = url.split('?')[0];

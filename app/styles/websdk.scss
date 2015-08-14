@@ -1,0 +1,21 @@
+.homologFlag {
+    background: #4798F5;
+    display: block;
+    text-align: center;
+    color: #FFF;
+    font-weight: bolder;
+    text-shadow: 0 1px #000;
+    padding: 8px;
+    z-index: 999999999;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    &.bottom {
+        top: inherit;
+        bottom: 0px;
+    }
+    a {
+        color: inherit;
+    }
+}
