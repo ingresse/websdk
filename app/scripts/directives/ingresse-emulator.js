@@ -6,7 +6,7 @@
 * Description
 */
 
-angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator', function (ingresseApiPreferences) {
+angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator', function () {
   // Runs during compile
   return {
     scope: {}, // {} = isolate, true = child, false/undefined = no change
@@ -357,7 +357,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
             VenusActivityIndicatorService.error(error.message);
           })
           .finally(function () {
-            VenusActivityIndicatorService.stopActivity("Carregando relatório de vendas dos grupos...");
+            VenusActivityIndicatorService.stopActivity('Carregando relatório de vendas dos grupos...');
           });
       };
 
@@ -490,7 +490,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         })
         .finally(function () {
           VenusActivityIndicatorService.stopActivity('Estornando Pagamento...');
-        })
+        });
       };
 
       $scope.updateTicketStatusData = {
@@ -537,7 +537,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
       });
 
       $scope.$watch('privateKey', function () {
-        // $document.cookie = "privateKey=" + $scope.privateKey + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+        // $document.cookie = 'privateKey=' + $scope.privateKey + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/';
         if (!$scope.privateKey) {
           return;
         }
@@ -548,19 +548,19 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         if (!$scope.publicKey) {
           return;
         }
-        // $document.cookie = "publicKey=" + $scope.publicKey + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+        // $document.cookie = 'publicKey=' + $scope.publicKey + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/';
         ipCookie('publickey', $scope.publicKey, {expires: 365});
       });
 
-      if (ipCookie('publickey') !== "") {
+      if (ipCookie('publickey') !== '') {
         ingresseApiPreferences.setPublicKey(ipCookie('publickey'));
       }
 
-      if (ipCookie('privatekey') !== "") {
+      if (ipCookie('privatekey') !== '') {
         ingresseApiPreferences.setPrivateKey(ipCookie('privatekey'));
       }
 
-      if (ipCookie.host !== "") {
+      if (ipCookie.host !== '') {
         $scope.setHost(ipCookie.host);
       }
 
@@ -568,6 +568,6 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
       $scope.publicKey = ingresseApiPreferences.publickey;
     },
     restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
-    templateUrl: ingresseApiPreferences.templates_directory + 'ingresse-emulator.html'
+    templateUrl: 'views/ingresse-emulator.html'
   };
 });

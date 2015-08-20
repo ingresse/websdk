@@ -1,6 +1,8 @@
+'use strict';
+
 angular.module('ingresseEmulatorApp').directive('results', function () {
     return {
-        templateUrl: 'directives/results.html',
+        templateUrl: 'views/results.html',
         restrict: 'E',
         scope: {},
         controller: function($scope, EmulatorService) {
@@ -11,4 +13,4 @@ angular.module('ingresseEmulatorApp').directive('results', function () {
             };
         }
     };
-})
+});

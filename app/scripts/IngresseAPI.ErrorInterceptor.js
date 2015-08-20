@@ -173,8 +173,18 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 3014) {
+              error.message = 'Você está tentando comprar ingressos que não estão mais disponíveis. Por favor, reinicie o processo de compra.';
+              return $q.reject(error);
+            }
+
             if (error.code === 3020) {
               error.message = 'Desculpe, mas não há ingressos cadastrados para o evento solicitado.';
+              return $q.reject(error);
+            }
+
+            if (error.code === 3023) {
+              error.message = 'Sua sessão de compra expirou. Por favor, refaça o processo de compra.';
               return $q.reject(error);
             }
 

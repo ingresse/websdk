@@ -18,7 +18,7 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'dist/'
   };
 
   // Define the configuration for all the tasks
@@ -196,7 +196,7 @@ module.exports = function (grunt) {
       },
       dist: {
         options: {
-          generatedImagesDir: '<%= yeoman.dist %>/styles/generated'
+          generatedImagesDir: '<%= yeoman.dist %>/v7/styles/generated'
         }
       },
       server: {
@@ -210,10 +210,10 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
-          '<%= yeoman.dist %>/scripts/{,*/}*.js',
-          '<%= yeoman.dist %>/styles/{,*/}*.css',
+          '<%= yeoman.dist %>/v7/scripts/{,*/}*.js',
+          '<%= yeoman.dist %>/v7/styles/{,*/}*.css',
           // '<%= yeoman.dist %>/styles/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/styles/fonts/*'
+          '<%= yeoman.dist %>/v7/styles/fonts/*'
         ]
       }
     },
@@ -224,7 +224,7 @@ module.exports = function (grunt) {
     useminPrepare: {
       html: '<%= yeoman.app %>/index.html',
       options: {
-        dest: '<%= yeoman.dist %>',
+        dest: '<%= yeoman.dist %>/v7/',
         flow: {
           html: {
             steps: {
@@ -239,10 +239,10 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      html: ['<%= yeoman.dist %>/v7//{,*/}*.html'],
+      css: ['<%= yeoman.dist %>/v7/styles/{,*/}*.css'],
       options: {
-        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/styles']
+        assetsDirs: ['<%= yeoman.dist %>/v7/','<%= yeoman.dist %>/v7/styles']
       }
     },
 
@@ -278,7 +278,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.app %>/styles',
           src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/styles'
+          dest: '<%= yeoman.dist %>/v7/styles'
         }]
       }
     },
@@ -289,7 +289,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.app %>/styles',
           src: '{,*/}*.svg',
-          dest: '<%= yeoman.dist %>/styles'
+          dest: '<%= yeoman.dist %>/v7/styles'
         }]
       }
     },
@@ -305,9 +305,9 @@ module.exports = function (grunt) {
         },
         files: [{
           expand: true,
-          cwd: '<%= yeoman.dist %>',
+          cwd: '<%= yeoman.dist %>/v7/',
           src: ['*.html', 'views/{,*/}*.html'],
-          dest: '<%= yeoman.dist %>'
+          dest: '<%= yeoman.dist %>/v7/'
         }]
       }
     },
@@ -328,33 +328,42 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/*.html']
+        html: ['<%= yeoman.dist %>/v7/*.html']
       }
     },
 
     // Copies remaining files to places other tasks can use
     copy: {
+      redirect: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: './',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            'index.html',
+            'parse-response.html'
+          ]
+        }]
+      },
       dist: {
         files: [{
           expand: true,
           dot: true,
           cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
+          dest: '<%= yeoman.dist %>/v7/',
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
             'views/{,*/}*.html',
-            'scripts/{,*/}*.html',
-            'scripts/{,*/}*.json',
-            'directives/**/*',
             'styles/**/*.{webp,svg,gif}',
             'styles/fonts/*'
           ]
         }, {
           expand: true,
           cwd: '.tmp/styles',
-          dest: '<%= yeoman.dist %>/styles',
+          dest: '<%= yeoman.dist %>/v7/styles',
           src: ['generated/*']
         }]
       },
@@ -376,6 +385,7 @@ module.exports = function (grunt) {
       ],
       dist: [
         'compass:dist',
+        'copy:styles',
         'imagemin',
         'svgmin'
       ]
@@ -406,11 +416,6 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve:' + target]);
-  });
-
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',
@@ -427,6 +432,7 @@ module.exports = function (grunt) {
     'autoprefixer',
     'concat',
     'ngAnnotate',
+    'copy:redirect',
     'copy:dist',
     'cssmin',
     'uglify',

@@ -31,11 +31,10 @@ html, body {
     text-transform: uppercase;
     color: #969595;
     animation: fadeIn 0.5s;
-}
-
-.loading-app.ng-hide-add {
-    -webkit-animation: fadeOut 0.5s;
-    display: block !important;
+    &.ng-hide-add {
+        -webkit-animation: fadeOut 0.5s;
+        display: block !important;
+    }
 }
 
 .result-card.ng-enter,

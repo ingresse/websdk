@@ -36,7 +36,7 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
         _host: prefHost,
 
         // PRIVATE
-        loginReturnUrl: 'http://cdn.ingresse.com/websdk/parse-response.html',
+        loginReturnUrl: 'http://cdn.ingresse.com/websdk/v7/parse-response.html',
         httpCalls: [],
 
         // PUBLIC

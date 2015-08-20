@@ -1,7 +1,9 @@
+'use strict';
+
 angular.module('ingresseEmulatorApp')
 .directive('query', function () {
     return {
-        templateUrl: 'directives/query.html',
+        templateUrl: 'views/query.html',
         restrict: 'E',
         transclude: true,
         scope: {

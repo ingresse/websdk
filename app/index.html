@@ -9,10 +9,16 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
 
-    <!-- build:css(.tmp, app) styles/main.css -->
+    <!-- build:css({./,.tmp}) styles/main.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
     <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
     <link rel="stylesheet" href="bower_components/ng-json-explorer/dist/angular-json-explorer.css" />
-    <link rel="stylesheet" href="directives/ingresse-emulator.css" />
+    <!-- endbower -->
+    <link rel="stylesheet" href="styles/ingresse-emulator.css" />
+    <!-- endbuild -->
+
+    <!-- build:css(.tmp) styles/websdk.css -->
     <link rel="stylesheet" href="styles/websdk.css" />
     <!-- endbuild -->
 
@@ -96,6 +102,7 @@
         <script src="scripts/IngresseAPI.ErrorInterceptor.js"></script>
         <script src="scripts/IngresseAPI.WWWFormUrlEnconded.js"></script>
         <script src="scripts/IngresseAPI.js"></script>
+        <script src="scripts/directives/domain-flag.js"></script>
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -119,10 +126,9 @@
         <script src="scripts/controllers/FreepassController.js"></script>
         <script src="scripts/controllers/LoginController.js"></script>
 
-        <script src="directives/ingresse-emulator.js"></script>
-        <script src="directives/query-directive.js"></script>
-        <script src="directives/results-directive.js"></script>
-        <script src="directives/domain-flag.js"></script>
+        <script src="scripts/directives/ingresse-emulator.js"></script>
+        <script src="scripts/directives/query-directive.js"></script>
+        <script src="scripts/directives/results-directive.js"></script>
         <!-- endbuild -->
 </body>
 </html>
