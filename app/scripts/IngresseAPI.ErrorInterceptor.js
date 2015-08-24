@@ -174,7 +174,7 @@ angular.module('ingresseSDK')
             }
 
             if (error.code === 3014) {
-              error.message = 'Você está tentando comprar ingressos que não estão mais disponíveis. Por favor, reinicie o processo de compra.';
+              error.message = 'A quantidade total de ingressos selecionados não está disponível. Experimente diminuir a quantidade de ingressos.';
               return $q.reject(error);
             }
 
