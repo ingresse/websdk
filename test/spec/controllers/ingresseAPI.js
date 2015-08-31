@@ -278,6 +278,21 @@ describe('Service: ingresesAPI', function () {
     httpBackend.flush();
   });
 
+  it('should GET balance', function () {
+    var filters = {
+      from: '2015-07-01',
+      to: '2015-08-01',
+      event: 12291,
+      operator: 118,
+      salesgroup: 0
+    };
+    var token = 'usertoken';
+
+    apisdk.balance.get(filters, token);
+    httpBackend.expectGET(preferences._host + '/balance' + apisdk._generateAuthKey() + '&from=2015-07-01&to=2015-08-01&event=12291&operator=118&salesgroup=0&usertoken=usertoken').respond({responseData: true});
+    httpBackend.flush();
+  });
+
   it('should GET dashboard/:eventId/visitsReport', function () {
     var eventId = '123456';
     var filters = {
