@@ -163,6 +163,16 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
       return API._get('event', identifier, filters);
     },
 
+    getTicketTypesForSession: function (eventId, filters, usertoken) {
+      var identifier = eventId + '/session/' + filters.sessionId + '/tickets';
+
+      if (usertoken) {
+        filters.usertoken = usertoken;
+      }
+
+      return API._get('event', identifier, filters);
+    },
+
     updateTicketStatus : function (eventId, ticket, token) {
       var filters = {
         method: 'updatestatus',
