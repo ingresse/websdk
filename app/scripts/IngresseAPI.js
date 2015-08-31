@@ -319,7 +319,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
   API.balance = {
     describe: function (method) {
       if (method === 'get') {
-        return "https://docs.google.com/document/d/1a4-M6o4hCa0AUG1Q_Zsxhl4UuicuA7qWJWH0C66qfbo/edit#heading=h.qmxn7fpd5bif";
+        return 'https://docs.google.com/document/d/1a4-M6o4hCa0AUG1Q_Zsxhl4UuicuA7qWJWH0C66qfbo/edit#heading=h.qmxn7fpd5bif';
       }
     },
     get: function (filters, token) {

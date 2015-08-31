@@ -58,10 +58,15 @@ angular.module('ingresseEmulatorApp').config(function ($routeProvider) {
             });
     };
 
+    $scope.describe = function (method) {
+        return ingresseAPI.balance.describe(method);
+    };
+
     $scope.fields = {
         balance: {
             label: 'Balance',
             action: $scope.get,
+            documentationUrl: $scope.describe('get'),
             authentication: true,
             identifier: null,
             fields: [

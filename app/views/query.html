@@ -138,6 +138,7 @@
             </md-input-container>
 
             <div class="md-actions" layout="row" layout-align="end center">
+                <md-button href="{{tab.documentationUrl}}" ng-if="tab.documentationUrl" target="_blank">Documentation</md-button>
                 <md-button ng-disabled="!queryForm.$valid">Send</md-button>
             </div>
         </form>
