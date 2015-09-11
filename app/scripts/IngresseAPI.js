@@ -402,6 +402,18 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
     }
   };
 
+  API.salesgroup = {
+    get: function (filters, token) {
+      if (!filters) {
+        filters = {};
+      }
+
+      filters.usertoken = token;
+
+      return API._get('salesgroup', null, filters);
+    }
+  };
+
   API.home = {
     getSections:  function () {
       return API._get('home', 'sections');
