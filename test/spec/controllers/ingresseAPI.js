@@ -486,6 +486,18 @@ describe('Service: ingresesAPI', function () {
     httpBackend.flush();
   });
 
+  it('should GET salesgroup', function () {
+    var filters = {
+      id: 123456,
+      term: 'nomedoevento'
+    };
+    var usertoken = 'usertoken';
+
+    apisdk.salesgroup.get(filters, usertoken);
+    httpBackend.expectGET(preferences._host + '/salesgroup' + apisdk._generateAuthKey() + '&id=123456&term=nomedoevento&usertoken=usertoken').respond({responseData: true});
+    httpBackend.flush();
+  });
+
   it('should GET featured', function () {
     var filters = {
       state: 'sp'
