@@ -11,7 +11,7 @@
             <md-list-item class="md-2-line" ng-show="result.http.url">
                 <div class="md-list-item-text">
                     <p class="time">{{result.http.stopTime | momentum:'HH:mm:ss'}} - {{result.http.requestTime}}s</p>
-                    <h3>{{result.http.domain}}</h3>
+                    <h3 style="line-height: 18px;">{{result.http.domain}}</h3>
                     <p ng-repeat="param in result.http.parameters">{{param}}</p>
                 </div>
             </md-list-item>

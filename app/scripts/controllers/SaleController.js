@@ -38,7 +38,7 @@ angular.module('ingresseEmulatorApp')
       return obj;
     };
 
-    $scope.getTransaction = function () {
+    $scope.get = function () {
       $scope.isLoading = true;
 
       var identifier = $scope.fields.transaction.identifier.model;
