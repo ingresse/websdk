@@ -3,7 +3,7 @@
 
 function receiveMessage (event) {
   console.log(event.origin);
-  if (event.origin !== 'http://cdn.ingresse.com') {
+  if (event.origin !== 'https://cdn.ingresse.com') {
     return;
   }
 
