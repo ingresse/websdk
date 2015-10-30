@@ -24,10 +24,12 @@ describe('Service: ingresesAPI', function () {
   it('should get parameters encoded', function () {
     var filters = {
       parameter: 'value one',
-      parameter2: 'value&'
+      parameter2: 'value&',
+      parameter3: undefined,
+      parameter4: 0
     };
 
-    expect(apisdk._getUrlParameters(filters)).toBe('&parameter=value%20one&parameter2=value%26');
+    expect(apisdk._getUrlParameters(filters)).toBe('&parameter=value%20one&parameter2=value%26&parameter4=0');
   });
 
   it('should GET with parameters', function () {
