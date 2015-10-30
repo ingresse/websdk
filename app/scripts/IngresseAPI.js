@@ -66,7 +66,9 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
     for (key in filters) {
       if (filters.hasOwnProperty(key)) {
-        parameters += '&' + key + '=' + this._urlencode(filters[key]);
+        if (filters[key]) {
+          parameters += '&' + key + '=' + this._urlencode(filters[key]);
+        }
       }
     }
 
@@ -305,6 +307,13 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
       if (usertoken) {
         filters.usertoken = usertoken;
       }
+
+      return API._get('dashboard', identifier, filters);
+    },
+    getTransactionsReport: function (identifier, filters, token) {
+      identifier += '/transactionReport';
+
+      filters.usertoken = token;
 
       return API._get('dashboard', identifier, filters);
     },

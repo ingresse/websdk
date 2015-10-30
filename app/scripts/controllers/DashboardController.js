@@ -82,6 +82,27 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getTransactionsReport = function() {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.getTransactionsReport.identifier.model;
+      var filters = $scope.getFiltersByTab($scope.fields.getTransactionsReport);
+
+      QueryService.setSearchParams('getTransactionsReport', $scope.fields.getEventReport.identifier, filters);
+
+      ingresseAPI.dashboard.getTransactionsReport(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.getEventReport = function () {
       $scope.result = {};
       $scope.isLoading = true;
@@ -194,6 +215,32 @@ angular.module('ingresseEmulatorApp')
             type: 'number',
             disabled: false
           },
+          {
+            label: 'from',
+            model: '',
+            type: 'date',
+            disabled: false
+          },
+          {
+            label: 'to',
+            model: '',
+            type: 'date',
+            disabled: false
+          }
+        ]
+      },
+      getTransactionsReport: {
+        label: 'Transactions Report',
+        action: $scope.getTransactionsReport,
+        authentication: true,
+        identifier: {
+          label: 'eventId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
           {
             label: 'from',
             model: '',
