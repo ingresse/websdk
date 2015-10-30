@@ -306,6 +306,20 @@ describe('Service: ingresesAPI', function () {
     httpBackend.flush();
   });
 
+
+  it('should GET dashboard/:eventId/transactionReport', function () {
+    var eventId = '123456';
+    var filters = {
+      from: '2015-07-01',
+      to: '2015-08-01'
+    };
+    var usertoken = 'usertoken';
+
+    apisdk.dashboard.getTransactionsReport(eventId, filters, usertoken);
+    httpBackend.expectGET(preferences._host + '/dashboard/' + eventId + '/transactionReport' + apisdk._generateAuthKey() + '&from=2015-07-01&to=2015-08-01&usertoken=usertoken').respond({responseData: true});
+    httpBackend.flush();
+  });
+
   it('should GET dashboard/:eventId/timeline', function () {
     var identifier = '123456';
     var filters = {

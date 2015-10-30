@@ -66,7 +66,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
     for (key in filters) {
       if (filters.hasOwnProperty(key)) {
-        if (filters[key]) {
+        if (filters[key] !== null) {
           parameters += '&' + key + '=' + this._urlencode(filters[key]);
         }
       }
