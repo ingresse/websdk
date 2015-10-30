@@ -23,7 +23,7 @@ angular.module('ingresseSDK')
       };
 
       if (apiEvent.addedBy) {
-        appEvent.ownerPhoto = ingresseAPI.getUserPhotoUrl(apiEvent.addedBy.id);
+        appEvent.ownerPhoto = ingresseAPI.user.getPhotoUrl(apiEvent.addedBy.id);
       }
 
       if (!apiEvent.date) {
