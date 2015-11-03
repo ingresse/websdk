@@ -113,6 +113,11 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 2006) {
+              error.message = 'Sua sessão expirou. Faça o login novamente.';
+              return $q.reject(error);
+            }
+
             if (error.code === 2007) {
               error.message = 'Esta aplicação não possui permissão para realizar a operação de login';
               return $q.reject(error);
