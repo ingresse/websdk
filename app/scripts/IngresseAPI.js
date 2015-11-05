@@ -17,6 +17,10 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
   var API = {};
 
   API._urlencode = function (str) {
+    if (str === null || str === undefined) {
+      return;
+    }
+
     str = str.toString();
     return encodeURIComponent(str);
   };
@@ -66,7 +70,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
     for (key in filters) {
       if (filters.hasOwnProperty(key)) {
-        if (filters[key] !== undefined) {
+        if (filters[key] !== undefined && filters[key] !== null) {
           parameters += '&' + key + '=' + this._urlencode(filters[key]);
         }
       }
@@ -372,7 +376,11 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
       return API._post('user', userid, filters, userObj);
     },
 
-    search: function (filters) {
+    search: function (filters, token) {
+      if (token) {
+        filters.usertoken = token;
+      }
+
       return API._get('user', null, filters);
     },
 

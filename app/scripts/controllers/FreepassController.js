@@ -18,35 +18,12 @@ angular.module('ingresseEmulatorApp')
       QueryService.setSelectedTab('send');
     });
 
-    $scope.getFilters = function (fields) {
-      var obj = {};
-      var i, day, month, year;
-
-      for (i = fields.length - 1; i >= 0; i--) {
-        if (fields[i].model) {
-          if (fields[i].type === 'date') {
-            day = fields[i].model.getDate().toString();
-            month = fields[i].model.getMonth().toString();
-            if (month.length < 2) {
-              month = '0' + month;
-            }
-            year = fields[i].model.getFullYear().toString();
-            obj[fields[i].label] = year + '-' + month + '-' + day;
-          } else {
-            obj[fields[i].label] = fields[i].model;
-          }
-        }
-      }
-
-      return obj;
-    };
-
      $scope.send = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
-      var filters = $scope.getFilters($scope.fields.send.fields);
-      var postParams = $scope.getFilters($scope.fields.send.postParams);
+      var filters = QueryService.getFilters($scope.fields.send.fields);
+      var postParams = QueryService.getFilters($scope.fields.send.postParams);
 
       QueryService.setSearchParams('send', null, filters);
 

@@ -18,36 +18,11 @@ angular.module('ingresseEmulatorApp')
       QueryService.setSelectedTab('sell');
     });
 
-    $scope.getFiltersByTab = function (tab) {
-      var obj = {};
-      var i, day, month, year;
-
-      for (i = tab.fields.length - 1; i >= 0; i--) {
-        if (tab.fields[i].model) {
-          if (tab.fields[i].type === 'date') {
-            day = tab.fields[i].model.getDate().toString();
-            month = tab.fields[i].model.getMonth().toString();
-            if (month.length < 2) {
-              month = '0' + month;
-            }
-            year = tab.fields[i].model.getFullYear().toString();
-            obj[tab.fields[i].label] = year + '-' + month + '-' + day;
-          } else {
-            obj[tab.fields[i].label] = tab.fields[i].model;
-          }
-        }
-      }
-
-      return obj;
-    };
-
     $scope.sell = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
-      var postObject = $scope.getFiltersByTab($scope.fields.sell);
-
-      // QueryService.setSearchParams('sell', null, postObject);
+      var postObject = QueryService.getFiltersByTab($scope.fields.sell);
 
       ingresseAPI.ticketBooth.sell(postObject, $scope.credentials.token)
         .then(function (response) {
@@ -66,7 +41,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
 
       var identifier = $scope.fields.print.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.print);
+      var filters = QueryService.getFiltersByTab($scope.fields.print);
 
       QueryService.setSearchParams('print', identifier, filters);
 

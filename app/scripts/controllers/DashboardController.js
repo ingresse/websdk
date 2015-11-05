@@ -17,35 +17,12 @@ angular.module('ingresseEmulatorApp')
       QueryService.getSearchParams($scope.fields);
     });
 
-    $scope.getFiltersByTab = function (tab) {
-      var obj = {};
-      var i, day, month, year;
-
-      for (i = tab.fields.length - 1; i >= 0; i--) {
-        if (tab.fields[i].model) {
-          if (tab.fields[i].type === 'date') {
-            day = tab.fields[i].model.getDate().toString();
-            month = tab.fields[i].model.getMonth().toString();
-            if (month.length < 2) {
-              month = '0' + month;
-            }
-            year = tab.fields[i].model.getFullYear().toString();
-            obj[tab.fields[i].label] = year + '-' + month + '-' + day;
-          } else {
-            obj[tab.fields[i].label] = tab.fields[i].model;
-          }
-        }
-      }
-
-      return obj;
-    };
-
     $scope.getVisitsReport = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
       var identifier = $scope.fields.visitsReport.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.visitsReport);
+      var filters = QueryService.getFiltersByTab($scope.fields.visitsReport);
 
       QueryService.setSearchParams('visitsReport', $scope.fields.visitsReport.identifier, filters);
 
@@ -66,7 +43,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
 
       var identifier = $scope.fields.getEventSalesTimeline.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.getEventSalesTimeline);
+      var filters = QueryService.getFiltersByTab($scope.fields.getEventSalesTimeline);
 
       QueryService.setSearchParams('getEventSalesTimeline', $scope.fields.getEventSalesTimeline.identifier, filters);
 
@@ -87,7 +64,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
 
       var identifier = $scope.fields.getTransactionsReport.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.getTransactionsReport);
+      var filters = QueryService.getFiltersByTab($scope.fields.getTransactionsReport);
 
       QueryService.setSearchParams('getTransactionsReport', $scope.fields.getEventReport.identifier, filters);
 
@@ -108,7 +85,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
 
       var identifier = $scope.fields.getEventReport.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.getEventReport);
+      var filters = QueryService.getFiltersByTab($scope.fields.getEventReport);
 
       QueryService.setSearchParams('getEventReport', $scope.fields.getEventReport.identifier, filters);
 

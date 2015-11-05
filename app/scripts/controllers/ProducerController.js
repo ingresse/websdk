@@ -17,35 +17,12 @@ angular.module('ingresseEmulatorApp')
       // QueryService.getSearchParams($scope.fields);
     });
 
-    $scope.getFiltersByTab = function (tab) {
-      var obj = {};
-      var i, day, month, year;
-
-      for (i = tab.fields.length - 1; i >= 0; i--) {
-        if (tab.fields[i].model) {
-          if (tab.fields[i].type === 'date') {
-            day = tab.fields[i].model.getDate().toString();
-            month = tab.fields[i].model.getMonth().toString();
-            if (month.length < 2) {
-              month = '0' + month;
-            }
-            year = tab.fields[i].model.getFullYear().toString();
-            obj[tab.fields[i].label] = year + '-' + month + '-' + day;
-          } else {
-            obj[tab.fields[i].label] = tab.fields[i].model;
-          }
-        }
-      }
-
-      return obj;
-    };
-
     $scope.getProducerCustomerList = function () {
       $scope.result = {};
       $scope.isLoading = true;
 
       var identifier = $scope.fields.producerCustomers.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.producerCustomers);
+      var filters = QueryService.getFiltersByTab($scope.fields.producerCustomers);
 
       QueryService.setSearchParams('producerCustomers', $scope.fields.producerCustomers.identifier, filters);
 
@@ -70,7 +47,7 @@ angular.module('ingresseEmulatorApp')
         costumerId: $scope.fields.producerSalesForCustomers.fields[0].model
       };
 
-      var filters = $scope.getFiltersByTab($scope.fields.producerSalesForCustomers);
+      var filters = QueryService.getFiltersByTab($scope.fields.producerSalesForCustomers);
 
       QueryService.setSearchParams('producerSalesForCustomers', $scope.fields.producerSalesForCustomers.identifier, filters);
 
@@ -112,7 +89,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
 
       var identifier = $scope.fields.salesGroupReport.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.salesGroupReport);
+      var filters = QueryService.getFiltersByTab($scope.fields.salesGroupReport);
 
       QueryService.setSearchParams('salesGroupReport', $scope.fields.salesGroupReport.identifier, filters);
 
@@ -133,7 +110,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
 
       var identifier = $scope.fields.salesGroupPaymentReport.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.salesGroupPaymentReport);
+      var filters = QueryService.getFiltersByTab($scope.fields.salesGroupPaymentReport);
 
       QueryService.setSearchParams('salesGroupPaymentReport', $scope.fields.salesGroupPaymentReport.identifier, filters);
 

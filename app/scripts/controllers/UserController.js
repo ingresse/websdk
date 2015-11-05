@@ -17,34 +17,11 @@ angular.module('ingresseEmulatorApp')
       QueryService.getSearchParams($scope.fields);
     });
 
-    $scope.getFiltersByTab = function (tab) {
-      var obj = {};
-      var i, day, month, year;
-
-      for (i = tab.fields.length - 1; i >= 0; i--) {
-        if (tab.fields[i].model) {
-          if (tab.fields[i].type === 'date') {
-            day = tab.fields[i].model.getDate().toString();
-            month = tab.fields[i].model.getMonth().toString();
-            if (month.length < 2) {
-              month = '0' + month;
-            }
-            year = tab.fields[i].model.getFullYear().toString();
-            obj[tab.fields[i].label] = year + '-' + month + '-' + day;
-          } else {
-            obj[tab.fields[i].label] = tab.fields[i].model;
-          }
-        }
-      }
-
-      return obj;
-    };
-
     $scope.get = function () {
       $scope.isLoading = true;
 
       var identifier = $scope.fields.user.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.user);
+      var filters = QueryService.getFiltersByTab($scope.fields.user);
 
       QueryService.setSearchParams('user', $scope.fields.user.identifier, filters);
 
@@ -65,7 +42,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
 
       var identifier = $scope.fields.userTickets.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.userTickets);
+      var filters = QueryService.getFiltersByTab($scope.fields.userTickets);
 
       QueryService.setSearchParams('userTickets', $scope.fields.userTickets.identifier, filters);
 
@@ -86,7 +63,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
 
       var identifier = $scope.fields.userEvents.identifier.model;
-      var filters = $scope.getFiltersByTab($scope.fields.userEvents);
+      var filters = QueryService.getFiltersByTab($scope.fields.userEvents);
 
       QueryService.setSearchParams('userEvents', $scope.fields.userEvents.identifier, filters);
 
@@ -117,7 +94,7 @@ angular.module('ingresseEmulatorApp')
       $scope.isLoading = true;
 
       var identifier = $scope.fields.userUpdate.identifier.model;
-      var obj = $scope.getFiltersByTab($scope.fields.userUpdate);
+      var obj = QueryService.getFiltersByTab($scope.fields.userUpdate);
 
       QueryService.setSearchParams('userUpdate', $scope.fields.userUpdate.identifier, null);
 
@@ -137,7 +114,7 @@ angular.module('ingresseEmulatorApp')
       $scope.result = {};
       $scope.isLoading = true;
 
-      var filters = $scope.getFiltersByTab($scope.fields.createUser);
+      var filters = QueryService.getFiltersByTab($scope.fields.createUser);
 
       QueryService.setSearchParams('createUser', null, filters);
 
@@ -157,13 +134,13 @@ angular.module('ingresseEmulatorApp')
       $scope.result = {};
       $scope.isLoading = true;
 
-      var filters = $scope.getFiltersByTab($scope.fields.searchUser);
+      var filters = QueryService.getFiltersByTab($scope.fields.searchUser);
 
       QueryService.setSearchParams('searchUser', null, filters);
 
-      ingresseAPI.user.search(filters)
+      ingresseAPI.user.search(filters, $scope.credentials.token)
         .then(function (response) {
-          EmulatorService.addResponse(response, response.status);
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
           EmulatorService.addResponse(error, false);
@@ -177,13 +154,13 @@ angular.module('ingresseEmulatorApp')
       $scope.result = {};
       $scope.isLoading = true;
 
-      var filters = $scope.getFiltersByTab($scope.fields.validateUserField);
+      var filters = QueryService.getFiltersByTab($scope.fields.validateUserField);
 
       QueryService.setSearchParams('validateUserField', null, filters);
 
       ingresseAPI.user.validateField(filters)
         .then(function (response) {
-          EmulatorService.addResponse(response, response.status);
+          EmulatorService.addResponse(response, true);
         })
         .catch(function (error) {
           EmulatorService.addResponse(error, false);
@@ -217,10 +194,16 @@ angular.module('ingresseEmulatorApp')
       searchUser: {
         label: 'Search User',
         action: $scope.search,
-        authentication: false,
+        authentication: true,
         fields: [
           {
             label: 'term',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'fields',
             model: '',
             type: 'text',
             disabled: false

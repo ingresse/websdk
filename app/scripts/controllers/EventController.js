@@ -17,34 +17,11 @@ angular.module('ingresseEmulatorApp')
             QueryService.getSearchParams($scope.fields);
         });
 
-        $scope.getFiltersByTab = function (tab) {
-            var obj = {};
-            var i, day, month, year;
-
-            for (i = tab.fields.length - 1; i >= 0; i--) {
-                if (tab.fields[i].model) {
-                    if (tab.fields[i].type === 'date') {
-                        day = tab.fields[i].model.getDate().toString();
-                        month = tab.fields[i].model.getMonth().toString();
-                        if (month.length < 2) {
-                            month = '0' + month;
-                        }
-                        year = tab.fields[i].model.getFullYear().toString();
-                        obj[tab.fields[i].label] = year + '-' + month + '-' + day;
-                    } else {
-                        obj[tab.fields[i].label] = tab.fields[i].model;
-                    }
-                }
-            }
-
-            return obj;
-        };
-
         $scope.get = function () {
             $scope.isLoading = true;
 
             var identifier = $scope.fields.event.identifier.model;
-            var filters = $scope.getFiltersByTab($scope.fields.event);
+            var filters = QueryService.getFiltersByTab($scope.fields.event);
 
             QueryService.setSearchParams('event', $scope.fields.event.identifier, filters);
 
@@ -83,7 +60,7 @@ angular.module('ingresseEmulatorApp')
             $scope.isLoading = true;
 
             var identifier = $scope.fields.updateTicketStatus.identifier.model;
-            var filters = $scope.getFiltersByTab($scope.fields.updateTicketStatus);
+            var filters = QueryService.getFiltersByTab($scope.fields.updateTicketStatus);
 
             QueryService.setSearchParams('updateTicketStatus', $scope.fields.updateTicketStatus.identifier, filters);
 
@@ -105,7 +82,7 @@ angular.module('ingresseEmulatorApp')
             $scope.isLoading = true;
 
             var identifier = $scope.fields.eventTicketTypes.identifier.model;
-            var filters = $scope.getFiltersByTab($scope.fields.eventTicketTypes);
+            var filters = QueryService.getFiltersByTab($scope.fields.eventTicketTypes);
 
             QueryService.setSearchParams('eventTicketTypes', $scope.fields.eventTicketTypes.identifier, filters);
 
@@ -125,7 +102,7 @@ angular.module('ingresseEmulatorApp')
             $scope.isLoading = true;
 
             var identifier = $scope.fields.eventTicketTypesForSession.identifier.model;
-            var filters = $scope.getFiltersByTab($scope.fields.eventTicketTypesForSession);
+            var filters = QueryService.getFiltersByTab($scope.fields.eventTicketTypesForSession);
 
             QueryService.setSearchParams('eventTicketTypesForSession', $scope.fields.eventTicketTypesForSession.identifier, filters);
 
@@ -145,7 +122,7 @@ angular.module('ingresseEmulatorApp')
             $scope.isLoading = true;
 
             var identifier = $scope.fields.crew.identifier.model;
-            var filters = $scope.getFiltersByTab($scope.fields.crew);
+            var filters = QueryService.getFiltersByTab($scope.fields.crew);
 
             QueryService.setSearchParams('crew', $scope.fields.crew.identifier, filters);
 
@@ -164,7 +141,7 @@ angular.module('ingresseEmulatorApp')
         $scope.getList = function () {
             $scope.isLoading = true;
 
-            var filters = $scope.getFiltersByTab($scope.fields.eventSearch);
+            var filters = QueryService.getFiltersByTab($scope.fields.eventSearch);
 
             QueryService.setSearchParams('user', null, filters);
 
