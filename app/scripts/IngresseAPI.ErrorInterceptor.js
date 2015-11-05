@@ -198,6 +198,11 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 3041) {
+              error.message = 'Você selecionou uma quantidade de ingressos maior do que temos disponível no estoque.';
+              return $q.reject(error);
+            }
+
             if (error.code === 5001) {
               error.message = 'Não conseguimos nos conectar ao seu facebook... Por favor, faça o login no seu facebook e tente novamente.';
               return $q.reject(error);
