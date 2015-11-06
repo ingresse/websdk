@@ -18,7 +18,7 @@ angular.module('ingresseEmulatorApp')
     $scope.get = function () {
       $scope.isLoading = true;
 
-      var filters = $scope.getFiltersByTab($scope.fields.salesgroup);
+      var filters = QueryService.getFiltersByTab($scope.fields.salesgroup);
 
       QueryService.setSearchParams('salesgroup', null, filters);
 
