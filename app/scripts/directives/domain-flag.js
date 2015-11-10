@@ -2,7 +2,7 @@
 
 angular.module('ingresseSDK').directive('domainFlag', function () {
     return {
-        template: '<div class="homologFlag" ng-class="{bottom: positionBottom}" ng-cloak ng-show="apiDomain == \'https://apihml.ingresse.com\' || apiDomain == \'https://apistg.ingresse.com\'">{{apiDomain}}</div>',
+        template: '<div class="homologFlag" ng-cloak ng-class="{bottom: positionBottom, visible: apiDomain == \'https://apihml.ingresse.com\' || apiDomain == \'https://apistg.ingresse.com\'}">{{apiDomain}}</div>',
         replace: true,
         restrict: 'E',
         scope: {
