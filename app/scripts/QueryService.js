@@ -76,7 +76,7 @@ angular.module('ingresseEmulatorApp').service('QueryService', function ($locatio
           year = fields[i].model.getFullYear().toString();
           obj[fields[i].label] = year + '-' + month + '-' + day;
         } else {
-          if (fields[i].model == null || fields[i].model == undefined || fields[i].model == "") {
+          if (fields[i].model === null || fields[i].model === undefined || fields[i].model === '') {
             continue;
           }
 
