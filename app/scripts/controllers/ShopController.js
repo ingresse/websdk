@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ingresseEmulatorApp')
-  .controller('ShopController', function ($scope, ingresseAPI, EmulatorService) {
+  .controller('ShopController', function ($scope, ingresseAPI, EmulatorService, QueryService) {
     $scope.request = {};
 
     $scope.ticketReservation = function () {

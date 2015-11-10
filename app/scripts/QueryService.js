@@ -63,18 +63,24 @@ angular.module('ingresseEmulatorApp').service('QueryService', function ($locatio
       var i, day, month, year;
 
       for (i = fields.length - 1; i >= 0; i--) {
-        if (fields[i].model !== undefined) {
-          if (fields[i].type === 'date') {
-            day = fields[i].model.getDate().toString();
-            month = fields[i].model.getMonth().toString();
-            if (month.length < 2) {
-              month = '0' + month;
-            }
-            year = fields[i].model.getFullYear().toString();
-            obj[fields[i].label] = year + '-' + month + '-' + day;
-          } else {
-            obj[fields[i].label] = fields[i].model;
+        if (fields[i].type === 'date') {
+          if (!fields[i].model) {
+            continue;
           }
+
+          day = fields[i].model.getDate().toString();
+          month = fields[i].model.getMonth().toString();
+          if (month.length < 2) {
+            month = '0' + month;
+          }
+          year = fields[i].model.getFullYear().toString();
+          obj[fields[i].label] = year + '-' + month + '-' + day;
+        } else {
+          if (fields[i].model == null || fields[i].model == undefined || fields[i].model == "") {
+            continue;
+          }
+
+          obj[fields[i].label] = fields[i].model;
         }
       }
 
