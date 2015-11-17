@@ -465,11 +465,14 @@ describe('Service: ingresesAPI', function () {
 
   it('should POST sale?method=refund', function () {
     var transactionId = 123456;
-    var reason = 'reason';
+    var postObject = {
+      reason: 'reason',
+      cashierId: 123455
+    };
     var token = 'usertoken';
 
-    apisdk.sale.refund(transactionId, reason, token);
-    httpBackend.expectPOST(preferences._host + '/sale/' + transactionId + apisdk._generateAuthKey() + '&method=refund&usertoken=usertoken',{reason: reason}).respond({responseData: true});
+    apisdk.sale.refund(transactionId, postObject, token);
+    httpBackend.expectPOST(preferences._host + '/sale/' + transactionId + apisdk._generateAuthKey() + '&method=refund&usertoken=usertoken',postObject).respond({responseData: true});
     httpBackend.flush();
   });
 
