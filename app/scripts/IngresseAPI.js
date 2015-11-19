@@ -430,11 +430,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
       return API._get('sale', transactionId, filters);
     },
 
-    refund: function (transactionId, reason, token) {
-      var postObject = {
-        reason: reason
-      };
-
+    refund: function (transactionId, postObject, token) {
       var filters = {
         method: 'refund',
         usertoken: token

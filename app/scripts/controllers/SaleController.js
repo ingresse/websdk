@@ -101,6 +101,13 @@ angular.module('ingresseEmulatorApp')
         },
         fields: [
           {
+            label: 'cashierId',
+            model: '',
+            type: 'number',
+            disabled: false,
+            required: true
+          },
+          {
             label: 'reason',
             model: '',
             type: 'text',
