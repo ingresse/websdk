@@ -132,6 +132,11 @@ angular.module('ingresseSDK')
               error.message = 'Aparentemente você não tem permissão para realizar esta tarefa';
               return $q.reject(error);
             }
+            
+            if (error.code === 2012) {
+              error.message = 'Tente novamente, por favor. Parece que já faz um tempo desde sua última interação.';
+              return $q.reject(error);
+            }
 
             if (error.code === 2011) {
               error.message = 'Para continuar você precisa ser o dono do evento';

@@ -34,6 +34,8 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
         publickey: publickey,
         privatekey: privatekey,
         _host: prefHost,
+        _signature: null,
+        _timestamp: null,
 
         // PRIVATE
         loginReturnUrl: 'https://cdn.ingresse.com/websdk/v7/parse-response.html',
@@ -55,6 +57,10 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
           }
 
           $rootScope.$broadcast('preferences.hostChanged');
+        },
+        setAuth: function (signature, timestamp) {
+          this._signature = signature;
+          this._timestamp = timestamp;
         },
         httpCallStarted: function (url) {
           var domain = url.split('?')[0];

@@ -43,6 +43,13 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
       RETURNS THE STRING TO BE USED ON API CALLS.
     */
+    
+    var authenticationString;
+    if (ingresseApiPreferences.publickey && ingresseApiPreferences._signature && ingresseApiPreferences._timestamp) {
+      authenticationString = '?publickey=' + ingresseApiPreferences.publickey + '&signature=' + ingresseApiPreferences._signature + '&timestamp=' + ingresseApiPreferences._timestamp;
+      return authenticationString;
+    }
+    
     if (!ingresseApiPreferences.privatekey && !ingresseApiPreferences.publickey) {
       return '?noauthdata';
     }
@@ -59,7 +66,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
     var data1 = ingresseApiPreferences.publickey + timestamp;
     var data2 = CryptoJS.HmacSHA1(data1, ingresseApiPreferences.privatekey);
     var computedSignature = data2.toString(CryptoJS.enc.Base64);
-    var authenticationString = '?publickey=' + ingresseApiPreferences.publickey + '&signature=' + API._urlencode(computedSignature) + '&timestamp=' + API._urlencode(timestamp);
+    authenticationString = '?publickey=' + ingresseApiPreferences.publickey + '&signature=' + API._urlencode(computedSignature) + '&timestamp=' + API._urlencode(timestamp);
 
     return authenticationString;
   };
