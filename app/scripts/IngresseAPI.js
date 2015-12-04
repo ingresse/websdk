@@ -46,7 +46,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
     var authenticationString;
     if (ingresseApiPreferences.publickey && ingresseApiPreferences._signature && ingresseApiPreferences._timestamp) {
-      authenticationString = '?publickey=' + ingresseApiPreferences.publickey + '&signature=' + ingresseApiPreferences._signature + '&timestamp=' + ingresseApiPreferences._timestamp;
+      authenticationString = '?publickey=' + API._urlencode(ingresseApiPreferences.publickey) + '&signature=' + API._urlencode(ingresseApiPreferences._signature) + '&timestamp=' + API._urlencode(ingresseApiPreferences._timestamp);
       return authenticationString;
     }
 

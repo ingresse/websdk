@@ -44,9 +44,9 @@
     </md-input-container>
     <div ng-repeat="tab in fields" ng-show="fields[tabSelected].label === tab.label">
         <form name="queryForm" ng-submit="tab.action()">
-            <md-input-container ng-if="tab.authentication">
+            <md-input-container>
                 <label>User token</label>
-                <input type="text" ng-model="credentials.token" required/>
+                <input type="text" ng-model="credentials.token" ng-required="tab.authentication"/>
             </md-input-container>
 
             <md-input-container ng-if="tab.identifier">

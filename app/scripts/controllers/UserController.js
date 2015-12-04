@@ -264,7 +264,7 @@ angular.module('ingresseEmulatorApp')
       userEvents: {
         label: 'Events',
         action: $scope.getEvents,
-        authentication: true,
+        authentication: false,
         identifier: {
           label: 'userid',
           model: '',
