@@ -43,13 +43,13 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
       RETURNS THE STRING TO BE USED ON API CALLS.
     */
-    
+
     var authenticationString;
     if (ingresseApiPreferences.publickey && ingresseApiPreferences._signature && ingresseApiPreferences._timestamp) {
       authenticationString = '?publickey=' + ingresseApiPreferences.publickey + '&signature=' + ingresseApiPreferences._signature + '&timestamp=' + ingresseApiPreferences._timestamp;
       return authenticationString;
     }
-    
+
     if (!ingresseApiPreferences.privatekey && !ingresseApiPreferences.publickey) {
       return '?noauthdata';
     }
@@ -405,6 +405,16 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
       return API._get('user', identifier, filters);
     },
 
+    renameTicket: function (userid, ticketId, filters, postObject, token) {
+      var identifier = userid + '/ticket/' + ticketId;
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._post('user', identifier, filters, postObject);
+    },
+
     getEvents: function (userid, filters, token) {
       var identifier = userid + '/events';
 
@@ -480,8 +490,8 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
     return API._get('featured', null, filters);
   };
 
-  API.getEventCategory = function (category) {
-    return API._get(null, category);
+  API.getEventCategory = function (category, filters) {
+    return API._get(null, category, filters);
   };
 
   API.getRefundReasons = function () {
