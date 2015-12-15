@@ -26,7 +26,7 @@ angular.module('ingresseEmulatorApp', [
       .primaryPalette('blue')
       .accentPalette('orange');
 
-    ingresseApiPreferencesProvider.setHost('https://apistg.ingresse.com');
+    ingresseApiPreferencesProvider.setHost('https://apipre.ingresse.com');
   })
   .run(function ($rootScope) {
     $rootScope.$on('$viewContentLoaded', function () {

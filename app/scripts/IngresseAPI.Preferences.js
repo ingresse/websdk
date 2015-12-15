@@ -15,7 +15,7 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
     setHost: function (host) {
       prefHost = host;
 
-      if (prefHost === 'https://api.ingresse.com' || prefHost === 'https://apistg.ingresse.com') {
+      if (prefHost === 'https://api.ingresse.com' || prefHost === 'https://apipre.ingresse.com') {
         PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
       }
 
@@ -48,7 +48,7 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
         setHost: function (host) {
           this._host = host;
 
-          if (this._host === 'https://api.ingresse.com' || this._host === 'https://apistg.ingresse.com') {
+          if (this._host === 'https://api.ingresse.com' || this._host === 'https://apipre.ingresse.com') {
             PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
           }
 
