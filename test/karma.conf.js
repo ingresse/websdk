@@ -12,7 +12,7 @@ module.exports = function (config) {
       './bower_components/pagar-me/index.js',
       './app/scripts/ingresseAPI.Preferences.js',
       './app/scripts/ingresseAPI.js',
-      './test/spec/**/*.js'
+      '../test/spec/**/*.js'
     ],
 
     // list of files / patterns to exclude
