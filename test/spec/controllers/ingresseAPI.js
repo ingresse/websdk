@@ -644,7 +644,6 @@ describe('Service: ingresesAPI', function () {
     try {
       apisdk.createPagarmeCard(transaction);
     } catch (error) {
-      console.log(error);
       expect(error.message).toBe(' Número do cartão inválido. Nome do portador inválido. Mês de expiração inválido. Ano de expiração inválido. Código de segurança inválido.');
       expect(error.code).toBe(1031);
     }
