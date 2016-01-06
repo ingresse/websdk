@@ -10,3 +10,4 @@ typings
 .sass-cache
 .vscode
 test/coverage/
+ingresse-websdk.sublime-project

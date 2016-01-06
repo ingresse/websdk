@@ -2,17 +2,17 @@ module.exports = function (config) {
   'use strict';
 
   config.set({
-    basePath: '../',
+    basePath: '../app',
     frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
     files: [
-      './bower_components/angular/angular.js',
-      './bower_components/angular-mocks/angular-mocks.js',
-      './bower_components/pagar-me/index.js',
-      './app/scripts/ingresseAPI.Preferences.js',
-      './app/scripts/ingresseAPI.js',
-      '../test/spec/**/*.js'
+      '../bower_components/angular/angular.js',
+      '../bower_components/angular-mocks/angular-mocks.js',
+      '../bower_components/pagar-me/index.js',
+      './scripts/IngresseAPI.Preferences.js',
+      './scripts/IngresseAPI.js',
+      '../test/spec/{,*/}*.js'
     ],
 
     // list of files / patterns to exclude
@@ -39,13 +39,14 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
 
     coverageReporter: {
-      dir : './test/coverage/',
+      dir : '../test/coverage/',
       reporters: [{
-        type: 'html',
-        subdir: 'report-html'
-      }, {
         type: 'lcov',
         subdir: 'report-lcov'
+      }, {
+        type: 'text'
+      }, {
+        type: 'text-summary'
       }]
     }
   });
