@@ -255,8 +255,36 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
       return API._get('producer', identifier, filters);
     },
-    getCustomerListCSVExportURL: function (producerId, token) {
-      return ingresseApiPreferences.getHost() + '/producer/' + producerId + '/customerExport' + API._generateAuthKey() + '&usertoken=' + token;
+    getCustomerListCSVExportURL: function (producerId, token, filters) {
+      var url = ingresseApiPreferences.getHost() + '/producer/' + producerId + '/customerExport' + API._generateAuthKey() + '&usertoken=' + token;
+
+      if (filters) {
+        if (filters.scorefrom) {
+          url += '&scorefrom=' + filters.scorefrom;
+        }
+
+        if (filters.scoreto) {
+          url += '&scoreto=' + filters.scoreto;
+        }
+
+        if (filters.event) {
+          url += '&event=' + filters.event;
+        }
+
+        if (filters.platform) {
+          url += '&platform=' + filters.platform;
+        }
+
+        if (filters.classification) {
+          url += '&classification=' + filters.classification;
+        }
+
+        if (filters.term) {
+          url += '&term=' + filters.term;
+        }
+      }
+
+      return url;
     },
     getSalesGroupReport: function (identifier, filters, token) {
       identifier += '/salesgroupReport';
