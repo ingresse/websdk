@@ -590,7 +590,7 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
     return transaction;
   };
 
-  API.payReservation = function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments, passkey) {
+  API.payReservation = function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments, passkey, postback) {
 
     var deferred = $q.defer();
     var transactionDTO = {};
@@ -643,6 +643,10 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
 
     if (installments) {
       currentTransaction.installments = installments;
+    }
+
+    if (postback) {
+      currentTransaction.postback = 1;
     }
 
     try {
