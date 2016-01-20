@@ -90,58 +90,65 @@
     <script src="bower_components/ng-json-explorer/dist/angular-json-explorer.js"></script>
     <!-- endbuild -->
 
-        <!-- build:js({./,.tmp,app}) scripts/websdk.js -->
-        <script src="bower_components/crypto-js/rollups/hmac-sha1.js"></script>
-        <script src="bower_components/crypto-js/components/enc-base64-min.js"></script>
-        <script src="bower_components/es5-shim/es5-shim.js"></script>
-        <script src="bower_components/pagar-me/index.js"></script>
-        <script src="scripts/libs/pagseguro/sandbox.pagseguro.directpayment.js"></script>
-        <script src="bower_components/moment/moment.js"></script>
+    <!-- build:js({./,.tmp,app}) scripts/websdk.js -->
 
-        <script src="scripts/IngresseAPI.Preferences.js"></script>
-        <script src="scripts/IngresseAPI.UserService.js"></script>
-        <script src="scripts/IngresseAPI.EventService.js"></script>
-        <script src="scripts/IngresseAPI.ErrorInterceptor.js"></script>
-        <script src="scripts/IngresseAPI.WWWFormUrlEnconded.js"></script>
-        <script src="scripts/IngresseAPI.js"></script>
+    <!--(if target dev)><!-->
+    <script src="scripts/libs/pagseguro/sandbox.pagseguro.directpayment.js"></script>
+    <!--<!(endif)-->
+    <!--(if target prod)><!-->
+    <script src="scripts/libs/pagseguro/pagseguro.directpayment.js"></script>
+    <!--<!(endif)-->
 
-        <script src="scripts/directives/domain-flag.js"></script>
+    <script src="bower_components/crypto-js/rollups/hmac-sha1.js"></script>
+    <script src="bower_components/crypto-js/components/enc-base64-min.js"></script>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/pagar-me/index.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
 
-        <script src="scripts/services/payments/BaseStrategy.js"></script>
-        <script src="scripts/services/payments/PagarMeStrategy.js"></script>
-        <script src="scripts/services/payments/PagSeguroStrategy.js"></script>
-        <script src="scripts/services/PaymentService.js"></script>
+    <script src="scripts/IngresseAPI.Preferences.js"></script>
+    <script src="scripts/IngresseAPI.UserService.js"></script>
+    <script src="scripts/IngresseAPI.EventService.js"></script>
+    <script src="scripts/IngresseAPI.ErrorInterceptor.js"></script>
+    <script src="scripts/IngresseAPI.WWWFormUrlEnconded.js"></script>
+    <script src="scripts/IngresseAPI.js"></script>
 
-        <script src="scripts/constants/PaymentGatewaysConstant.js"></script>
-        <script src="scripts/constants/PaymentTypeConstant.js"></script>
-        <!-- endbuild -->
+    <script src="scripts/directives/domain-flag.js"></script>
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/EmulatorService.js"></script>
-        <script src="scripts/QueryService.js"></script>
-        <script src="scripts/controllers/SidenavController.js"></script>
-        <script src="scripts/controllers/HeaderController.js"></script>
-        <script src="scripts/controllers/EventController.js"></script>
-        <script src="scripts/controllers/UserController.js"></script>
-        <script src="scripts/controllers/ErrorController.js"></script>
-        <script src="scripts/controllers/SaleController.js"></script>
-        <script src="scripts/controllers/DashboardController.js"></script>
-        <script src="scripts/controllers/ProducerController.js"></script>
-        <script src="scripts/controllers/FeaturedController.js"></script>
-        <script src="scripts/controllers/RootController.js"></script>
-        <script src="scripts/controllers/RefundReasonsController.js"></script>
-        <script src="scripts/controllers/TicketController.js"></script>
-        <script src="scripts/controllers/TicketBoothController.js"></script>
-        <script src="scripts/controllers/HomeController.js"></script>
-        <script src="scripts/controllers/FreepassController.js"></script>
-        <script src="scripts/controllers/LoginController.js"></script>
-        <script src="scripts/controllers/BalanceController.js"></script>
-        <script src="scripts/controllers/SalesGroupController.js"></script>
+    <script src="scripts/services/payments/BaseStrategy.js"></script>
+    <script src="scripts/services/payments/PagarMeStrategy.js"></script>
+    <script src="scripts/services/payments/PagSeguroStrategy.js"></script>
+    <script src="scripts/services/PaymentService.js"></script>
 
-        <script src="scripts/directives/ingresse-emulator.js"></script>
-        <script src="scripts/directives/query-directive.js"></script>
-        <script src="scripts/directives/results-directive.js"></script>
-        <!-- endbuild -->
+    <script src="scripts/constants/PaymentGatewaysConstant.js"></script>
+    <script src="scripts/constants/PaymentTypeConstant.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/EmulatorService.js"></script>
+    <script src="scripts/QueryService.js"></script>
+    <script src="scripts/controllers/SidenavController.js"></script>
+    <script src="scripts/controllers/HeaderController.js"></script>
+    <script src="scripts/controllers/EventController.js"></script>
+    <script src="scripts/controllers/UserController.js"></script>
+    <script src="scripts/controllers/ErrorController.js"></script>
+    <script src="scripts/controllers/SaleController.js"></script>
+    <script src="scripts/controllers/DashboardController.js"></script>
+    <script src="scripts/controllers/ProducerController.js"></script>
+    <script src="scripts/controllers/FeaturedController.js"></script>
+    <script src="scripts/controllers/RootController.js"></script>
+    <script src="scripts/controllers/RefundReasonsController.js"></script>
+    <script src="scripts/controllers/TicketController.js"></script>
+    <script src="scripts/controllers/TicketBoothController.js"></script>
+    <script src="scripts/controllers/HomeController.js"></script>
+    <script src="scripts/controllers/FreepassController.js"></script>
+    <script src="scripts/controllers/LoginController.js"></script>
+    <script src="scripts/controllers/BalanceController.js"></script>
+    <script src="scripts/controllers/SalesGroupController.js"></script>
+
+    <script src="scripts/directives/ingresse-emulator.js"></script>
+    <script src="scripts/directives/query-directive.js"></script>
+    <script src="scripts/directives/results-directive.js"></script>
+    <!-- endbuild -->
 </body>
 </html>

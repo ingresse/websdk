@@ -12,7 +12,7 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
     // Project settings
-    yeoman: appConfig,
+    ingresse: appConfig,
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
@@ -21,7 +21,7 @@ module.exports = function (grunt) {
         tasks: ['wiredep']
       },
       js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+        files: ['<%= ingresse.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
         options: {
           livereload: '<%= connect.options.livereload %>'
@@ -32,7 +32,7 @@ module.exports = function (grunt) {
         tasks: ['newer:jshint:test', 'karma']
       },
       compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        files: ['<%= ingresse.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass:server', 'autoprefixer']
       },
       gruntfile: {
@@ -43,9 +43,9 @@ module.exports = function (grunt) {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
-          '<%= yeoman.app %>/{,*/}*.html',
+          '<%= ingresse.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
-          '<%= yeoman.app %>/styles/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= ingresse.app %>/styles/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
     },
@@ -111,7 +111,7 @@ module.exports = function (grunt) {
       all: {
         src: [
           'Gruntfile.js',
-          '<%= yeoman.app %>/scripts/{,*/}*.js'
+          '<%= ingresse.app %>/scripts/{,*/}*.js'
         ]
       },
       test: {
@@ -129,8 +129,8 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
-            '<%= yeoman.dist %>/{,*/}*',
-            '!<%= yeoman.dist %>/.git*'
+            '<%= ingresse.dist %>/{,*/}*',
+            '!<%= ingresse.dist %>/.git*'
           ]
         }]
       },
@@ -155,11 +155,11 @@ module.exports = function (grunt) {
     // Automatically inject Bower components into the app
     wiredep: {
       app: {
-        src: ['<%= yeoman.app %>/index.html'],
+        src: ['<%= ingresse.app %>/index.html'],
         ignorePath:  /\.\.\//
       },
       sass: {
-        src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        src: ['<%= ingresse.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
       }
     },
@@ -167,12 +167,12 @@ module.exports = function (grunt) {
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
       options: {
-        sassDir: '<%= yeoman.app %>/styles',
+        sassDir: '<%= ingresse.app %>/styles',
         cssDir: '.tmp/styles',
         generatedImagesDir: '.tmp/styles/generated',
-        imagesDir: '<%= yeoman.app %>/styles',
-        javascriptsDir: '<%= yeoman.app %>/scripts',
-        fontsDir: '<%= yeoman.app %>/styles/fonts',
+        imagesDir: '<%= ingresse.app %>/styles',
+        javascriptsDir: '<%= ingresse.app %>/scripts',
+        fontsDir: '<%= ingresse.app %>/styles/fonts',
         importPath: './bower_components',
         httpImagesPath: '/styles',
         httpGeneratedImagesPath: '/styles/generated',
@@ -183,7 +183,7 @@ module.exports = function (grunt) {
       },
       dist: {
         options: {
-          generatedImagesDir: '<%= yeoman.dist %>/v7/styles/generated'
+          generatedImagesDir: '<%= ingresse.dist %>/v7/styles/generated'
         }
       },
       server: {
@@ -197,10 +197,10 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
-          '<%= yeoman.dist %>/v7/scripts/{,*/}*.js',
-          '<%= yeoman.dist %>/v7/styles/{,*/}*.css',
-          // '<%= yeoman.dist %>/styles/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/v7/styles/fonts/*'
+          '<%= ingresse.dist %>/v7/scripts/{,*/}*.js',
+          '<%= ingresse.dist %>/v7/styles/{,*/}*.css',
+          // '<%= ingresse.dist %>/styles/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= ingresse.dist %>/v7/styles/fonts/*'
         ]
       }
     },
@@ -209,9 +209,9 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
+      html: '<%= ingresse.app %>/index.html',
       options: {
-        dest: '<%= yeoman.dist %>/v7/',
+        dest: '<%= ingresse.dist %>/v7/',
         flow: {
           html: {
             steps: {
@@ -226,10 +226,10 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/v7//{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/v7/styles/{,*/}*.css'],
+      html: ['<%= ingresse.dist %>/v7//{,*/}*.html'],
+      css: ['<%= ingresse.dist %>/v7/styles/{,*/}*.css'],
       options: {
-        assetsDirs: ['<%= yeoman.dist %>/v7/','<%= yeoman.dist %>/v7/styles']
+        assetsDirs: ['<%= ingresse.dist %>/v7/','<%= ingresse.dist %>/v7/styles']
       }
     },
 
@@ -237,9 +237,9 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.app %>/styles',
+          cwd: '<%= ingresse.app %>/styles',
           src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/v7/styles'
+          dest: '<%= ingresse.dist %>/v7/styles'
         }]
       }
     },
@@ -248,9 +248,9 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.app %>/styles',
+          cwd: '<%= ingresse.app %>/styles',
           src: '{,*/}*.svg',
-          dest: '<%= yeoman.dist %>/v7/styles'
+          dest: '<%= ingresse.dist %>/v7/styles'
         }]
       }
     },
@@ -266,9 +266,9 @@ module.exports = function (grunt) {
         },
         files: [{
           expand: true,
-          cwd: '<%= yeoman.dist %>/v7/',
+          cwd: '<%= ingresse.dist %>/v7/',
           src: ['*.html', 'views/{,*/}*.html'],
-          dest: '<%= yeoman.dist %>/v7/'
+          dest: '<%= ingresse.dist %>/v7/'
         }]
       }
     },
@@ -289,7 +289,7 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/v7/*.html']
+        html: ['<%= ingresse.dist %>/v7/*.html']
       }
     },
 
@@ -300,7 +300,7 @@ module.exports = function (grunt) {
           expand: true,
           dot: true,
           cwd: './',
-          dest: '<%= yeoman.dist %>',
+          dest: '<%= ingresse.dist %>',
           src: [
             'index.html',
             'parse-response.html'
@@ -311,8 +311,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>/v7/',
+          cwd: '<%= ingresse.app %>',
+          dest: '<%= ingresse.dist %>/v7/',
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
@@ -324,13 +324,13 @@ module.exports = function (grunt) {
         }, {
           expand: true,
           cwd: '.tmp/styles',
-          dest: '<%= yeoman.dist %>/v7/styles',
+          dest: '<%= ingresse.dist %>/v7/styles',
           src: ['generated/*']
         }]
       },
       styles: {
         expand: true,
-        cwd: '<%= yeoman.app %>/styles',
+        cwd: '<%= ingresse.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
       }
@@ -358,13 +358,27 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    // Check for script to use in dev or prod
+    targethtml: {
+      prod: {
+        files: {
+          '<%= ingresse.app %>/index.html': '<%= ingresse.app %>/index.html',
+        }
+      },
+      dev: {
+        files: {
+          '<%= ingresse.app %>/index.html': '<%= ingresse.app %>/index.html',
+        }
+      }
     }
   });
 
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
+      return grunt.task.run(['connect:dist:keepalive']);
     }
 
     grunt.task.run([
@@ -385,6 +399,23 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
+    'targethtml:prod',
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'concat',
+    'ngAnnotate',
+    'copy:redirect',
+    'copy:dist',
+    'cssmin',
+    'uglify',
+    'usemin'
+  ]);
+
+  grunt.registerTask('build:dev', [
+    'clean:dist',
+    'wiredep',
+    'targethtml:dev',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
