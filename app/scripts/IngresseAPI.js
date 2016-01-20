@@ -1,4 +1,3 @@
-/// <reference path="../../typings/angularjs/angular.d.ts"/>
 'use strict';
 
 function receiveMessage (event) {
@@ -13,7 +12,8 @@ function receiveMessage (event) {
 
 window.addEventListener('message', receiveMessage, false);
 
-angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingresseApiPreferences) {
+angular.module('ingresseSDK')
+.service('ingresseAPI', function ($http, $q, ingresseApiPreferences, Payment) {
   var API = {};
 
   API._urlencode = function (str) {
@@ -673,6 +673,50 @@ angular.module('ingresseSDK').service('ingresseAPI', function ($http, $q, ingres
           deferred.reject(error);
         });
     });
+
+    return deferred.promise;
+  };
+
+  /**
+   * Pay for reserved tickets
+   * @param {object}  transaction - Transaction object
+   * @param {integer} transaction.eventId - Event id
+   * @param {integer} transaction.userId - The id of the user paying
+   * @param {object}  transaction.gateway - The gateway used by the event
+   * @param {string}  transaction.transactionId - The transaction id
+   * @param {string}  transaction.paymentMethod - The payment method
+   * @param {object}  [transaction.creditcard] - The creditcard information
+   * @param {integer} transaction.installments - The number of installmetns
+   * @param {string}  [transaction.passkey] - The passkey used to buy the ticket
+   * @param {boolean} [transaction.postback] - If it will use postback or not
+   * @param {string}  token - The token of the user paying
+   */
+  API.pay = function (transaction, token) {
+    var url      = ingresseApiPreferences.getHost() + '/shop/' + this._generateAuthKey() + '&usertoken=' + token,
+        deferred = $q.defer();
+
+    // Configure payment service
+    Payment
+      .setTransaction(transaction)
+      .setGateway();
+
+    // Execute payment
+    Payment.execute()
+      .then(function (transaction) {
+        // Send date to api
+        $http.post(url, transaction)
+          .success(function (response) {
+            deferred.resolve(response.responseData.data);
+          })
+
+          // On error reject promise
+          .catch(function (error) {
+            deferred.reject(error);
+          });
+      })
+      .catch(function (error) {
+        deferred.reject(error);
+      });
 
     return deferred.promise;
   };
