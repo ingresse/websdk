@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ingresseSDK')
-.factory('Payment', function ($q, paymentGateway, paymentType, PagarMeStrategy, PagSeguroStrategy) {
+.factory('Payment', function ($q, ingressePaymentGateway, ingressePaymentType, PagarMeStrategy, PagSeguroStrategy) {
   /**
    * Payment
    * @class
@@ -45,7 +45,7 @@ angular.module('ingresseSDK')
 
     switch(_gateway.name) {
 
-      case paymentGateway.PAGSEGURO:
+      case ingressePaymentGateway.PAGSEGURO:
         this.setStrategy(new PagSeguroStrategy());
         break;
 
@@ -62,7 +62,7 @@ angular.module('ingresseSDK')
    * @returns {promise}
    */
   Payment.prototype.execute = function () {
-    if (this.transaction.paymentMethod === paymentType.CREDITCARD) {
+    if (this.transaction.paymentMethod === ingressePaymentType.CREDITCARD) {
       return this.strategy.creditCardPayment(this.transaction);
     }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ingresseSDK')
-.constant('paymentType', {
+.constant('ingressePaymentType', {
   BANKSLIP  : 'BoletoBancario',
   CREDITCARD: 'CartaoCredito'
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ingresseSDK')
-.constant('paymentGateway', {
+.constant('ingressePaymentGateway', {
   PAGARME  : 'pagarme',
   PAGSEGURO: 'pagseguro'
 });
