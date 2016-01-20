@@ -32,7 +32,13 @@ angular.module('ingresseSDK')
     creditCard.cardCVV             = transaction.creditcard.cvv.toString();
 
     // Check for error
-		this.errorCheck(creditCard);
+    try {
+      this.errorCheck(creditCard);
+
+    } catch (err) {
+      deferred.reject(err);
+      return deferred.promise;
+    }
 
     // Generate card hash
     creditCard.generateHash(function (hash) {
