@@ -692,16 +692,17 @@ angular.module('ingresseSDK')
    * @param {string}  token - The token of the user paying
    */
   API.pay = function (transaction, token) {
-    var url      = ingresseApiPreferences.getHost() + '/shop/' + this._generateAuthKey() + '&usertoken=' + token,
+    var payment  = new Payment(),
+        url      = ingresseApiPreferences.getHost() + '/shop/' + this._generateAuthKey() + '&usertoken=' + token,
         deferred = $q.defer();
 
     // Configure payment service
-    Payment
+    payment
       .setTransaction(transaction)
       .setGateway();
 
     // Execute payment
-    Payment.execute()
+    payment.execute()
       .then(function (transaction) {
         // Send date to api
         $http.post(url, transaction)

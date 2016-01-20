@@ -1,15 +1,21 @@
 'use strict';
 
 angular.module('ingresseSDK')
-.service('Payment', function ($q, paymentGateway, paymentType, PagarMeStrategy, PagSeguroStrategy) {
-  this.strategy    = null;
-  this.transaction = null;
+.factory('Payment', function ($q, paymentGateway, paymentType, PagarMeStrategy, PagSeguroStrategy) {
+  /**
+   * Payment
+   * @class
+   */
+  var Payment = function () {
+    this.strategy    = null;
+    this.transaction = null;
+  };
 
   /**
    * Set the selected strategy
    * @param {function} strategy - The strategy to be used
    */
-  this.setStrategy = function (strategy) {
+  Payment.prototype.setStrategy = function (strategy) {
     this.strategy = strategy;
 
     return this;
@@ -22,7 +28,7 @@ angular.module('ingresseSDK')
    * @param {string} transaction.gateway.name - Name of the Gateway
    * @param {string} transaction.gateway.session - Gateway session token
    */
-  this.setTransaction = function (transaction) {
+  Payment.prototype.setTransaction = function (transaction) {
       this.transaction = transaction;
 
       return this;
@@ -34,7 +40,7 @@ angular.module('ingresseSDK')
    * @param {string} gateway.name - Name of the gateway
    * @param {string} [gateway.session] - Gateway session id
    */
-  this.setGateway = function (gateway) {
+  Payment.prototype.setGateway = function (gateway) {
     var _gateway = gateway || this.transaction.gateway;
 
     switch(_gateway.name) {
@@ -55,12 +61,14 @@ angular.module('ingresseSDK')
    * Execute strategy payment
    * @returns {promise}
    */
-  this.execute = function () {
+  Payment.prototype.execute = function () {
     if (this.transaction.paymentMethod === paymentType.CREDITCARD) {
       return this.strategy.creditCardPayment(this.transaction);
     }
 
     return this.strategy.bankSlipPayment(this.transaction);
   };
+
+  return Payment;
 });
 

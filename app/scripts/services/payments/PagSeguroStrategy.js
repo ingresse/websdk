@@ -26,16 +26,17 @@ angular.module('ingresseSDK')
     // Get sender hash
     transaction.senderHash = this.getSenderHash(transaction.gateway.session);
 
+    // Format full year for pagSeguro
+    var fullYear = this.formatFullYear(transaction.creditcard.year);
+
     var param = {
       cardNumber     : transaction.creditcard.number,
       brand          : transaction.creditcard.flag,
       cvv            : transaction.creditcard.cvv,
       expirationMonth: transaction.creditcard.month,
-      expirationYear : '20' + transaction.creditcard.year,
+      expirationYear : fullYear,
 
       success: function (response) {
-        console.log(response);
-
         transaction.creditcard = {
           cardHash : response.card.token,
           cpf      : transaction.creditcard.cpf,
@@ -50,8 +51,6 @@ angular.module('ingresseSDK')
         deferred.reject(response);
       }
     };
-
-    console.log(param);
 
     // Create card hash
     PagSeguroDirectPayment.createCardToken(param);
@@ -71,6 +70,17 @@ angular.module('ingresseSDK')
     deferred.resolve(transaction);
 
     return deferred.promise;
+  };
+
+  /**
+   * PagSeguro format year
+   */
+  PagSeguroStrategy.prototype.formatFullYear = function (year) {
+    if (angular.isDefined(year) && year.toString().length == 2) {
+      return '20' + year;
+    }
+
+    return year;
   };
 
   /**
