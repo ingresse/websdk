@@ -12,6 +12,8 @@ module.exports = function (config) {
       '../bower_components/pagar-me/index.js',
       './scripts/IngresseAPI.Preferences.js',
       './scripts/IngresseAPI.js',
+      './scripts/services/{,*/}*.js',
+      './scripts/constants/{,*/}*.js',
       '../test/spec/{,*/}*.js'
     ],
 
