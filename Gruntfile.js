@@ -209,7 +209,7 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: '<%= ingresse.app %>/index.html',
+      html: '.tmp/index.html',
       options: {
         dest: '<%= ingresse.dist %>/v7/',
         flow: {
@@ -364,12 +364,12 @@ module.exports = function (grunt) {
     targethtml: {
       prod: {
         files: {
-          '<%= ingresse.app %>/index.html': '<%= ingresse.app %>/index.html',
+          '.tmp/index.html': '<%= ingresse.app %>/index.html',
         }
       },
       dev: {
         files: {
-          '<%= ingresse.app %>/index.html': '<%= ingresse.app %>/index.html',
+          '.tmp/index.html': '<%= ingresse.app %>/index.html',
         }
       }
     }
