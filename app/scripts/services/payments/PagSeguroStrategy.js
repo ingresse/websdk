@@ -29,7 +29,8 @@ angular.module('ingresseSDK')
     // Format full year for pagSeguro
     var fullYear = this.formatFullYear(transaction.creditcard.year);
 
-    var param = {
+    // Prams to generate the pagseguro card token
+    var cardTokenParams = {
       cardNumber     : transaction.creditcard.number,
       brand          : transaction.creditcard.flag,
       cvv            : transaction.creditcard.cvv,
@@ -37,6 +38,7 @@ angular.module('ingresseSDK')
       expirationYear : fullYear,
 
       success: function (response) {
+        // Add the information to the creditcard object
         transaction.creditcard = {
           cardHash : response.card.token,
           cpf      : transaction.creditcard.cpf,
@@ -48,12 +50,13 @@ angular.module('ingresseSDK')
       },
 
       error: function (response) {
-        deferred.reject(response);
+        // Reject promise with the error
+        deferred.reject(response.errors);
       }
     };
 
-    // Create card hash
-    PagSeguroDirectPayment.createCardToken(param);
+    // Create card token
+    PagSeguroDirectPayment.createCardToken(cardTokenParams);
 
     return deferred.promise;
   };
@@ -65,6 +68,7 @@ angular.module('ingresseSDK')
   PagSeguroStrategy.prototype.bankSlipPayment = function (transaction) {
     var deferred = $q.defer();
 
+    // Get sender hash
     transaction.senderHash = this.getSenderHash(transaction.gateway.session);
 
     deferred.resolve(transaction);
@@ -73,7 +77,8 @@ angular.module('ingresseSDK')
   };
 
   /**
-   * PagSeguro format year
+   * PagSeguro format fullyear
+   * @param {string} - Year to check if is in fullyear format
    */
   PagSeguroStrategy.prototype.formatFullYear = function (year) {
     if (angular.isDefined(year) && year.toString().length == 2) {
