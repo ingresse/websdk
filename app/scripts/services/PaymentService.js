@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ingresseSDK')
-.factory('Payment', function ($q, ingressePaymentGateway, ingressePaymentType, PagarMeStrategy, PagSeguroStrategy) {
+.factory('Payment', function ($q, ingressePaymentGateway, ingressePaymentType, PagarMeStrategy, pagSeguroStrategy) {
   /**
    * Payment
    * @class
@@ -46,7 +46,7 @@ angular.module('ingresseSDK')
     switch(_gateway.name) {
 
       case ingressePaymentGateway.PAGSEGURO:
-        this.setStrategy(new PagSeguroStrategy());
+        this.setStrategy(pagSeguroStrategy);
         break;
 
       default:

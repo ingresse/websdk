@@ -2,7 +2,7 @@
 
 describe('Payment Service', function () {
   var payment, Payment, TRANSACTION;
-  var PagSeguroStrategy, PagarMeStrategy, ingressePaymentGateway;
+  var pagSeguroStrategy, PagarMeStrategy, ingressePaymentGateway;
 
 	beforeEach(module('ingresseSDK', function ($provide) {
 	  // Mock pagarme strategy
@@ -10,13 +10,13 @@ describe('Payment Service', function () {
     PagarMeStrategy.prototype.creditCardPayment = jasmine.createSpy('creditCardPayment');
     PagarMeStrategy.prototype.bankSlipPayment = jasmine.createSpy('bankSlipPayment');
 
-	  // Mock pagseguro strategy
-    PagSeguroStrategy = function () {};
-    PagSeguroStrategy.prototype.creditCardPayment = jasmine.createSpy('creditCardPayment');
-    PagSeguroStrategy.prototype.bankSlipPayment = jasmine.createSpy('bankSlipPayment');
+	  // Mock pagseguro singleton strategy
+    pagSeguroStrategy = {};
+    pagSeguroStrategy.creditCardPayment = jasmine.createSpy('creditCardPayment');
+    pagSeguroStrategy.bankSlipPayment = jasmine.createSpy('bankSlipPayment');
 
 		$provide.value('PagarMeStrategy', PagarMeStrategy);
-		$provide.value('PagSeguroStrategy', PagSeguroStrategy);
+		$provide.value('pagSeguroStrategy', pagSeguroStrategy);
 	}));
 
   beforeEach(inject(function ($injector) {
@@ -72,7 +72,7 @@ describe('Payment Service', function () {
     payment.setGateway();
 
     expect(payment.setStrategy).toHaveBeenCalled();
-    expect(payment.strategy instanceof PagSeguroStrategy).toBe(true);
+    expect(payment.strategy).toBe(pagSeguroStrategy);
   });
 
   it('should execute method the paymentd method defined in transaction', function () {

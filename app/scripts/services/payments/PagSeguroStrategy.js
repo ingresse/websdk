@@ -1,33 +1,34 @@
 'use strict';
 
-angular.module('ingresseSDK')
-.factory('PagSeguroStrategy', function ($q, BaseStrategy) {
-  /**
-   * PagSeguro payment strategy
-   * @class
-   */
-  var PagSeguroStrategy = function () {
-    BaseStrategy.apply(this, arguments);
-  };
+/**
+ * DISCLAIMER
+ * PagSeguroDirectPayment lib obligates us to create this strategy as a singleton
+ * to handle the **setSession** just once, to prevent the error **30400** when
+ * trying to buy for the second time after a declined transaction
+ */
 
+angular.module('ingresseSDK')
+.factory('pagSeguroStrategy', function ($q) {
   /**
-   * Use base strategy prototype
+   * PagSeguro singleton payment strategy
    */
-  PagSeguroStrategy.prototype = new BaseStrategy();
+  var pagSeguroStrategy  = {
+    session: null
+  };
 
   /**
    * Creditcard payment
    * @param {object} transaction - Transaction object
    * @returns {promise}
    */
-  PagSeguroStrategy.prototype.creditCardPayment = function (transaction) {
+  pagSeguroStrategy.creditCardPayment = function (transaction) {
     var deferred = $q.defer();
 
     // Get sender hash
-    transaction.senderHash = this.getSenderHash(transaction.gateway.session);
+    transaction.senderHash = pagSeguroStrategy.getSenderHash(transaction.gateway.session);
 
     // Format full year for pagSeguro
-    var fullYear = this.formatFullYear(transaction.creditcard.year);
+    var fullYear = pagSeguroStrategy.formatFullYear(transaction.creditcard.year);
 
     // Prams to generate the pagseguro card token
     var cardTokenParams = {
@@ -65,11 +66,11 @@ angular.module('ingresseSDK')
    * Bank slip payment
    * @returns {promise}
    */
-  PagSeguroStrategy.prototype.bankSlipPayment = function (transaction) {
+  pagSeguroStrategy.bankSlipPayment = function (transaction) {
     var deferred = $q.defer();
 
     // Get sender hash
-    transaction.senderHash = this.getSenderHash(transaction.gateway.session);
+    transaction.senderHash = pagSeguroStrategy.getSenderHash(transaction.gateway.session);
 
     deferred.resolve(transaction);
 
@@ -80,7 +81,7 @@ angular.module('ingresseSDK')
    * PagSeguro format fullyear
    * @param {string} - Year to check if is in fullyear format
    */
-  PagSeguroStrategy.prototype.formatFullYear = function (year) {
+  pagSeguroStrategy.formatFullYear = function (year) {
     if (angular.isDefined(year) && year.toString().length == 2) {
       return '20' + year;
     }
@@ -90,14 +91,19 @@ angular.module('ingresseSDK')
 
   /**
    * Get sender hash
-   * @param {string} session - PagSeguro session, musc return in the api gateway object
+   * @param {string} session - PagSeguro session, get it in the api gateway object
    */
-  PagSeguroStrategy.prototype.getSenderHash = function (session) {
-    PagSeguroDirectPayment.setSessionId(session);
+  pagSeguroStrategy.getSenderHash = function (session) {
+    // Set session only one time to prevent error 30400
+    // as the pagSeguro consultant advised
+    if (!pagSeguroStrategy.session) {
+      PagSeguroDirectPayment.setSessionId(session);
+      pagSeguroStrategy.session = session;
+    }
 
     return PagSeguroDirectPayment.getSenderHash();
   };
 
-  return PagSeguroStrategy;
+  return pagSeguroStrategy;
 });
 
