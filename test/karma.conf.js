@@ -13,6 +13,7 @@ module.exports = function (config) {
       './scripts/IngresseAPI.Preferences.js',
       './scripts/IngresseAPI.js',
       './scripts/services/{,*/}*.js',
+      './scripts/services/payments/*.js',
       './scripts/constants/{,*/}*.js',
       '../test/spec/{,*/}*.js'
     ],
@@ -35,7 +36,7 @@ module.exports = function (config) {
     singleRun: true,
 
     preprocessors: {
-      './app/scripts/{,*/}*.js': ['coverage']
+      'scripts/{,*/}*.js': ['coverage']
     },
 
     logLevel: config.LOG_INFO,
