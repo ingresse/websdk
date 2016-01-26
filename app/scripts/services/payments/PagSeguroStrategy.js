@@ -52,7 +52,9 @@ angular.module('ingresseSDK')
 
       error: function (response) {
         // Reject promise with the error
-        deferred.reject(response.errors);
+        var error = pagSeguroStrategy.errorCheck(response.errors);
+
+        deferred.reject(error);
       }
     };
 
@@ -102,6 +104,35 @@ angular.module('ingresseSDK')
     }
 
     return PagSeguroDirectPayment.getSenderHash();
+  };
+
+  /**
+   * Check for error in the card hash
+   * @param {array} errors - Check for error types
+   */
+  pagSeguroStrategy.errorCheck = function (errors) {
+    var pagSeguroErrors = [{ code: 30400, message: 'Verifique os dados do cartão de crédito.'}];
+
+		if (errors) {
+		  var error;
+
+			for (var i = 0; i < pagSeguroErrors.length; i++) {
+			  var err = pagSeguroErrors[i];
+
+			  if (errors[err.code]) {
+			    error = new Error(err.message);
+			    error.code = err.code;
+
+			    break;
+			  }
+			}
+
+			if (error) {
+			  return error;
+			}
+		}
+
+		return errors;
   };
 
   return pagSeguroStrategy;
