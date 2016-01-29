@@ -3,13 +3,13 @@
 angular.module('ingresseEmulatorApp')
   .config(function ($routeProvider) {
       $routeProvider
-          .when('/cardHash', {
-              templateUrl: 'views/emulator.html',
-              controller: 'CardHashController',
+          .when('/hash', {
+              templateUrl   : 'views/emulator.html',
+              controller    : 'HashController',
               reloadOnSearch: false
           });
   })
-  .controller('CardHashController', function ($scope, Payment, IngresseApiUserService, EmulatorService, QueryService) {
+  .controller('HashController', function ($scope, Payment, ingresseAPI, IngresseApiUserService, EmulatorService, QueryService) {
       $scope.request = {};
 
       /**
@@ -18,18 +18,41 @@ angular.module('ingresseEmulatorApp')
        */
       $scope.$on('$viewContentLoaded', function () {
         $scope.credentials = IngresseApiUserService.credentials;
+
         QueryService.getSearchParams($scope.fields);
+        QueryService.getSearchParams($scope.defaults);
       });
 
       /**
        * Generate card hash for pagarme and pagseguro
        */
-      $scope.generateCardHash = function () {
+      $scope.getHash = function () {
          $scope.isLoading = true;
 
          var params      = QueryService.getFiltersByTab($scope.fields.cardHash),
-             transaction = $scope.formatTransactionParams(params),
-             payment     = new Payment();
+             transaction = $scope.formatTransactionParams(params);
+
+         // If pagseguro get a gateway session first
+         if (transaction.gateway.name === 'pagseguro') {
+            $scope.generatePagseguroSession(params)
+              .then(function (response) {
+                // Set session from api response
+                transaction.gateway.session = response.data.gateway.session;
+
+                $scope.startPaymentProcess(transaction);
+              });
+
+         } else {
+            $scope.startPaymentProcess(transaction);
+         }
+      };
+
+      /**
+       * Start payment process
+       * @param {object} transaction - Transaction information
+       */
+      $scope.startPaymentProcess = function (transaction) {
+         var payment = new Payment();
 
          // Set transaction and define the gateway
          payment
@@ -50,8 +73,26 @@ angular.module('ingresseEmulatorApp')
       };
 
       /**
+       * Generate pagseguro session
+       * @param {object} params - Filled form params
+       */
+      $scope.generatePagseguroSession = function (params) {
+        var tickets = [{
+          quantity: 5,
+          guestTypeId: params.guestTypeId
+        }];
+
+        return ingresseAPI.ticketReservation(
+          params.eventId,
+          $scope.credentials.userId,
+          $scope.credentials.token,
+          tickets
+        );
+      };
+
+      /**
        * Format transaction params
-       * @param {object} params - From filled params
+       * @param {object} params - Filled form params
        */
       $scope.formatTransactionParams = function (params) {
         var transaction = {
@@ -64,8 +105,7 @@ angular.module('ingresseEmulatorApp')
             cvv   : params['creditcard.cvv']
           },
           gateway: {
-            name   : params['gateway.name'],
-            session: params['gateway.session']
+            name: params.gateway
           },
           paymentMethod: params.paymentMethod
         };
@@ -78,56 +118,61 @@ angular.module('ingresseEmulatorApp')
        */
       $scope.fields = {
         cardHash: {
-          label: 'CardHash',
-          action: $scope.generateCardHash,
+          label: 'Hash',
+          action: $scope.getHash,
           authentication: true,
           fields: [{
+            label: 'eventId',
+            model: '15844',
+            type: 'text',
+            disabled: false
+          }, {
+            label: 'guestTypeId',
+            model: '38907',
+            type: 'text',
+            disabled: false
+          }, {
             label: 'paymentMethod',
-            model: '',
+            model: 'CartaoCredito',
             type: 'option',
             options: ['CartaoCredito', 'BoletoBancario'],
             disabled: false
           }, {
-            label: 'gateway.name',
+            label: 'gateway',
             model: '',
             type: 'option',
             options: ['pagarme', 'pagseguro'],
             disabled: false
           }, {
-            label: 'gateway.session',
-            model: '',
-            type: 'text',
-            disabled: false
-          }, {
             label: 'creditcard.name',
-            model: '',
+            model: 'John Doe',
             type: 'text',
             disabled: false
           }, {
             label: 'creditcard.month',
-            model: '',
+            model: '01',
             type: 'option',
             options: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
             disabled: false
           }, {
             label: 'creditcard.year',
-            model: '',
+            model: '2020',
             type: 'option',
             options: ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'],
             disabled: false
           }, {
             label: 'creditcard.number',
-            model: '',
+            model: '4111111111111111',
             type: 'text',
             disabled: false
           }, {
             label: 'creditcard.cvv',
-            model: '',
+            model: '123',
             type: 'text',
             disabled: false
           }, {
             label: 'creditcard.flag',
-            model: '',
+            model: 'visa',
             type: 'option',
             options: ['visa', 'mastercard', 'amex', 'diners', 'elo'],
             disabled: false
