@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
+angular.module('ingresseSDK', [])
+.provider('ingresseApiPreferences', function () {
   var publickey, privatekey;
   var prefHost = 'https://api.ingresse.com';
   PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
 
-  return{
+  return {
     setPublicKey: function(key){
       publickey = key;
     },
@@ -97,3 +98,4 @@ angular.module('ingresseSDK',[]).provider('ingresseApiPreferences',function () {
     }
   };
 });
+

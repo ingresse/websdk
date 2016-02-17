@@ -12,6 +12,9 @@ module.exports = function (config) {
       '../bower_components/pagar-me/index.js',
       './scripts/IngresseAPI.Preferences.js',
       './scripts/IngresseAPI.js',
+      './scripts/services/{,*/}*.js',
+      './scripts/services/payments/*.js',
+      './scripts/constants/{,*/}*.js',
       '../test/spec/{,*/}*.js'
     ],
 
@@ -33,7 +36,7 @@ module.exports = function (config) {
     singleRun: true,
 
     preprocessors: {
-      './app/scripts/{,*/}*.js': ['coverage']
+      'scripts/{,*/}*.js': ['coverage']
     },
 
     logLevel: config.LOG_INFO,

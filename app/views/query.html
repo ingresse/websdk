@@ -11,6 +11,7 @@
                 <md-option value="https://private-3dc774-ingresseapi.apiary-mock.com">https://private-3dc774-ingresseapi.apiary-mock.com</md-option>
             </md-select>
         </md-input-container>
+
         <md-input-container style="width: 250px;">
             <md-select
                 placeholder="method"
@@ -32,9 +33,11 @@
                 <md-option value="/home">/home</md-option>
                 <md-option value="/freepass">/freepass</md-option>
                 <md-option value="/login">/login</md-option>
+                <md-option value="/hash">/hash</md-option>
             </md-select>
         </md-input-container>
     </div>
+
     <md-input-container ng-hide="isMethodSelectionHidden">
         <md-select
             placeholder="method"
@@ -42,6 +45,7 @@
             <md-option value="{{key}}" ng-repeat="(key, value) in fields">/{{value.label}}</md-option>
         </md-select>
     </md-input-container>
+
     <div ng-repeat="tab in fields" ng-show="fields[tabSelected].label === tab.label">
         <form name="queryForm" ng-submit="tab.action()">
             <md-input-container>

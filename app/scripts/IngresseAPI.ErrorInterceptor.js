@@ -78,11 +78,6 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
-            if (error.code === 1032) {
-              error.message = 'Você esqueceu de preencher o campo CPF.';
-              return $q.reject(error);
-            }
-
             if (error.code === 1089) {
               error.message = 'Faltou uma informação necessária: ';
               var errorFields = [];
@@ -132,7 +127,7 @@ angular.module('ingresseSDK')
               error.message = 'Aparentemente você não tem permissão para realizar esta tarefa';
               return $q.reject(error);
             }
-            
+
             if (error.code === 2012) {
               error.message = 'Tente novamente, por favor. Parece que já faz um tempo desde sua última interação.';
               return $q.reject(error);
