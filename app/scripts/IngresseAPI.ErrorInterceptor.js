@@ -39,7 +39,7 @@ angular.module('ingresseSDK')
             }
 
             if (error.code === 1005) {
-              error.message = 'O usuário informado é diferente do usuário que gerou a transação. Você trocou de login no meio do processo? Por favor, recomeçe a operação.';
+              error.message = 'O usuário informado é diferente do usuário que gerou a transação. Você trocou de login no meio do processo? Por favor, recomece a operação.';
               return $q.reject(error);
             }
 
@@ -128,13 +128,13 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
-            if (error.code === 2012) {
-              error.message = 'Tente novamente, por favor. Parece que já faz um tempo desde sua última interação.';
+            if (error.code === 2011) {
+              error.message = 'Para continuar você precisa ser o dono do evento';
               return $q.reject(error);
             }
 
-            if (error.code === 2011) {
-              error.message = 'Para continuar você precisa ser o dono do evento';
+            if (error.code === 2012) {
+              error.message = 'Tente novamente, por favor. Parece que já faz um tempo desde sua última interação.';
               return $q.reject(error);
             }
 
@@ -144,7 +144,7 @@ angular.module('ingresseSDK')
             }
 
             if (error.code === 2016) {
-              error.message = 'Aparentemente você não tem permissão para realizar esta tarefa';
+              error.message = 'Desculpe, você não tem permissão para fazer isso.';
               return $q.reject(error);
             }
 
