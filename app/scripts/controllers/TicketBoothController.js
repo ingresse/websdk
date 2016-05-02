@@ -57,6 +57,24 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.history = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.history.identifier.model;
+
+      ingresseAPI.ticketBooth.setLogPrintData(identifier, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       sell: {
         label: 'sell',
@@ -107,6 +125,18 @@ angular.module('ingresseEmulatorApp')
             disabled: false
           }
         ]
+      },
+      history: {
+        label: 'history',
+        action: $scope.history,
+        authentication: true,
+        identifier: {
+          label: 'transactionId',
+          model: '',
+          type: 'text',
+          disabled: false,
+          required: true
+        },
       }
     };
 
