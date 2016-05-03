@@ -61,9 +61,10 @@ angular.module('ingresseEmulatorApp')
       $scope.result = {};
       $scope.isLoading = true;
 
-      var identifier = $scope.fields.history.identifier.model;
+      var identifier = $scope.fields.history.identifier.model,
+        postObject = QueryService.getFiltersByTab($scope.fields.history);
 
-      ingresseAPI.ticketBooth.setLogPrintData(identifier, $scope.credentials.token)
+      ingresseAPI.ticketBooth.setLogPrintData(identifier, postObject, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -137,6 +138,14 @@ angular.module('ingresseEmulatorApp')
           disabled: false,
           required: true
         },
+        fields: [
+          {
+            label: 'printer',
+            type: 'text',
+            model: '',
+            disabled: false
+          }
+        ]
       }
     };
 
@@ -145,8 +154,6 @@ angular.module('ingresseEmulatorApp')
       if (!eventId) {
         return;
       }
-
-      console.log(eventId);
 
       ingresseAPI.getEventTicketTypes(eventId)
         .then(function (response) {
@@ -170,7 +177,6 @@ angular.module('ingresseEmulatorApp')
           };
 
           $scope.fields.sell.fields[3].model.push(ticket);
-          console.log($scope.fields.sell.fields[3].model);
         });
     });
   });
