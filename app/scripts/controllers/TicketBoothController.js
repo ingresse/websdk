@@ -57,6 +57,25 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.history = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.history.identifier.model,
+        postObject = QueryService.getFiltersByTab($scope.fields.history);
+
+      ingresseAPI.ticketBooth.setLogPrintData(identifier, postObject, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       sell: {
         label: 'sell',
@@ -107,6 +126,26 @@ angular.module('ingresseEmulatorApp')
             disabled: false
           }
         ]
+      },
+      history: {
+        label: 'history',
+        action: $scope.history,
+        authentication: true,
+        identifier: {
+          label: 'transactionId',
+          model: '',
+          type: 'text',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'printer',
+            type: 'text',
+            model: '',
+            disabled: false
+          }
+        ]
       }
     };
 
@@ -115,8 +154,6 @@ angular.module('ingresseEmulatorApp')
       if (!eventId) {
         return;
       }
-
-      console.log(eventId);
 
       ingresseAPI.getEventTicketTypes(eventId)
         .then(function (response) {
@@ -140,7 +177,6 @@ angular.module('ingresseEmulatorApp')
           };
 
           $scope.fields.sell.fields[3].model.push(ticket);
-          console.log($scope.fields.sell.fields[3].model);
         });
     });
   });

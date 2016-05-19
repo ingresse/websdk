@@ -1,7 +1,6 @@
 'use strict';
 
 function receiveMessage (event) {
-  console.log(event.origin);
   if (event.origin !== 'https://cdn.ingresse.com') {
     return;
   }
@@ -316,6 +315,13 @@ angular.module('ingresseSDK')
       filters.usertoken = token;
 
       return API._get('ticketbooth', transactionId, filters);
+    },
+    setLogPrintData: function(transactionId, postObject, token) {
+      var filters = {
+          usertoken: token
+        }, identifier = transactionId + '/history';
+
+      return API._post('ticketbooth', identifier, filters, postObject);
     }
   };
 
