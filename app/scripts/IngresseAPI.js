@@ -568,7 +568,7 @@ angular.module('ingresseSDK')
     return url;
   };
 
-  API.ticketReservation = function (eventId, userId, token, tickets, discountCode, passkey) {
+  API.ticketReservation = function (eventId, userId, token, tickets, discountCode, passkey, extra) {
     var filters = {
       usertoken: token
     };
@@ -580,6 +580,8 @@ angular.module('ingresseSDK')
       discountCode: discountCode,
       passkey: passkey
     };
+
+    angular.extend(postObject, extra);
 
     return API._post('shop', null, filters, postObject);
   };
