@@ -45,7 +45,8 @@ angular.module('ingresseSDK')
       transaction.creditcard = {
         cardHash : hash,
         cpf      : transaction.creditcard.cpf,
-        birthdate: transaction.creditcard.birthdate
+        birthdate: transaction.creditcard.birthdate,
+        number   : transaction.creditcard.mask,
       };
 
       // Resolve promise with the transaction object with card hash
