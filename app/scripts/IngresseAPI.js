@@ -104,6 +104,10 @@ angular.module('ingresseSDK')
 
     $http.get(url)
       .success(function (response) {
+        if (angular.isObject(response.responseData) && angular.isDefined(response.ResponseSessionStatus)) {
+          response.responseData.sessionStatus = response.ResponseSessionStatus;
+        }
+
         deferred.resolve(response.responseData);
       })
       .catch(function (error) {
