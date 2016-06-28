@@ -212,6 +212,15 @@ angular.module('ingresseSDK')
       };
 
       return API._get('event', identifier, filters);
+    },
+
+    getAttributes : function (eventId, token) {
+      var filters = {
+        usertoken: token
+      },
+      identifier = eventId + '/attributes';
+
+      return API._get('event', identifier, filters);
     }
   };
 
