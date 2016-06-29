@@ -146,7 +146,7 @@ angular.module('ingresseEmulatorApp')
 
           QueryService.setSearchParams('attributes', $scope.fields.attributes.identifier, filters);
 
-          ingresseAPI.event.getAttributes(identifier, $scope.credentials.token)
+          ingresseAPI.event.getAttributes(identifier, filters)
             .then(function (response) {
               EmulatorService.addResponse(response, true);
             })
@@ -156,7 +156,7 @@ angular.module('ingresseEmulatorApp')
             .finally(function () {
               $scope.isLoading = false;
             });
-        }
+        };
 
         $scope.getList = function () {
             $scope.isLoading = true;
@@ -385,7 +385,7 @@ angular.module('ingresseEmulatorApp')
                 },
                 fields: [
                     {
-                        label: 'fields',
+                        label: 'filters',
                         model: '',
                         type: 'text',
                         disabled: false
