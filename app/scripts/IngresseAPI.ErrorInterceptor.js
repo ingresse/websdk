@@ -98,6 +98,18 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 1108) {
+              error.message = 'Ocorreu um erro durante a validação do telefone.';
+
+              return $q.reject(error);
+            }
+
+            if (error.code === 1109) {
+              error.message = 'Este número já foi validado por outro usuário.';
+
+              return $q.reject(error);
+            }
+
             if (error.code === 2004) {
               error.message = 'Você já acessou a última página';
               return $q.reject(error);
