@@ -104,7 +104,7 @@ angular.module('ingresseSDK')
             }
 
             if (error.code === 1109) {
-              error.message = 'Este número já foi validado por outro usuário.';
+              error.message = 'Este número já foi verificado por outro usuário.';
               return $q.reject(error);
             }
 
