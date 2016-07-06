@@ -348,6 +348,26 @@ angular.module('ingresseSDK')
       url += '&usertoken=' + usertoken;
 
       return url;
+    },
+
+    updateTicketTransfer: function (ticketId, postObject, userToken) {
+      var filters = {
+        usertoken: userToken
+      },
+
+      identifier = ticketId + '/transfer/' + postObject.transferId;
+
+      return API._post('ticket', identifier, filters, postObject);
+    },
+
+    createTicketTransfer: function (ticketId, postObject, userToken) {
+      var filters = {
+        usertoken: userToken
+      },
+
+      identifier = ticketId + '/transfer';
+
+      return API._post('ticket', identifier, filters, postObject);
     }
   };
 
@@ -472,6 +492,26 @@ angular.module('ingresseSDK')
 
     getPhotoUrl: function (userid) {
       return ingresseApiPreferences.getHost() + '/user/' + userid + '/picture/' + API._generateAuthKey();
+    },
+
+    getUserSessionTickets: function (userId, sessionId, filters, token) {
+      var identifier = userId + '/sessions/' + sessionId;
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._get('user', identifier, filters);
+    },
+
+    getAllUserSessions: function (userId, filters, token) {
+      var identifier = userId + '/sessions/';
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._get('user', identifier, filters);
     }
   };
 
