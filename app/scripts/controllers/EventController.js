@@ -138,6 +138,26 @@ angular.module('ingresseEmulatorApp')
                 });
         };
 
+        $scope.getAttributes = function () {
+          $scope.isLoading = true;
+
+          var identifier = $scope.fields.attributes.identifier.model;
+          var filters = QueryService.getFiltersByTab($scope.fields.attributes);
+
+          QueryService.setSearchParams('attributes', $scope.fields.attributes.identifier, filters);
+
+          ingresseAPI.event.getAttributes(identifier, filters)
+            .then(function (response) {
+              EmulatorService.addResponse(response, true);
+            })
+            .catch(function (error) {
+              EmulatorService.addResponse(error, false);
+            })
+            .finally(function () {
+              $scope.isLoading = false;
+            });
+        };
+
         $scope.getList = function () {
             $scope.isLoading = true;
 
@@ -346,6 +366,26 @@ angular.module('ingresseEmulatorApp')
                 fields: [
                     {
                         label: 'fields',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    }
+                ]
+            },
+            attributes: {
+                label: 'Attributes',
+                action: $scope.getAttributes,
+                authentication: true,
+                identifier: {
+                    label: 'eventId',
+                    model: '',
+                    type: 'text',
+                    disabled: false,
+                    required: true
+                },
+                fields: [
+                    {
+                        label: 'filters',
                         model: '',
                         type: 'text',
                         disabled: false
