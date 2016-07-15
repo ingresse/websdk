@@ -95,10 +95,10 @@ angular.module('ingresseEmulatorApp')
             required: true
           },
           {
-            label: 'actions',
+            label: 'action',
             model: '',
             type: 'option',
-            options: ['accept', 'refuse', 'return', 'cancel'],
+            options: ['accept', 'refuse', 'cancel'],
             disabled: false,
             required: true
           }
@@ -118,11 +118,17 @@ angular.module('ingresseEmulatorApp')
         },
         fields: [
           {
-            label: 'userId',
+            label: 'user',
             type: 'text',
             model: '',
-            disabled: false,
-            required: true
+            disabled: false
+          },
+          {
+            label: 'isReturn',
+            type: 'option',
+            options: ['false', 'true'],
+            model: '',
+            disabled: false
           }
         ]
       }
