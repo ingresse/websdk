@@ -98,6 +98,16 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 1108) {
+              error.message = 'Ocorreu um erro durante a validação do telefone.';
+              return $q.reject(error);
+            }
+
+            if (error.code === 1109) {
+              error.message = 'Este número já foi verificado por outro usuário.';
+              return $q.reject(error);
+            }
+
             if (error.code === 2004) {
               error.message = 'Você já acessou a última página';
               return $q.reject(error);
@@ -215,6 +225,11 @@ angular.module('ingresseSDK')
 
             if (error.code === 6014) {
               error.message = 'Você excedeu o limite de ingressos disponíveis por conta. Para mais informações, verifique a descrição do evento.';
+              return $q.reject(error);
+            }
+
+            if (error.code === 6033) {
+              error.message = 'A compra de ingresso só pode ser realizada por usuários verificados.';
               return $q.reject(error);
             }
 
