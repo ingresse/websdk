@@ -493,6 +493,19 @@ angular.module('ingresseEmulatorApp')
         },
         fields: [
           {
+            label: 'term',
+            model: '',
+            type: 'text',
+            disable: false
+          },
+          {
+            label: 'order',
+            model: '',
+            options: ['ASC', 'DESC'],
+            type: 'option',
+            disable: false
+          },
+          {
             label: 'from',
             model: '',
             type: 'text',
