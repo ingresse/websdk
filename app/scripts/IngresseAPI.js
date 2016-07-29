@@ -495,7 +495,7 @@ angular.module('ingresseSDK')
     },
 
     getUserSessionTickets: function (userId, sessionId, filters, token) {
-      var identifier = userId + '/sessions/' + sessionId;
+      var identifier = userId + '/sessions/' + sessionId + '/tickets';
 
       if (token) {
         filters.usertoken = token;
