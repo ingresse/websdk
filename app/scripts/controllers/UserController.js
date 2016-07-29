@@ -170,6 +170,45 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getUserSession = function () {
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.userSession.identifier.model,
+        filters = QueryService.getFiltersByTab($scope.fields.userSession),
+        sessionId = $scope.fields.userSession.fields[0].model;
+
+      ingresseAPI.user.getUserSessionTickets(identifier, sessionId, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
+    $scope.getAllUserSessions = function () {
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.userSessions.identifier.model,
+        filters = QueryService.getFiltersByTab($scope.fields.userSessions);
+
+      console.log('identifier: ', identifier);
+
+      ingresseAPI.user.getAllUserSessions(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       user: {
         label: 'User',
@@ -438,6 +477,97 @@ angular.module('ingresseEmulatorApp')
             model: '',
             type: 'phone',
             disabled: false
+          }
+        ]
+      },
+      userSessions: {
+        label: 'Get All User Session',
+        action: $scope.getAllUserSessions,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'term',
+            model: '',
+            type: 'text',
+            disable: false
+          },
+          {
+            label: 'order',
+            model: '',
+            options: ['ASC', 'DESC'],
+            type: 'option',
+            disable: false
+          },
+          {
+            label: 'from',
+            model: '',
+            type: 'text',
+            disable: false
+          },
+          {
+            label: 'to',
+            model: '',
+            type: 'text',
+            disable: false
+          },
+          {
+            label: 'pageSize',
+            model: '',
+            type: 'number',
+            disable: false
+          },
+          {
+            label: 'page',
+            model: '',
+            type: 'number',
+            disable: false
+          },
+          {
+            label: 'order',
+            model: '',
+            type: 'options',
+            options: ['ASC', 'DESC'],
+            disable: false
+          }
+        ]
+      },
+      userSession: {
+        label: 'Get User Session Tickets',
+        action: $scope.getUserSession,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'sessionId',
+            model: '',
+            type: 'number',
+            disable: false,
+            required: true
+          },
+          {
+            label: 'pageSize',
+            model: '',
+            type: 'number',
+            disable: false
+          },
+          {
+            label: 'page',
+            model: '',
+            type: 'number',
+            disable: false
           }
         ]
       },
