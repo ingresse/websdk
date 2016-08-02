@@ -195,8 +195,6 @@ angular.module('ingresseEmulatorApp')
       var identifier = $scope.fields.userSessions.identifier.model,
         filters = QueryService.getFiltersByTab($scope.fields.userSessions);
 
-      console.log('identifier: ', identifier);
-
       ingresseAPI.user.getAllUserSessions(identifier, filters, $scope.credentials.token)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
