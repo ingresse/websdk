@@ -512,6 +512,16 @@ angular.module('ingresseSDK')
       }
 
       return API._get('user', identifier, filters);
+    },
+
+    getTransfers: function (userId, filters, token) {
+      var identifier = userId + '/transfers/';
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._get('user', identifier, filters);
     }
   };
 
