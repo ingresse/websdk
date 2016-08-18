@@ -207,6 +207,24 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getUserTicketTransfer = function () {
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.userTicketTransfer.identifier.model,
+        filters = QueryService.getFiltersByTab($scope.fields.userTicketTransfer);
+
+      ingresseAPI.user.getTransfers(identifier, filters, $scope.credentials.token)
+      .then(function (response) {
+        EmulatorService.addResponse(response, true);
+      })
+      .catch(function (error) {
+        EmulatorService.addResponse(error, false);
+      })
+      .finally(function () {
+        $scope.isLoading = false;
+      });
+    };
+
     $scope.fields = {
       user: {
         label: 'User',
@@ -526,13 +544,6 @@ angular.module('ingresseEmulatorApp')
             model: '',
             type: 'number',
             disable: false
-          },
-          {
-            label: 'order',
-            model: '',
-            type: 'options',
-            options: ['ASC', 'DESC'],
-            disable: false
           }
         ]
       },
@@ -565,6 +576,27 @@ angular.module('ingresseEmulatorApp')
             label: 'page',
             model: '',
             type: 'number',
+            disable: false
+          }
+        ]
+      },
+      userTicketTransfer: {
+        label: 'Get Tickets Transfer',
+        action: $scope.getUserTicketTransfer,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'status',
+            model: '',
+            options: ['pending', 'accepted', 'refused', 'returned', 'cancelled'],
+            type: 'option',
             disable: false
           }
         ]
