@@ -141,6 +141,21 @@ angular.module('ingresseSDK')
     return deferred.promise;
   };
 
+  /**
+   * Calls for elasticsearch microservice.
+   */
+  API.search = {
+    getUserTransfer: function (filters, usertoken) {
+      var identifier = 'transfer/user';
+
+      if (usertoken) {
+        filters.usertoken = usertoken;
+      }
+
+      return API._get('search', identifier, filters);
+    }
+  };
+
   API.event = {
     get : function (eventId, filters) {
       var identifier;
