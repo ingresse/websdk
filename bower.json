@@ -32,7 +32,7 @@
     "angular-touch": "~1.4.*",
     "angular-ui-utils": "~3.0.0",
     "animate.css": "https://github.com/daneden/animate.css.git#~3.4.0",
-    "crypto-js": "http://crypto-js.googlecode.com/files/CryptoJS%20v3.1.2.zip",
+    "crypto-js": "https://github.com/jSilverize/crypto-js.git",
     "es5-shim": "~4.1.*",
     "json3": "~3.3.1",
     "moment": "~2.*.*",
