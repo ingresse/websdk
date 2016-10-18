@@ -20,7 +20,7 @@ angular.module('ingresseSDK', [])
         PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
       }
 
-      if (prefHost === 'https://apihml.ingresse.com') {
+      if (prefHost === 'https://hml-api.ingresse.com' || prefHost === 'https://hml-api-2.ingresse.com') {
         PagarMe.encryption_key = 'ek_test_lwfVXNqRg3tpN7IPPXtatdMYhQG96N';
       }
     },
@@ -53,7 +53,8 @@ angular.module('ingresseSDK', [])
             PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
           }
 
-          if (this._host === 'https://apihml.ingresse.com') {
+          if (this._host === 'https://hml-api.ingresse.com' ||
+            this._host === 'https://hml-api-2.ingresse.com') {
             PagarMe.encryption_key = 'ek_test_lwfVXNqRg3tpN7IPPXtatdMYhQG96N';
           }
 
