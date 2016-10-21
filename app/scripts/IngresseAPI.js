@@ -413,6 +413,15 @@ angular.module('ingresseSDK')
       filters.usertoken = token;
 
       return API._get('dashboard', identifier, filters);
+    },
+    getSalesCalendarReport: function (eventId, filters, token) {
+      var identifier = eventId + '/dailyTickets/';
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._get('dashboard', identifier, filters);
     }
   };
 

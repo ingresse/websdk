@@ -101,6 +101,26 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getSalesCalendarReport = function () {
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.getSalesCalendarReport.identifier.model;
+      var filters = QueryService.getFiltersByTab($scope.fields.getSalesCalendarReport);
+
+      QueryService.setSearchParams('getSalesCalendarReport', $scope.fields.getSalesCalendarReport.identifier, filters);
+
+      ingresseAPI.dashboard.getSalesCalendarReport(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       visitsReport: {
         label: 'Visits Report',
@@ -205,6 +225,19 @@ angular.module('ingresseEmulatorApp')
             disabled: false
           }
         ]
+      },
+      getSalesCalendarReport: {
+        label: 'Sales Calendar Report',
+        action: $scope.getSalesCalendarReport,
+        authentication: true,
+        identifier: {
+          label: 'eventId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: []
       },
       getTransactionsReport: {
         label: 'Transactions Report',
