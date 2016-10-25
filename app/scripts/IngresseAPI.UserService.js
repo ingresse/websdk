@@ -5,11 +5,11 @@ angular.module('ingresseSDK').service('IngresseApiUserService', function UserSer
         data: {},
         credentials: {},
         getCredentials: function () {
-            this.credentials.userId   = ipCookie('userId');
-            this.credentials.token    = ipCookie('token');
-            this.credentials.jwtToken = ipCookie('jwtToken');
+            this.credentials.userId = ipCookie('userId');
+            this.credentials.token  = ipCookie('token');
+            this.credentials.jwt    = ipCookie('jwt');
 
-            if (this.credentials.userId || this.credentials.token || this.credentials.jwtToken) {
+            if (this.credentials.userId || this.credentials.token || this.credentials.jwt) {
                 return this.credentials;
             }
 
@@ -18,31 +18,31 @@ angular.module('ingresseSDK').service('IngresseApiUserService', function UserSer
         clearCredentials: function () {
             ipCookie('userId', '', { expires: -1, domain: '.ingresse.com' });
             ipCookie('token', '', { expires: -1, domain: '.ingresse.com' });
-            ipCookie('jwtToken', '', { expires: -1, domain: '.ingresse.com' });
+            ipCookie('jwt', '', { expires: -1, domain: '.ingresse.com' });
             ipCookie('userId', '', { expires: -1});
             ipCookie('token', '', { expires: -1});
-            ipCookie('jwtToken', '', { expires: -1});
+            ipCookie('jwt', '', { expires: -1});
 
-            this.data                 = null;
-            this.credentials.userId   = null;
-            this.credentials.token    = null;
-            this.credentials.jwtToken = null;
+            this.data               = null;
+            this.credentials.userId = null;
+            this.credentials.token  = null;
+            this.credentials.jwt    = null;
         },
-        saveCredentials: function (token, userId, jwtToken) {
+        saveCredentials: function (token, userId, jwt) {
             this.credentials.userId = userId;
             this.credentials.token  = token;
-            
-            if (jwtToken) {
-                this.credentials.jwtToken = jwtToken;
 
-                ipCookie('jwtToken', jwtToken, {
+            if (jwt) {
+                this.credentials.jwt = jwt;
+
+                ipCookie('jwt', jwt, {
                     domain        : '.ingresse.com',
                     expires       : 15,
                     expirationUnit: 'minutes'
                 });
-                
-            } else if (ipCookie('jwtToken') && ipCookie('userId') === this.credentials.userId) {
-                this.credentials.jwtToken = ipCookie('jwtToken');
+
+            } else if (ipCookie('jwt') && ipCookie('userId') === this.credentials.userId) {
+                this.credentials.jwt = ipCookie('jwt');
             }
 
             ipCookie('userId', userId, { expires: 7, domain: '.ingresse.com' });
