@@ -237,7 +237,20 @@ angular.module('ingresseEmulatorApp')
           disabled: false,
           required: true
         },
-        fields: []
+        fields: [
+          {
+            label: 'begin',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'end',
+            model: '',
+            type: 'text',
+            disabled: false
+          }
+        ]
       },
       getTransactionsReport: {
         label: 'Transactions Report',
