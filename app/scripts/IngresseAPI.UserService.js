@@ -37,12 +37,9 @@ angular.module('ingresseSDK').service('IngresseApiUserService', function UserSer
 
                 ipCookie('jwt', jwt, {
                     domain        : '.ingresse.com',
-                    expires       : 15,
-                    expirationUnit: 'minutes'
+                    expires       : 24,
+                    expirationUnit: 'hours'
                 });
-
-            } else if (ipCookie('jwt') && ipCookie('userId') === this.credentials.userId) {
-                this.credentials.jwt = ipCookie('jwt');
             }
 
             ipCookie('userId', userId, { expires: 7, domain: '.ingresse.com' });
