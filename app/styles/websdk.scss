@@ -1,35 +1,45 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
+    display: none !important;
 }
 
-.homologFlag {
-    background: #4798F5;
+.homolog-flag {
     display: none;
-    text-align: center;
-    color: #FFF;
-    font-weight: bolder;
-    text-shadow: 0 1px #000;
-    padding: 8px;
-    width: 100%;
     z-index: 999999999;
 
-    &.visible {
+    text-align : center;
+    font-weight: bolder;
+
+    padding: 9px 8px 12px;
+
+    width     : 100%;
+    min-height: 40px;
+
+    color      : #ffffff;
+    text-shadow: 0 0 4px #2d2d2d;
+    background : #fca311;
+    box-shadow : 0 -3px 10px -5px #2d2d2d inset;
+
+    &--visible {
         display: block;
     }
 
-    &.bottom {
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        width: 100%;
+    &--top {
+        top: 0;
+        box-shadow: 0 5px 10px -5px #2d2d2d;
     }
 
-    &.top {
-        position: fixed;
-        top: 0px;
-        left: 0px;
-        width: 100%;
+    &--bottom {
+        bottom: 0;
+        box-shadow: 0 -5px 10px -5px #2d2d2d;
     }
+
+    &--top,
+    &--bottom {
+        position: fixed;
+        right   : 0;
+        left    : 0;
+    }
+
     a {
         color: inherit;
     }

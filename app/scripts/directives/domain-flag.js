@@ -2,11 +2,11 @@
 
 angular.module('ingresseSDK').directive('domainFlag', function () {
     return {
-        template: '<div class="homologFlag" ng-cloak ng-class="{bottom: positionBottom, visible: apiDomain == \'https://apihml.ingresse.com\' || apiDomain == \'https://apipre.ingresse.com\'}">{{apiDomain}}</div>',
+        template: '<div class="homolog-flag" ng-cloak data-ng-class="{ \'homolog-flag--bottom\': positionBottom, \'homolog-flag--visible\': apiDomain === \'https://hml-api.ingresse.com\' || apiDomain === \'https://hml-api-2.ingresse.com\' || apiDomain === \'https://apipre.ingresse.com\' }">{{ apiDomain }}</div>',
         replace: true,
         restrict: 'E',
         scope: {
-            positionBottom: '@'
+            positionBottom: '@',
         },
         controller: function($scope, $rootScope, ingresseApiPreferences) {
             $scope.apiDomain = ingresseApiPreferences.getHost();
