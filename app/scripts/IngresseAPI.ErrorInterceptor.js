@@ -233,6 +233,11 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 6040) {
+              error.message = 'Esse ingresso já foi transferido.';
+              return $q.reject(error);
+            }
+
             $log.error(error);
             error.message = 'Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código: ' + error.code;
             return $q.reject(error);
