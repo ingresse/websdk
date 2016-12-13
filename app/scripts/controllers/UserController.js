@@ -225,6 +225,23 @@ angular.module('ingresseEmulatorApp')
       });
     };
 
+    $scope.getRecentsTransfers = function () {
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.getRecentsTransfers.identifier.model,
+        filter = QueryService.getFiltersByTab($scope.fields.getRecentsTransfers);
+      ingresseAPI.user.getRecentsTransfers(identifier, filter, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       user: {
         label: 'User',
@@ -598,6 +615,33 @@ angular.module('ingresseEmulatorApp')
             options: ['pending', 'accepted', 'refused', 'returned', 'cancelled'],
             type: 'option',
             disable: false
+          }
+        ]
+      },
+      getRecentsTransfers: {
+        label: 'Get Recents Transfer',
+        action: $scope.getRecentsTransfers,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'order',
+            model: '',
+            options: ['ASC', 'DESC'],
+            type: 'option',
+            disable: false
+          },
+          {
+            label: 'size',
+            model: '',
+            type: 'number',
+            disabled: false
           }
         ]
       },
