@@ -121,6 +121,26 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getCashFlowReport = function () {
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.getCashFlowReport.identifier.model;
+      var filters = QueryService.getFiltersByTab($scope.fields.getCashFlowReport);
+
+      QueryService.setSearchParams('getCashFlowReport', $scope.fields.getCashFlowReport.identifier, filters);
+
+      ingresseAPI.dashboard.getCashFlowReport(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       visitsReport: {
         label: 'Visits Report',
@@ -229,6 +249,32 @@ angular.module('ingresseEmulatorApp')
       getSalesCalendarReport: {
         label: 'Sales Calendar Report',
         action: $scope.getSalesCalendarReport,
+        authentication: true,
+        identifier: {
+          label: 'eventId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'begin',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'end',
+            model: '',
+            type: 'text',
+            disabled: false
+          }
+        ]
+      },
+      getCashFlowReport: {
+        label: 'Cash Flow Report',
+        action: $scope.getCashFlowReport,
         authentication: true,
         identifier: {
           label: 'eventId',

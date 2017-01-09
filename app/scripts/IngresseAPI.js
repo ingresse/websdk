@@ -422,6 +422,15 @@ angular.module('ingresseSDK')
       }
 
       return API._get('dashboard', identifier, filters);
+    },
+    getCashFlowReport: function (eventId, filters, token) {
+      var identifier = eventId + '/dailyCashFlow/';
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._get('dashboard', identifier, filters);
     }
   };
 
