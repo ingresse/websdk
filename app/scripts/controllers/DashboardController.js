@@ -141,6 +141,26 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getPaymentReport = function () {
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.getPaymentReport.identifier.model;
+      var filters = QueryService.getFiltersByTab($scope.fields.getPaymentReport);
+
+      QueryService.setSearchParams('getPaymentReport', $scope.fields.getPaymentReport.identifier, filters);
+
+      ingresseAPI.dashboard.getPaymentReport(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       visitsReport: {
         label: 'Visits Report',
@@ -275,6 +295,32 @@ angular.module('ingresseEmulatorApp')
       getCashFlowReport: {
         label: 'Cash Flow Report',
         action: $scope.getCashFlowReport,
+        authentication: true,
+        identifier: {
+          label: 'eventId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'begin',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'end',
+            model: '',
+            type: 'text',
+            disabled: false
+          }
+        ]
+      },
+      getPaymentReport: {
+        label: 'Payment Report',
+        action: $scope.getPaymentReport,
         authentication: true,
         identifier: {
           label: 'eventId',
