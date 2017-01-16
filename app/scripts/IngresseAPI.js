@@ -650,6 +650,10 @@ angular.module('ingresseSDK')
     },
     facebook: function (postObject) {
       return API._post('login', 'facebook', null, postObject);
+    },
+    renewToken: function (filters, token) {
+      filters.usertoken = token;
+      return API._get('renewToken', null, filters);
     }
   };
 
