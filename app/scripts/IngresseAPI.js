@@ -653,7 +653,7 @@ angular.module('ingresseSDK')
     },
     renewToken: function (filters, token) {
       filters.usertoken = token;
-      return API._get('renewToken', null, filters);
+      return API._get('login','renewToken', filters);
     }
   };
 
