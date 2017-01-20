@@ -65,14 +65,6 @@ describe('Payment Service', function () {
     expect(payment.setStrategy).toHaveBeenCalled();
     expect(payment.strategy instanceof PagarMeStrategy).toBe(true);
 
-    // Change gateway to pagseguro
-    TRANSACTION.gateway = { name: 'pagseguro', session: '1234' };
-
-    payment.setTransaction(TRANSACTION);
-    payment.setGateway();
-
-    expect(payment.setStrategy).toHaveBeenCalled();
-    expect(payment.strategy).toBe(pagSeguroStrategy);
   });
 
   it('should execute method the paymentd method defined in transaction', function () {
