@@ -431,6 +431,15 @@ angular.module('ingresseSDK')
       }
 
       return API._get('dashboard', identifier, filters);
+    },
+    getPaymentReport: function (eventId, filters, token) {
+      var identifier = eventId + '/dailyPayment/';
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._get('dashboard', identifier, filters);
     }
   };
 
