@@ -57,6 +57,23 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.renewToken = function () {
+      $scope.isLoading = true;
+
+      var filters = QueryService.getFiltersByTab($scope.fields.facebook);
+
+      ingresseAPI.login.renewToken(filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       direct: {
         label: 'direct',
@@ -95,6 +112,12 @@ angular.module('ingresseEmulatorApp')
             disabled: false
           }
         ]
+      },
+      renewToken: {
+        label: 'renewToken',
+        action: $scope.renewToken,
+        authentication: true,
+        fields: []
       }
     };
   });

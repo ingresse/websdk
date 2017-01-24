@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ingresseSDK')
-.factory('Payment', function ($q, ingressePaymentGateway, ingressePaymentType, PagarMeStrategy, pagSeguroStrategy) {
+.factory('Payment', function ($q, ingressePaymentGateway, ingressePaymentType, PagarMeStrategy) {
   /**
    * Payment
    * @class
@@ -36,23 +36,9 @@ angular.module('ingresseSDK')
 
   /**
    * Set gateway to use and set the strategy
-   * @param {object} gateway - Gateway object
-   * @param {string} gateway.name - Name of the gateway
-   * @param {string} [gateway.session] - Gateway session id
    */
-  Payment.prototype.setGateway = function (gateway) {
-    var _gateway = gateway || this.transaction.gateway;
-
-    switch(_gateway.name) {
-
-      case ingressePaymentGateway.PAGSEGURO:
-        this.setStrategy(pagSeguroStrategy);
-        break;
-
-      default:
-        this.setStrategy(new PagarMeStrategy());
-
-    }
+  Payment.prototype.setGateway = function () {
+    this.setStrategy(new PagarMeStrategy());
 
     return this;
   };

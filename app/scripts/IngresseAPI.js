@@ -431,6 +431,15 @@ angular.module('ingresseSDK')
       }
 
       return API._get('dashboard', identifier, filters);
+    },
+    getPaymentReport: function (eventId, filters, token) {
+      var identifier = eventId + '/dailyPayment/';
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._get('dashboard', identifier, filters);
     }
   };
 
@@ -650,6 +659,10 @@ angular.module('ingresseSDK')
     },
     facebook: function (postObject) {
       return API._post('login', 'facebook', null, postObject);
+    },
+    renewToken: function (filters, token) {
+      filters.usertoken = token;
+      return API._get('login','renew-token', filters);
     }
   };
 
