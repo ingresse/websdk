@@ -279,6 +279,12 @@ angular.module('ingresseEmulatorApp')
         },
         fields: [
           {
+            label: 'session',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
             label: 'begin',
             model: '',
             type: 'text',
@@ -305,6 +311,12 @@ angular.module('ingresseEmulatorApp')
         },
         fields: [
           {
+            label: 'session',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
+          {
             label: 'begin',
             model: '',
             type: 'text',
@@ -330,6 +342,12 @@ angular.module('ingresseEmulatorApp')
           required: true
         },
         fields: [
+          {
+            label: 'session',
+            model: '',
+            type: 'number',
+            disabled: false
+          },
           {
             label: 'begin',
             model: '',
