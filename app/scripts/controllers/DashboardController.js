@@ -161,6 +161,31 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getSalesChannelReport = function () {
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.getSalesChannelReport.identifier.model;
+      var filters = QueryService
+        .getFiltersByTab($scope.fields.getSalesChannelReport);
+
+      QueryService.setSearchParams(
+        'getSalesChannelReport',
+        $scope.fields.getSalesChannelReport.identifier,
+        filters
+      );
+
+      ingresseAPI.dashboard.getSalesChannelReport(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       visitsReport: {
         label: 'Visits Report',
@@ -348,6 +373,32 @@ angular.module('ingresseEmulatorApp')
             type: 'number',
             disabled: false
           },
+          {
+            label: 'begin',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'end',
+            model: '',
+            type: 'text',
+            disabled: false
+          }
+        ]
+      },
+      getSalesChannelReport: {
+        label: 'Sales Channel Report',
+        action: $scope.getSalesChannelReport,
+        authentication: true,
+        identifier: {
+          label: 'eventId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
           {
             label: 'begin',
             model: '',

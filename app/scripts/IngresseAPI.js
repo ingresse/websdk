@@ -440,6 +440,15 @@ angular.module('ingresseSDK')
       }
 
       return API._get('dashboard', identifier, filters);
+    },
+    getSalesChannelReport: function (eventId, filters, token) {
+      var identifier = eventId + '/dailyChannels/';
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._get('dashboard', identifier, filters);
     }
   };
 
