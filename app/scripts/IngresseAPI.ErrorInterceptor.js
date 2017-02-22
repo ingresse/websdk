@@ -238,6 +238,11 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 6045) {
+              error.message = 'Este ingresso já pertence a você e está na sua carteira.';
+              return $q.reject(error);
+            }
+
             $log.error(error);
             error.message = 'Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código: ' + error.code;
             return $q.reject(error);
