@@ -218,7 +218,10 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
-            if (error.code === 5002) {
+            if (error.code === 5002 ||
+                error.code === 5009 ||
+                error.code === 5010 ||
+                error.code === 5011) {
               error.message = 'Houve um problema de comunicação com nosso gateway de pagamento. Por favor tente novamente.';
               return $q.reject(error);
             }
@@ -235,6 +238,11 @@ angular.module('ingresseSDK')
 
             if (error.code === 6040) {
               error.message = 'Esse ingresso já foi transferido.';
+              return $q.reject(error);
+            }
+
+            if (error.code === 6045) {
+              error.message = 'Este ingresso já pertence a você e está na sua carteira.';
               return $q.reject(error);
             }
 
