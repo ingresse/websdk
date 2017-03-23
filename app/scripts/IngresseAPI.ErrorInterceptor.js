@@ -226,7 +226,7 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
-            if (error.code === 6014 || error.code === 6044) {
+            if (error.code === 6014 || error.code === 6044 || error.code === 6027) {
               error.message = 'Você excedeu o limite de ingressos disponíveis por conta. Para mais informações, verifique a descrição do evento.';
               return $q.reject(error);
             }
