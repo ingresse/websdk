@@ -383,6 +383,16 @@ angular.module('ingresseSDK')
       identifier = ticketId + '/transfer';
 
       return API._post('ticket', identifier, filters, postObject);
+    },
+
+    getTransferHistory: function (ticketId,  userToken) {
+      var filters = {
+        usertoken: userToken
+      },
+
+      identifier = ticketId + '/transfer';
+
+      return API._get('ticket', identifier, filters);
     }
   };
 
