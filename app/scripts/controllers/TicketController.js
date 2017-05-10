@@ -60,6 +60,23 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getTransferHistory = function () {
+      $scope.isLoading = true;
+
+      var  ticketId = $scope.fields.createTicketTransfer.identifier.model;
+
+      ingresseAPI.ticket.getTransferHistory(ticketId, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       ticketQRCode: {
         label: 'qrcode',
@@ -131,6 +148,19 @@ angular.module('ingresseEmulatorApp')
             disabled: false
           }
         ]
+      },
+
+      getTransferHistory: {
+        label: 'Ticket History Transfer',
+        action: $scope.getHistoryTransfer,
+        authentication: true,
+        identifier: {
+          label: 'ticketId',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        }
       }
     };
   });
