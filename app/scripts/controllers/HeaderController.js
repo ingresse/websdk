@@ -2,7 +2,7 @@
 
 angular.module('ingresseEmulatorApp')
   .controller('HeaderController', function ($scope, $mdSidenav, ingresseAPI, IngresseApiUserService, $window) {
-    
+
     $scope.openLeftMenu = function () {
       $mdSidenav('left').toggle();
     };
@@ -14,7 +14,7 @@ angular.module('ingresseEmulatorApp')
         var url = ingresseAPI.login.getAuthorizeUrl();
         $window.open(url);
       }
-      
+
       $scope.loadUserData($scope.credentials);
     };
 
@@ -31,17 +31,19 @@ angular.module('ingresseEmulatorApp')
         $scope.$apply();
         return;
       }
-      
+
       IngresseApiUserService.saveCredentials(obj.token, obj.userId);
       $scope.credentials = IngresseApiUserService.credentials;
       $scope.loadUserData($scope.credentials);
     });
-    
+
     $scope.loadUserData = function (credentials) {
       ingresseAPI.user.get(credentials.userId, {fields: 'id,name,email,type'}, credentials.token)
         .then(function (response) {
-          response.photo = ingresseAPI.user.getPhotoUrl(credentials.userId);
-          $scope.user = response;
+          if (response) {
+            response.photo = ingresseAPI.user.getPhotoUrl(credentials.userId);
+            $scope.user = response;
+          }
         });
     };
   });
