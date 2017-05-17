@@ -9,6 +9,7 @@ module.exports = function (grunt) {
     dist: 'dist/'
   };
 
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   // Define the configuration for all the tasks
   grunt.initConfig({
     // Project settings
@@ -111,14 +112,14 @@ module.exports = function (grunt) {
       all: {
         src: [
           'Gruntfile.js',
-          '<%= ingresse.app %>/scripts/{,*/}*.js'
+          '<%= ingresse.app %>/scripts/**/*.js'
         ]
       },
       test: {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: ['test/spec/{,*/}*.js']
+        src: ['test/spec/**/*.js']
       }
     },
 

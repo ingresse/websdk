@@ -8,7 +8,7 @@
  */
 
 angular.module('ingresseSDK')
-.factory('pagSeguroStrategy', function ($q) {
+.factory('pagSeguroStrategy', function ($q, PagSeguroDirectPayment) {
   /**
    * PagSeguro singleton payment strategy
    */
@@ -85,7 +85,7 @@ angular.module('ingresseSDK')
    * @param {string} - Year to check if is in fullyear format
    */
   pagSeguroStrategy.formatFullYear = function (year) {
-    if (angular.isDefined(year) && year.toString().length == 2) {
+    if (angular.isDefined(year) && year.toString().length === 2) {
       return '20' + year;
     }
 

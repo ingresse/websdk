@@ -266,7 +266,8 @@ angular.module('ingresseSDK')
       url += '&usertoken=' + token;
 
       $http.get(url)
-        .success(function (response) {
+        .then(function (response) {
+          response = response.data;
           deferred.resolve(response.responseData);
         })
         .catch(function (error) {
