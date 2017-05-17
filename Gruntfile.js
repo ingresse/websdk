@@ -9,8 +9,6 @@ module.exports = function (grunt) {
     dist: 'dist/'
   };
 
-  grunt.loadNpmTasks('grunt-contrib-watch');
-
   // Define the configuration for all the tasks
   grunt.initConfig({
     // Project settings
@@ -26,12 +24,7 @@ module.exports = function (grunt) {
         files: ['<%= ingresse.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
         options: {
-          livereload: {
-            port: 443,
-            protocol: 'https',
-            hostname: '0.0.0.0',
-            livereload: 357230
-          }
+          livereload: '<%= connect.options %>'
         }
       },
       jsTest: {
@@ -47,12 +40,7 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          livereload: {
-            port: 443,
-            protocol: 'https',
-            hostname: '0.0.0.0',
-            livereload: 357230
-          }
+          livereload: '<%= connect.options %>'
         },
         files: [
           '<%= ingresse.app %>/{,*/}*.html',
@@ -446,4 +434,3 @@ module.exports = function (grunt) {
     'build'
   ]);
 };
-

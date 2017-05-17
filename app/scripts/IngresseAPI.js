@@ -103,7 +103,8 @@ angular.module('ingresseSDK')
     url += API._getUrlParameters(parameters);
 
     $http.get(url)
-      .success(function (response) {
+      .then(function (response) {
+        response = response.data;
         if (angular.isObject(response.responseData) && angular.isDefined(response.ResponseSessionStatus)) {
           response.responseData.sessionStatus = response.ResponseSessionStatus;
         }
@@ -131,7 +132,8 @@ angular.module('ingresseSDK')
     url += API._getUrlParameters(parameters);
 
     $http.post(url, postParameters)
-      .success(function (response) {
+      .then(function (response) {
+        response = response.data;
         deferred.resolve(response.responseData);
       })
       .catch(function (error) {

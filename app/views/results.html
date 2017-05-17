@@ -1,23 +1,23 @@
 <md-card class="result-card" ng-class="{error: !result.success}" ng-animate="'animate'" ng-repeat="result in results" flex="100">
-    <div class="md-actions" layout="row" layout-align="end center">
-        <md-button ng-click="result.hide = !result.hide">
-            <span ng-show="result.hide">Show Result</span>
-            <span ng-hide="result.hide">Hide Result</span>
-        </md-button>
-        <md-button class="md-button md-warn" ng-click="removeResponse(result)">Close</md-button>
+  <div class="md-actions" layout="row" layout-align="end center">
+    <md-button ng-click="result.hide = !result.hide">
+      <span ng-show="result.hide">Show Result</span>
+      <span ng-hide="result.hide">Hide Result</span>
+    </md-button>
+    <md-button class="md-button md-warn" ng-click="removeResponse(result)">Close</md-button>
   </div>
-    <md-card-content>
-        <md-list>
-            <md-list-item class="md-2-line" ng-show="result.http.url">
-                <div class="md-list-item-text">
-                    <p class="time">{{result.http.stopTime | momentum:'HH:mm:ss'}} - {{result.http.requestTime}}s</p>
-                    <h3 style="line-height: 18px;">{{result.http.domain}}</h3>
-                    <p ng-repeat="param in result.http.parameters">{{param}}</p>
-                </div>
-            </md-list-item>
-        </md-list>
-        <div ng-hide="result.hide">
-            <json-explorer class="result" data="result.json" collapsed="false"></json-explorer>
+  <md-card-content>
+    <md-list>
+      <md-list-item class="md-2-line" ng-show="result.http.url">
+        <div class="md-list-item-text">
+          <p class="time">{{result.http.stopTime | momentum:'HH:mm:ss'}} - {{result.http.requestTime}}s</p>
+          <h3 style="line-height: 18px;">{{result.http.domain}}</h3>
+          <p ng-repeat="param in result.http.parameters">{{param}}</p>
         </div>
-    </md-card-content>
+      </md-list-item>
+    </md-list>
+    <div ng-hide="result.hide">
+      <json-explorer class="result" json-data="result.json" collapsed="false"></json-explorer>
+    </div>
+  </md-card-content>
 </md-card>
