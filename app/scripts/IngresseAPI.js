@@ -690,13 +690,13 @@ angular.module('ingresseSDK')
 
   API.recover = {
     recoverPassword: function (postObjects) {
-      return API._post('recover', 'password', null, postObjects);
+      return API._post('recover-password', null, null, postObjects);
     },
     validateHash: function (postObjects) {
-      return API._post('recover', 'validate', null, postObjects);
+      return API._post('recover-validate', null, null, postObjects);
     },
     updatePassword: function (postObjects) {
-      return API._post('recover', 'update-password', null, postObjects);
+      return API._post('recover-update-password', null, null, postObjects);
     }
   };
 
