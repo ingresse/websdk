@@ -688,6 +688,18 @@ angular.module('ingresseSDK')
     }
   };
 
+  API.recover = {
+    recoverPassword: function (postObjects) {
+      return API._post('recover', 'password', null, postObjects);
+    },
+    validateHash: function (postObjects) {
+      return API._post('recover', 'validate', null, postObjects);
+    },
+    updatePassword: function (postObjects) {
+      return API._post('recover', 'update-password', null, postObjects);
+    }
+  };
+
   API.register = function () {
     var url = ingresseApiPreferences.getHost() + '/register' + API._generateAuthKey();
     return url + '&returnurl=' + API._urlencode(ingresseApiPreferences.loginReturnUrl);
