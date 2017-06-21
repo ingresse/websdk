@@ -19,11 +19,11 @@ angular.module('ingresseEmulatorApp')
     $scope.recoverPassword = function () {
       $scope.isLoading = true;
 
-      var identifier = $scope.fields.recoverPassword.identifier.model;
+      var filters = QueryService.getFiltersByTab($scope.fields.recoverPassword);
 
-      QueryService.setSearchParams('recoverPassword', $scope.fields.recoverPassword.identifier);
+      QueryService.setSearchParams('recoverPassword', $scope.fields.recoverPassword.identifier, filters);
 
-      ingresseAPI.recover.recoverPassword(identifier)
+      ingresseAPI.recover.recoverPassword(filters)
         .then(function (response) {
           EmulatorService.addResponse(response, true);
         })
@@ -77,14 +77,15 @@ angular.module('ingresseEmulatorApp')
       recoverPassword: {
         label: 'Recover Password',
         action: $scope.recoverPassword,
-        identifier: {
-          label: 'email',
-          model: '',
-          type: 'text',
-          disabled: false,
-          required: true
-        },
-        fields: []
+        fields: [
+          {
+            label: 'email',
+            model: '',
+            type: 'text',
+            disabled: false,
+            required: true
+          }
+        ]
       },
       validateHash: {
         label: 'Validate Password Hash',
