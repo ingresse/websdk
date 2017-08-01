@@ -236,7 +236,15 @@ angular.module('ingresseSDK')
         identifier = eventId + '/attributes';
 
       return API._get('event', identifier, _filter);
-    }
+    },
+
+    update : function (eventId, data, token) {
+      var filters = {
+        usertoken: token,
+      };
+
+      return API._post('event', eventId, filters, data);
+    },
   };
 
   API.producer = {
