@@ -65,7 +65,10 @@
             </md-input-container>
 
 
-            <label ng-if="tab.fields.length > 0">GET PARAMS</label>
+            <label ng-if="tab.fields.length > 0">
+                <span ng-if="!tab.post">GET PARAMS</span>
+                <span ng-if="tab.post">POST ATTRIBUTES</span>
+            </label>
             <md-input-container ng-repeat="input in tab.fields">
                 <label ng-if="input.type === 'text' || input.type === 'date' || input.type === 'number' || input.type === 'phone' || input.type === 'object'">{{input.label}}</label>
 

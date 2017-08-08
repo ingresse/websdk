@@ -19,6 +19,8 @@
     background : #fca311;
     box-shadow : 0 -3px 10px -5px #2d2d2d inset;
 
+    box-sizing: border-box;
+
     &--visible {
         display: block;
     }

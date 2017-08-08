@@ -177,6 +177,25 @@ angular.module('ingresseEmulatorApp')
                 });
         };
 
+        $scope.update = function () {
+            $scope.isLoading = true;
+
+            var _eventId = $scope.fields.update.identifier.eventId;
+            var _token   = $scope.credentials.token;
+            var _data    = QueryService.getFiltersByTab($scope.fields.update);
+
+            ingresseAPI.event.update(_eventId, _data, _token)
+                .then(function (response) {
+                    EmulatorService.addResponse(response, true);
+                })
+                .catch(function (error) {
+                    EmulatorService.addResponse(error, false);
+                })
+                .finally(function () {
+                    $scope.isLoading = false;
+                });
+        };
+
         $scope.fields = {
             event: {
                 label: 'Event',
@@ -277,7 +296,7 @@ angular.module('ingresseEmulatorApp')
                 identifier: {
                     label: 'eventId',
                     model: '',
-                    type: 'text',
+                    type: 'number',
                     disabled: false,
                     required: true
                 },
@@ -326,6 +345,7 @@ angular.module('ingresseEmulatorApp')
                 label: 'Update Ticket',
                 action: $scope.updateTicketStatus,
                 authentication: true,
+                post: true,
                 identifier: {
                     label: 'eventId',
                     model: '',
@@ -391,6 +411,63 @@ angular.module('ingresseEmulatorApp')
                         disabled: false
                     }
                 ]
-            }
+            },
+            update: {
+                label: 'update',
+                action: $scope.update,
+                authentication: true,
+                post: true,
+                identifier: {
+                    label: 'eventId',
+                    model: '',
+                    type: 'object',
+                    disabled: false,
+                    required: true
+                },
+                fields: [
+                    {
+                        label: 'aiddp',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    },
+                    {
+                        label: 'obs2',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    },
+                    {
+                        label: 'formalName',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    },
+                    {
+                        label: 'address',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    },
+                    {
+                        label: 'cnpj',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    },
+                    {
+                        label: 'cpf',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    },
+                    {
+                        label: 'cityNumber',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    },
+                ]
+            },
         };
     });
