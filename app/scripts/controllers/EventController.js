@@ -330,7 +330,7 @@ angular.module('ingresseEmulatorApp')
                     {
                         label: 'sessionId',
                         model: '',
-                        type: 'number',
+                        type: 'text',
                         disabled: false
                     },
                     {
