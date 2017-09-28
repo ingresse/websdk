@@ -143,6 +143,31 @@ angular.module('ingresseSDK')
     return deferred.promise;
   };
 
+  API._delete = function (method, identifier, parameters) {
+    var deferred = $q.defer();
+    var url;
+
+    url = ingresseApiPreferences.getHost() + '/' + method;
+
+    if (identifier) {
+      url += '/' + identifier;
+    }
+
+    url += API._generateAuthKey();
+    url += API._getUrlParameters(parameters);
+
+    $http.delete(url)
+      .then(function (response) {
+        response = response.data;
+        deferred.resolve(response.responseData);
+      })
+      .catch(function (error) {
+        deferred.reject(error);
+      });
+
+    return deferred.promise;
+  };
+
   /**
    * Calls for elasticsearch microservice.
    */
@@ -518,6 +543,18 @@ angular.module('ingresseSDK')
       }
 
       return API._post('user', userid, filters, userObj);
+    },
+
+    delete: function (userid, token) {
+      var filters;
+
+      if (token) {
+        filters = {
+          usertoken: token,
+        };
+      }
+
+      return API._delete('user', userid, filters);
     },
 
     search: function (filters, token) {
