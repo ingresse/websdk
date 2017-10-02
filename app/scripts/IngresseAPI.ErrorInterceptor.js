@@ -33,6 +33,11 @@ angular.module('ingresseSDK')
             error.code = response.data.responseError.code;
             error.message = response.data.responseError.message;
 
+            if (error.code === 56) {
+              error.message = 'A senha atual não está correta.';
+              return $q.reject(error);
+            }
+
             if (error.code === 1001) {
               error.message = 'Desculpe, mas você precisa selecionar pelo menos um ingresso.';
               return $q.reject(error);
