@@ -78,7 +78,7 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
-            if (error.code === 1032) {
+            if (error.code === 1032 || error.code === 1033) {
               error.message = 'Você esqueceu de preencher o campo CPF.';
               return $q.reject(error);
             }
