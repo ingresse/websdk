@@ -641,6 +641,16 @@ angular.module('ingresseSDK')
       }
 
       return API._get('user', identifier, filters);
+    },
+
+    getUserWallet: function (userId, filters, token) {
+      var identifier = userId + '/wallet';
+
+      if (token) {
+        filters.usertoken = token;
+      }
+
+      return API._get('user', identifier, filters);
     }
   };
 
