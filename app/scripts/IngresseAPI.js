@@ -713,9 +713,15 @@ angular.module('ingresseSDK')
   };
 
   API.login = {
-    getAuthorizeUrl: function () {
-      var url = ingresseApiPreferences.getHost() + '/authorize/' + API._generateAuthKey();
-      return url + '&returnurl=' + API._urlencode(ingresseApiPreferences.loginReturnUrl);
+    getAuthorizeUrl: function (returnUrl) {
+      var url = 'https://www.ingresse.com/login';
+
+      if (returnUrl) {
+        url += '?returnUrl=' +
+          API._urlencode(returnUrl);
+      }
+      
+      return url;
     },
     getLogoutURL: function () {
       var url = ingresseApiPreferences.getHost() + '/logout' + API._generateAuthKey();
