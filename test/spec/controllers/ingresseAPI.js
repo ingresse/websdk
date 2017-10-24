@@ -541,7 +541,12 @@ describe('Service: ingresesAPI', function () {
 
   it('should get authorize url', function () {
     var url = apisdk.login.getAuthorizeUrl();
-    expect(url).toBe(preferences._host + '/authorize/' + apisdk._generateAuthKey() + '&returnurl=' + apisdk._urlencode(preferences.loginReturnUrl));
+    expect(url).toBe('https://www.ingresse.com/login');
+  });
+
+  it('should get authorize url with returnUrl', function () {
+    var url = apisdk.login.getAuthorizeUrl('test.com');
+    expect(url).toBe('https://www.ingresse.com/login?returnUrl=test.com');
   });
 
   it('should get logout url', function () {

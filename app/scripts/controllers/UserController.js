@@ -242,6 +242,25 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getUserWallet = function () {
+      $scope.isLoading = true;
+
+      var identifier = $scope.fields.userWallet.identifier.model,
+        filters = QueryService.getFiltersByTab($scope.fields.userWallet);
+
+      ingresseAPI.user.getUserWallet(identifier, filters, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
+
     $scope.fields = {
       user: {
         label: 'User',
@@ -582,6 +601,57 @@ angular.module('ingresseEmulatorApp')
             type: 'number',
             disable: false,
             required: true
+          },
+          {
+            label: 'pageSize',
+            model: '',
+            type: 'number',
+            disable: false
+          },
+          {
+            label: 'page',
+            model: '',
+            type: 'number',
+            disable: false
+          }
+        ]
+      },
+      userWallet: {
+        label: 'Get User Event Wallet',
+        action: $scope.getUserWallet,
+        authentication: true,
+        identifier: {
+          label: 'userid',
+          model: '',
+          type: 'number',
+          disabled: false,
+          required: true
+        },
+        fields: [
+          {
+            label: 'term',
+            model: '',
+            type: 'text',
+            disable: false
+          },
+          {
+            label: 'order',
+            model: '',
+            options: ['ASC', 'DESC'],
+            type: 'option',
+            disable: false
+          },
+          {
+            label: 'from',
+            model: '',
+            type: 'text',
+            disable: false
+          },
+          {
+            label: 'to',
+            model: '',
+            type: 'text',
+            disable: false
           },
           {
             label: 'pageSize',

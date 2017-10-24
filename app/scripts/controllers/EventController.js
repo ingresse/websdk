@@ -158,6 +158,25 @@ angular.module('ingresseEmulatorApp')
             });
         };
 
+        $scope.updateAttributes = function () {
+            $scope.isLoading = true;
+
+            var _eventId = $scope.fields.updateAttributes.identifier.model;
+            var _token   = $scope.credentials.token;
+            var _data    = QueryService.getFiltersByTab($scope.fields.updateAttributes);
+
+            ingresseAPI.event.updateAttributes(_eventId, _data, _token)
+                .then(function (response) {
+                    EmulatorService.addResponse(response, true);
+                })
+                .catch(function (error) {
+                    EmulatorService.addResponse(error, false);
+                })
+                .finally(function () {
+                    $scope.isLoading = false;
+                });
+        };
+
         $scope.getList = function () {
             $scope.isLoading = true;
 
@@ -410,6 +429,33 @@ angular.module('ingresseEmulatorApp')
                         type: 'text',
                         disabled: false
                     }
+                ]
+            },
+            updateAttributes: {
+                label: 'Update Attributes',
+                action: $scope.updateAttributes,
+                authentication: true,
+                post: true,
+                identifier: {
+                    label: 'eventId',
+                    model: '',
+                    type: 'text',
+                    disabled: false,
+                    required: true
+                },
+                fields: [
+                    {
+                        label: 'name',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    },
+                    {
+                        label: 'value',
+                        model: '',
+                        type: 'text',
+                        disabled: false
+                    },
                 ]
             },
             update: {
