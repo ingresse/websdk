@@ -83,6 +83,11 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 1060 || error.code === 1061) {
+              error.message = 'Número de CPF inválido';
+              return $q.reject(error);
+            }
+
             if (error.code === 1089) {
               error.message = 'Faltou uma informação necessária: ';
               var errorFields = [];
