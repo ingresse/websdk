@@ -1,6 +1,6 @@
 {
   "name": "ingresse-websdk",
-  "version": "7.25.0",
+  "version": "7.26.1",
   "homepage": "https://github.com/ingresse/ingresse-websdk",
   "authors": [
     "Daniel Borlino de Oliveira <daniel.borlino@ingresse.com>"
@@ -50,7 +50,7 @@
   },
   "appPath": "app",
   "resolutions": {
-    "angular": "1.6.6",
+    "angular": "1.6.7",
     "angular-animate": "^1.6.5"
   }
 }
