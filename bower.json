@@ -21,15 +21,15 @@
     "SDK"
   ],
   "dependencies": {
-    "angular": "~1.4.*",
-    "angular-animate": "^1.6.4",
-    "angular-cookie": "~4.*",
+    "angular": "1.6.9",
+    "angular-animate": "1.6.9",
+    "angular-cookie": "4.1.0",
     "angular-material": "~0.10.*",
-    "angular-messages": "~1.4.*",
-    "angular-resource": "~1.4.*",
-    "angular-route": "~1.4.*",
-    "angular-sanitize": "~1.4.*",
-    "angular-touch": "~1.4.*",
+    "angular-messages": "1.6.9",
+    "angular-resource": "1.6.9",
+    "angular-route": "1.6.9",
+    "angular-sanitize": "1.6.9",
+    "angular-touch": "1.6.9",
     "angular-ui-utils": "~3.0.0",
     "animate.css": "https://github.com/daneden/animate.css.git#~3.4.0",
     "crypto-js-core": "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js",
@@ -42,15 +42,11 @@
     "moment": "~2.*.*",
     "ng-json-explorer": "*",
     "pagar-me": "https://pagar.me/assets/pagarme.js",
-    "angular-aria": "^1.6.4"
+    "angular-aria": "^1.6.9"
   },
   "devDependencies": {
-    "angular-mocks": "~1.4.*",
-    "angular-scenario": "~1.4.*"
+    "angular-mocks": "1.6.9",
+    "angular-scenario": "1.6.9"
   },
-  "appPath": "app",
-  "resolutions": {
-    "angular": "1.6.7",
-    "angular-animate": "^1.6.5"
-  }
+  "appPath": "app"
 }
