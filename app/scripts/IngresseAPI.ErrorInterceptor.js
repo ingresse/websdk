@@ -241,6 +241,11 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 6029) {
+              error.message = 'Para concluir sua compra, gostaríamos de confirmar algumas informações de segurança. Por favor, entre em contato conosco através do e-mail contato@ingresse.com.';
+              return $q.reject(error);
+            }
+
             if (error.code === 6033) {
               error.message = 'A compra de ingresso só pode ser realizada por usuários verificados.';
               return $q.reject(error);
