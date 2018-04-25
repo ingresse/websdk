@@ -445,7 +445,7 @@ angular.module('ingresseEmulatorApp')
             disabled: false
           },
           {
-            label: 'event',
+            label: 'eventId',
             model: '',
             type: 'number',
             disabled: false
