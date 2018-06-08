@@ -438,7 +438,17 @@ angular.module('ingresseSDK')
       identifier = ticketId + '/transfer';
 
       return API._get('ticket', identifier, filters);
-    }
+    },
+
+    getCheckinStatus: function (ticketCode, userToken) {
+      var filters = {
+        usertoken: userToken
+      },
+
+      identifier = encodeURIComponent(ticketCode) + '/status';
+
+      return API._get('ticket', identifier, filters);
+    },
   };
 
   API.dashboard = {
