@@ -551,6 +551,10 @@ angular.module('ingresseSDK')
       return API._post('user', null, {method: 'create'}, userObj);
     },
 
+    newCreate: function (userObj) {
+      return API._post('user', null, {}, userObj);
+    },
+
     update: function (userid, userObj, token) {
       var filters;
 
@@ -749,7 +753,7 @@ angular.module('ingresseSDK')
         url += '?returnUrl=' +
           API._urlencode(returnUrl);
       }
-      
+
       return url;
     },
     getLogoutURL: function () {

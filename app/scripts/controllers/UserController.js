@@ -130,6 +130,26 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.newCreate = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var filters = QueryService.getFiltersByTab($scope.fields.newCreateUser);
+
+      QueryService.setSearchParams('newCreateUser', null, filters);
+
+      ingresseAPI.user.newCreate(filters)
+        .then(function (response) {
+          EmulatorService.addResponse(response, response.status);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.search = function () {
       $scope.result = {};
       $scope.isLoading = true;
@@ -713,6 +733,62 @@ angular.module('ingresseEmulatorApp')
             type: 'number',
             disabled: false
           }
+        ]
+      },
+      newCreateUser: {
+        label: 'New Create User',
+        action: $scope.newCreate,
+        authentication: false,
+        identifier: null,
+        fields: [
+          {
+            label: 'name',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'lastName',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'email',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'password',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'facebookUserId',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'phone',
+            model: '',
+            type: 'phone',
+            disabled: false
+          },
+          {
+            label: 'news',
+            model: '',
+            type: 'checkbox',
+            disabled: false
+          },
+          {
+            label: 'token',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
         ]
       },
       createUser: {
