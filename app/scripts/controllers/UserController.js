@@ -150,6 +150,46 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.tokenValidate = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var filters = QueryService.getFiltersByTab($scope.fields.tokenValidate);
+
+      QueryService.setSearchParams('tokenValidate', null, filters);
+
+      ingresseAPI.user.tokenValidate(filters)
+        .then(function (response) {
+          EmulatorService.addResponse(response, response.status);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
+    $scope.activateUser = function () {
+      $scope.result = {};
+      $scope.isLoading = true;
+
+      var filters = QueryService.getFiltersByTab($scope.fields.activateUser);
+
+      QueryService.setSearchParams('activateUser', null, filters);
+
+      ingresseAPI.user.activateUser(filters)
+        .then(function (response) {
+          EmulatorService.addResponse(response, response.status);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.search = function () {
       $scope.result = {};
       $scope.isLoading = true;
@@ -733,6 +773,52 @@ angular.module('ingresseEmulatorApp')
             type: 'number',
             disabled: false
           }
+        ]
+      },
+      activateUser: {
+        label: 'Activate user',
+        action: $scope.activateUser,
+        authentication: false,
+        identifier: null,
+        fields: [
+          {
+            label: 'email',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'password',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'token',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+        ]
+      },
+      tokenValidate: {
+        label: 'Token Validate',
+        action: $scope.tokenValidate,
+        authentication: false,
+        identifier: null,
+        fields: [
+          {
+            label: 'email',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
+          {
+            label: 'token',
+            model: '',
+            type: 'text',
+            disabled: false
+          },
         ]
       },
       newCreateUser: {
