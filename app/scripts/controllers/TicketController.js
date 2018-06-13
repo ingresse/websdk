@@ -77,6 +77,23 @@ angular.module('ingresseEmulatorApp')
         });
     };
 
+    $scope.getCheckinStatus = function () {
+      $scope.isLoading = true;
+
+      var ticketCode = $scope.fields.getCheckinStatus.identifier.model;
+
+      ingresseAPI.ticket.getCheckinStatus(ticketCode, $scope.credentials.token)
+        .then(function (response) {
+          EmulatorService.addResponse(response, true);
+        })
+        .catch(function (error) {
+          EmulatorService.addResponse(error, false);
+        })
+        .finally(function () {
+          $scope.isLoading = false;
+        });
+    };
+
     $scope.fields = {
       ticketQRCode: {
         label: 'qrcode',
@@ -161,6 +178,19 @@ angular.module('ingresseEmulatorApp')
           disabled: false,
           required: true
         }
-      }
+      },
+
+      getCheckinStatus: {
+        label: 'Ticket Checkin Status',
+        action: $scope.getCheckinStatus,
+        authentication: true,
+        identifier: {
+          label: 'ticketCode',
+          model: '',
+          type: 'text',
+          disabled: false,
+          required: true
+        }
+      },
     };
   });

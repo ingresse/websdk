@@ -1,6 +1,6 @@
 {
   "name": "ingresseemulator",
-  "version": "7.26.1",
+  "version": "7.26.3",
   "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.1",
