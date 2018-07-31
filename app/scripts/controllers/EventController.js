@@ -184,7 +184,7 @@ angular.module('ingresseEmulatorApp')
 
             QueryService.setSearchParams('user', null, filters);
 
-            ingresseAPI.event.getList(filters)
+            ingresseAPI.event.search(filters)
                 .then(function (response) {
                     EmulatorService.addResponse(response, true);
                 })

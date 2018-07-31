@@ -37,6 +37,10 @@
 
                 <md-content layout-padding>
                     <md-input-container>
+                        <label>Company ID</label>
+                        <input type="number" ng-model="companyId" ng-blur="updateCompanyId(companyId)"/>
+                    </md-input-container>
+                    <md-input-container>
                         <label>Public Key</label>
                         <input type="text" ng-model="publicKey" ng-blur="updatePublicKey(publicKey)"/>
                     </md-input-container>
@@ -105,6 +109,7 @@
     <script src="scripts/IngresseAPI.EventService.js"></script>
     <script src="scripts/IngresseAPI.ErrorInterceptor.js"></script>
     <script src="scripts/IngresseAPI.WWWFormUrlEnconded.js"></script>
+    <script src="scripts/IngresseAPI.CookiesService.js"></script>
     <script src="scripts/IngresseAPI.js"></script>
 
     <script src="scripts/directives/domain-flag.js"></script>

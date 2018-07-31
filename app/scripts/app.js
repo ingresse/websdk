@@ -21,7 +21,9 @@ angular.module('ingresseEmulatorApp', [
   'ngMaterial',
   'ngMessages'
 ])
-  .config(function (ingresseApiPreferencesProvider, $mdThemingProvider) {
+  .config(function ($locationProvider, $mdThemingProvider, ingresseApiPreferencesProvider) {
+    $locationProvider.hashPrefix('');
+
     $mdThemingProvider.theme('default')
       .primaryPalette('blue')
       .accentPalette('orange');

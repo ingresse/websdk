@@ -10,8 +10,8 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
   // Runs during compile
   return {
     scope: {}, // {} = isolate, true = child, false/undefined = no change
-    controller: function ($scope, ipCookie, ingresseAPI, ingresseApiPreferences, IngresseApiUserService, IngresseAPI_Freepass, VenusActivityIndicatorService) {
-      $scope.domain = ipCookie('host');
+    controller: function ($scope, ingresseApiCookies, ingresseAPI, ingresseApiPreferences, IngresseApiUserService, IngresseAPI_Freepass, VenusActivityIndicatorService) {
+      $scope.domain = ingresseApiCookies('host');
 
       if (!$scope.domain) {
         $scope.domain = ingresseApiPreferences._host;
@@ -36,7 +36,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           return;
         }
 
-        ipCookie('host', host, {expires: 365});
+        ingresseApiCookies('host', host, 365);
         ingresseApiPreferences.setHost(host);
         $scope.domain = ingresseApiPreferences._host;
       };
@@ -536,12 +536,20 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         $scope.user = null;
       });
 
+      $scope.$watch('companyId', function () {
+        // $document.cookie = 'companyid=' + $scope.companyId + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/';
+        if (!$scope.companyId) {
+          return;
+        }
+        ingresseApiCookies('companyid', $scope.companyId, 365);
+      });
+
       $scope.$watch('privateKey', function () {
         // $document.cookie = 'privateKey=' + $scope.privateKey + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/';
         if (!$scope.privateKey) {
           return;
         }
-        ipCookie('privatekey', $scope.privateKey, {expires: 365});
+        ingresseApiCookies('privatekey', $scope.privateKey, 365);
       });
 
       $scope.$watch('publicKey', function () {
@@ -549,19 +557,23 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           return;
         }
         // $document.cookie = 'publicKey=' + $scope.publicKey + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/';
-        ipCookie('publickey', $scope.publicKey, {expires: 365});
+        ingresseApiCookies('publickey', $scope.publicKey, 365);
       });
 
-      if (ipCookie('publickey') !== '') {
-        ingresseApiPreferences.setPublicKey(ipCookie('publickey'));
+      if (ingresseApiCookies('companyid') !== '') {
+        ingresseApiPreferences.setCompanyId(ingresseApiCookies('companyid'));
       }
 
-      if (ipCookie('privatekey') !== '') {
-        ingresseApiPreferences.setPrivateKey(ipCookie('privatekey'));
+      if (ingresseApiCookies('publickey') !== '') {
+        ingresseApiPreferences.setPublicKey(ingresseApiCookies('publickey'));
       }
 
-      if (ipCookie.host !== '') {
-        $scope.setHost(ipCookie.host);
+      if (ingresseApiCookies('privatekey') !== '') {
+        ingresseApiPreferences.setPrivateKey(ingresseApiCookies('privatekey'));
+      }
+
+      if (ingresseApiCookies('host') !== '') {
+        $scope.setHost(ingresseApiCookies('host'));
       }
 
       $scope.privateKey = ingresseApiPreferences.privatekey;
