@@ -1,9 +1,0 @@
-dependencies:
-    override:
-        - bower install
-        - npm install
-
-test:
-    override:
-        - npm test
-
