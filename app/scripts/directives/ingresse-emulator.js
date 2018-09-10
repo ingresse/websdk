@@ -557,15 +557,15 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           return;
         }
         // $document.cookie = 'publicKey=' + $scope.publicKey + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/';
-        ingresseApiCookies('publickey', $scope.publicKey, 365);
+        ingresseApiCookies('apikey', $scope.publicKey, 365);
       });
 
       if (ingresseApiCookies('companyid') !== '') {
         ingresseApiPreferences.setCompanyId(ingresseApiCookies('companyid'));
       }
 
-      if (ingresseApiCookies('publickey') !== '') {
-        ingresseApiPreferences.setPublicKey(ingresseApiCookies('publickey'));
+      if (ingresseApiCookies('apikey') !== '') {
+        ingresseApiPreferences.setPublicKey(ingresseApiCookies('apikey'));
       }
 
       if (ingresseApiCookies('privatekey') !== '') {
@@ -577,7 +577,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
       }
 
       $scope.privateKey = ingresseApiPreferences.privatekey;
-      $scope.publicKey = ingresseApiPreferences.publickey;
+      $scope.publicKey = ingresseApiPreferences.apikey;
     },
     restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
     templateUrl: 'views/ingresse-emulator.html'
