@@ -54,7 +54,7 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 443,
+        port: 9000,
         protocol: 'https',
         hostname: '0.0.0.0',
         livereload: 357230

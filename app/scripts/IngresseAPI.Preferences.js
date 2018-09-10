@@ -2,7 +2,7 @@
 
 angular.module('ingresseSDK', [])
 .provider('ingresseApiPreferences', function () {
-  var publickey, privatekey;
+  var publickey, privatekey, companyid;
   var prefHost = 'https://api.ingresse.com';
   PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
 
@@ -24,6 +24,9 @@ angular.module('ingresseSDK', [])
         PagarMe.encryption_key = 'ek_test_lwfVXNqRg3tpN7IPPXtatdMYhQG96N';
       }
     },
+    setCompanyId: function(id) {
+        companyid = id;
+    },
     $get: function($rootScope) {
       return{
         setPublicKey: function(key){
@@ -32,8 +35,12 @@ angular.module('ingresseSDK', [])
         setPrivateKey: function(key){
           this.privatekey = key;
         },
+        setCompanyId: function(id) {
+            this.companyid = id;
+        },
         publickey: publickey,
         privatekey: privatekey,
+        companyid: companyid,
         _host: prefHost,
         _signature: null,
         _timestamp: null,
@@ -59,6 +66,9 @@ angular.module('ingresseSDK', [])
           }
 
           $rootScope.$broadcast('preferences.hostChanged');
+        },
+        getCompanyId: function () {
+            return this.companyid || 1;
         },
         setAuth: function (signature, timestamp) {
           this._signature = signature;

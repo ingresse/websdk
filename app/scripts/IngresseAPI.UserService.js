@@ -1,13 +1,15 @@
 'use strict';
 
-angular.module('ingresseSDK').service('IngresseApiUserService', function UserService($rootScope, ipCookie){
+angular.module('ingresseSDK')
+.service('IngresseApiUserService',
+    function UserService ($rootScope, ingresseApiPreferences, ingresseApiCookies) {
     return {
         data: {},
         credentials: {},
         getCredentials: function () {
-            this.credentials.userId = ipCookie('userId');
-            this.credentials.token  = ipCookie('token');
-            this.credentials.jwt    = ipCookie('jwt');
+            this.credentials.userId = ingresseApiCookies('userId');
+            this.credentials.token  = ingresseApiCookies('token');
+            this.credentials.jwt    = ingresseApiCookies('jwt');
 
             if (this.credentials.userId || this.credentials.token || this.credentials.jwt) {
                 return this.credentials;
@@ -16,12 +18,12 @@ angular.module('ingresseSDK').service('IngresseApiUserService', function UserSer
             return false;
         },
         clearCredentials: function () {
-            ipCookie('userId', '', { expires: -1, domain: '.ingresse.com' });
-            ipCookie('token', '', { expires: -1, domain: '.ingresse.com' });
-            ipCookie('jwt', '', { expires: -1, domain: '.ingresse.com' });
-            ipCookie('userId', '', { expires: -1});
-            ipCookie('token', '', { expires: -1});
-            ipCookie('jwt', '', { expires: -1});
+            ingresseApiCookies('userId', '', -1);
+            ingresseApiCookies('token', '', -1);
+            ingresseApiCookies('jwt', '', -1);
+            ingresseApiCookies('userId', '', -1);
+            ingresseApiCookies('token', '', -1);
+            ingresseApiCookies('jwt', '', -1);
 
             this.data               = null;
             this.credentials.userId = null;
@@ -35,29 +37,25 @@ angular.module('ingresseSDK').service('IngresseApiUserService', function UserSer
             if (jwt) {
                 this.credentials.jwt = jwt;
 
-                ipCookie('jwt', jwt, {
-                    domain        : '.ingresse.com',
-                    expires       : 24,
-                    expirationUnit: 'hours'
-                });
+                ingresseApiCookies('jwt', jwt, 24, 'hours');
             }
 
-            ipCookie('userId', userId, { expires: 7, domain: '.ingresse.com' });
-            ipCookie('token', token, { expires: 7, domain: '.ingresse.com' });
+            ingresseApiCookies('userId', userId, 7);
+            ingresseApiCookies('token', token, 7);
 
             $rootScope.$broadcast('userSessionSaved');
         },
         saveLocation: function(location){
             this.city = location;
-            ipCookie('city',this.city, {expires: 365, domain:'.ingresse.com'});
+            ingresseApiCookies('city', this.city, 365);
             $rootScope.$broadcast('user_service.location_saved');
         },
         getLocation: function(){
             if(!this.city){
-                return ipCookie('city');
+                return ingresseApiCookies('city');
             }
 
             return this.city;
-        }
+        },
     };
 });

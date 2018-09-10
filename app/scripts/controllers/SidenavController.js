@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('ingresseEmulatorApp')
-  .controller('SidenavController', function ($scope, ingresseApiPreferences, ipCookie, $mdSidenav, $mdDialog, $timeout) {
+  .controller('SidenavController', function ($scope, ingresseApiPreferences, ingresseApiCookies, $mdSidenav, $mdDialog, $timeout) {
     $scope.init = function () {
+      $scope.companyId  = 1;
+      $scope.publicKey  = '';
+      $scope.privateKey = '';
+
       $scope.loadCookies();
 
-      $scope.privateKey = ingresseApiPreferences.privatekey;
-      $scope.publicKey = ingresseApiPreferences.publickey;
-
-      if (!$scope.privateKey || !$scope.publicKey) {
+      if (!$scope.publicKey || !$scope.privateKey) {
         $mdSidenav('left').toggle();
         $scope.showError('Para utilizar o emulador você precisa de chaves públicas e privadas. Entre em contato com a ingresse para solicitar a sua e preencha ao lado. As chaves ficarão salvas nos cookies para sua comodidade.');
       }
@@ -33,26 +34,42 @@ angular.module('ingresseEmulatorApp')
       $mdSidenav('left').toggle();
     };
 
+    $scope.updateCompanyId = function (companyId) {
+      $scope.companyId = companyId;
+
+      ingresseApiPreferences.setPrivateKey(companyId);
+      ingresseApiCookies('companyid', companyId, 365);
+    };
+
     $scope.updatePrivateKey = function (privateKey) {
-      ipCookie('privatekey', privateKey, {expires: 365});
+      $scope.publicKey = privateKey;
+
       ingresseApiPreferences.setPrivateKey(privateKey);
+      ingresseApiCookies('privatekey', privateKey, 365);
     };
 
     $scope.updatePublicKey = function (publicKey) {
-      ipCookie('publickey', publicKey, {expires: 365});
+      $scope.publicKey = publicKey;
+
       ingresseApiPreferences.setPublicKey(publicKey);
+      ingresseApiCookies('publickey', publicKey, 365);
     };
 
     $scope.loadCookies = function () {
-      var publicKey = ipCookie('publickey');
-      var privateKey = ipCookie('privatekey');
+      $scope.companyId  = (ingresseApiCookies('companyid') || 1);
+      $scope.publicKey  = ingresseApiCookies('publickey');
+      $scope.privateKey = ingresseApiCookies('privatekey');
 
-      if (publicKey) {
-        ingresseApiPreferences.setPublicKey(publicKey);
+      if ($scope.companyId) {
+        ingresseApiPreferences.setCompanyId($scope.companyId);
       }
 
-      if (privateKey) {
-        ingresseApiPreferences.setPrivateKey(privateKey);
+      if ($scope.publicKey) {
+        ingresseApiPreferences.setPublicKey($scope.publicKey);
+      }
+
+      if ($scope.privateKey) {
+        ingresseApiPreferences.setPrivateKey($scope.privateKey);
       }
     };
 

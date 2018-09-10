@@ -11,7 +11,7 @@ angular.module('ingresseEmulatorApp')
             credentials: '=',
             isMethodSelectionHidden: '='
         },
-        controller: function($scope, ingresseApiPreferences, ipCookie, $location, QueryService) {
+        controller: function($scope, ingresseApiPreferences, ingresseApiCookies, $location, QueryService) {
             $scope.domain = ingresseApiPreferences._host;
             $scope.method = $location.$$path;
             $scope.selectedTabKey = QueryService.selectedTab;
@@ -29,13 +29,13 @@ angular.module('ingresseEmulatorApp')
                 return;
               }
 
-              ipCookie('host', host, {expires: 365});
+              ingresseApiCookies('host', host, 365);
               ingresseApiPreferences.setHost(host);
               $scope.domain = ingresseApiPreferences._host;
             };
 
             $scope.loadCookies = function () {
-              var host = ipCookie('host');
+              var host = ingresseApiCookies('host');
 
               if (host) {
                 $scope.setHost(host);

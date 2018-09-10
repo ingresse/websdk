@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('ingresseEmulatorApp')
-  .controller('HeaderController', function ($scope, $mdSidenav, ingresseAPI, IngresseApiUserService, $window) {
+  .controller('HeaderController', function ($scope, $window, $location, $mdSidenav,
+    ingresseAPI, ingresseApiPreferences, IngresseApiUserService) {
 
     $scope.openLeftMenu = function () {
       $mdSidenav('left').toggle();
@@ -9,18 +10,26 @@ angular.module('ingresseEmulatorApp')
 
     $scope.login = function () {
       $scope.credentials = IngresseApiUserService.getCredentials();
+
       if (!$scope.credentials) {
-        // open login on new tab.
-        var url = ingresseAPI.login.getAuthorizeUrl();
-        $window.open(url);
+        document.location.href =
+            'https://hml-auth.ingresse.com/?returnUrl=' +
+            encodeURIComponent($location.absUrl()) +
+            '&companyId=' +
+            ingresseApiPreferences.getCompanyId() +
+            '&publicKey=' +
+            ingresseApiPreferences.getPublicKey()
+        ;
+
+        return;
       }
 
       $scope.loadUserData($scope.credentials);
     };
 
     $scope.logout = function () {
-      var url = ingresseAPI.login.getLogoutURL();
-      $window.open(url);
+      $scope.credentials = null;
+      IngresseApiUserService.clearCredentials();
     };
 
     $scope.$on('ingresseAPI.userHasLogged', function (event, obj) {
@@ -44,6 +53,9 @@ angular.module('ingresseEmulatorApp')
             response.photo = ingresseAPI.user.getPhotoUrl(credentials.userId);
             $scope.user = response;
           }
+        })
+        .catch(function (error) {
+            console.log(error);
         });
     };
   });
