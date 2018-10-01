@@ -1,6 +1,6 @@
 {
   "name": "ingresse-websdk",
-  "version": "7.26.3",
+  "version": "7.27.0",
   "homepage": "https://github.com/ingresse/ingresse-websdk",
   "authors": [
     "Daniel Borlino de Oliveira <daniel.borlino@ingresse.com>"
@@ -32,11 +32,6 @@
     "angular-touch": "1.6.9",
     "angular-ui-utils": "~3.0.0",
     "animate.css": "https://github.com/daneden/animate.css.git#~3.4.0",
-    "crypto-js-core": "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js",
-    "crypto-js-hmac": "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/hmac-min.js",
-    "crypto-js-hmac-sha1": "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha1.js",
-    "crypto-js-sha1": "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha1-min.js",
-    "crypto-js-enc-base64": "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64-min.js",
     "es5-shim": "~4.1.*",
     "json3": "~3.3.1",
     "moment": "~2.*.*",

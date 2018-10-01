@@ -4,8 +4,8 @@ angular.module('ingresseEmulatorApp')
   .controller('SidenavController', function ($scope, ingresseApiPreferences, ingresseApiCookies, $mdSidenav, $mdDialog, $timeout) {
     $scope.init = function () {
       $scope.companyId  = 1;
-      $scope.publicKey  = '';
-      $scope.privateKey = '';
+      $scope.privateKey = ingresseApiPreferences.privatekey;
+      $scope.publicKey  = ingresseApiPreferences.apikey;
 
       $scope.loadCookies();
 
@@ -51,8 +51,9 @@ angular.module('ingresseEmulatorApp')
     $scope.updatePublicKey = function (publicKey) {
       $scope.publicKey = publicKey;
 
-      ingresseApiPreferences.setPublicKey(publicKey);
       ingresseApiCookies('publickey', publicKey, 365);
+
+      ingresseApiPreferences.setPublicKey(publicKey);
     };
 
     $scope.loadCookies = function () {

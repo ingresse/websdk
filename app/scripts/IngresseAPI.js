@@ -31,43 +31,22 @@ angular.module('ingresseSDK')
     return value;
   };
 
+  /*  GENERATES THE PROPER AUTHENTICATION KEY FOR API CALLS, NEED THE PRIVATE AND PUBLIC KEYS OF APPLICATION SETTED WITH ingresseAPIProvider.
+
+    Ex:
+    angular.module('yourAppModuleName').config(function (ingresseAPIProvider) {
+      ingresseAPIProvider.setPublicKey('your public key');
+      ingresseAPIProvider.setPrivateKey('your private key');
+    });
+
+    RETURNS THE STRING TO BE USED ON API CALLS.
+  */
   API._generateAuthKey = function () {
-    /*  GENERATES THE PROPER AUTHENTICATION KEY FOR API CALLS, NEED THE PRIVATE AND PUBLIC KEYS OF APPLICATION SETTED WITH ingresseAPIProvider.
-
-      Ex:
-      angular.module('yourAppModuleName').config(function (ingresseAPIProvider) {
-        ingresseAPIProvider.setPublicKey('your public key');
-        ingresseAPIProvider.setPrivateKey('your private key');
-      });
-
-      RETURNS THE STRING TO BE USED ON API CALLS.
-    */
-
-    var authenticationString;
-    if (ingresseApiPreferences.publickey && ingresseApiPreferences._signature && ingresseApiPreferences._timestamp) {
-      authenticationString = '?publickey=' + API._urlencode(ingresseApiPreferences.publickey) + '&signature=' + API._urlencode(ingresseApiPreferences._signature) + '&timestamp=' + API._urlencode(ingresseApiPreferences._timestamp);
-      return authenticationString;
-    }
-
-    if (!ingresseApiPreferences.privatekey && !ingresseApiPreferences.publickey) {
+    if (!ingresseApiPreferences.apikey) {
       return '?noauthdata';
     }
 
-    var now = new Date();
-    var UTCYear = now.getUTCFullYear();
-    var UTCMonth = this._formatTwoCaracters(now.getUTCMonth() + 1);
-    var UTCDay = this._formatTwoCaracters(now.getUTCDate());
-    var UTCHours = this._formatTwoCaracters(now.getUTCHours());
-    var UTCMinutes = this._formatTwoCaracters(now.getUTCMinutes());
-    var UTCSeconds = this._formatTwoCaracters(now.getUTCSeconds());
-
-    var timestamp = UTCYear + '-' + UTCMonth + '-' + UTCDay + 'T' + UTCHours + ':' + UTCMinutes + ':' + UTCSeconds + 'Z';
-    var data1 = ingresseApiPreferences.publickey + timestamp;
-    var data2 = CryptoJS.HmacSHA1(data1, ingresseApiPreferences.privatekey);
-    var computedSignature = data2.toString(CryptoJS.enc.Base64);
-    authenticationString = '?publickey=' + ingresseApiPreferences.publickey + '&signature=' + API._urlencode(computedSignature) + '&timestamp=' + API._urlencode(timestamp);
-
-    return authenticationString;
+    return '?apikey=' + API._urlencode(ingresseApiPreferences.apikey);;
   };
 
   API._getUrlParameters = function (filters) {

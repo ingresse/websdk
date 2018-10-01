@@ -2,13 +2,17 @@
 
 angular.module('ingresseSDK', [])
 .provider('ingresseApiPreferences', function () {
+<<<<<<< HEAD
   var publickey, privatekey, companyid;
+=======
+  var apikey, privatekey;
+>>>>>>> Update: 'Public Key' to 'API Key' and remove 'Signature' & 'Timestamp';
   var prefHost = 'https://api.ingresse.com';
   PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
 
   return {
     setPublicKey: function(key){
-      publickey = key;
+      apikey = key;
     },
     setPrivateKey: function(key){
       privatekey = key;
@@ -30,7 +34,7 @@ angular.module('ingresseSDK', [])
     $get: function($rootScope) {
       return{
         setPublicKey: function(key){
-          this.publickey = key;
+          this.apikey = key;
         },
         setPrivateKey: function(key){
           this.privatekey = key;
@@ -38,12 +42,10 @@ angular.module('ingresseSDK', [])
         setCompanyId: function(id) {
             this.companyid = id;
         },
-        publickey: publickey,
+        apikey: apikey,
         privatekey: privatekey,
         companyid: companyid,
         _host: prefHost,
-        _signature: null,
-        _timestamp: null,
 
         // PRIVATE
         loginReturnUrl: 'https://cdn.ingresse.com/websdk/v7/parse-response.html',
