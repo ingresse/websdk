@@ -46,7 +46,7 @@ angular.module('ingresseSDK')
       return '?noauthdata';
     }
 
-    return '?apikey=' + API._urlencode(ingresseApiPreferences.apikey);;
+    return '?apikey=' + API._urlencode(ingresseApiPreferences.apikey);
   };
 
   API._getUrlParameters = function (filters) {
