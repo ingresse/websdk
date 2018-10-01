@@ -2,7 +2,7 @@
 
 angular.module('ingresseSDK', [])
 .provider('ingresseApiPreferences', function () {
-  var apikey, privatekey;
+  var apikey, privatekey, companyid;
   var prefHost = 'https://api.ingresse.com';
   PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
 
