@@ -2,11 +2,7 @@
 
 angular.module('ingresseSDK', [])
 .provider('ingresseApiPreferences', function () {
-<<<<<<< HEAD
-  var publickey, privatekey, companyid;
-=======
   var apikey, privatekey;
->>>>>>> Update: 'Public Key' to 'API Key' and remove 'Signature' & 'Timestamp';
   var prefHost = 'https://api.ingresse.com';
   PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
 
