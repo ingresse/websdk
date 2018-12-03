@@ -214,7 +214,7 @@ angular.module('ingresseSDK')
             }
 
             if (error.code === 3030) {
-              error.message = 'Não encontramos este e-mail em nossa plataforma. Certifique-se de que ele foi utilizado para criar uma conta na Ingresse.';
+              error.message = 'Não encontramos este e-mail em nossa plataforma. Certifique-se de que ele foi utilizado para criar uma conta.';
               return $q.reject(error);
             }
 
