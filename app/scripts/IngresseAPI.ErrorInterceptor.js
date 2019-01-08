@@ -213,6 +213,11 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 3030) {
+              error.message = 'Não encontramos este e-mail em nossa plataforma. Certifique-se de que ele foi utilizado para criar uma conta.';
+              return $q.reject(error);
+            }
+
             if (error.code === 3036) {
               error.message = 'Desculpe, somente é possível estornar transações aprovadas.';
               return $q.reject(error);
@@ -220,6 +225,11 @@ angular.module('ingresseSDK')
 
             if (error.code === 3041) {
               error.message = 'Você selecionou uma quantidade de ingressos maior do que temos disponível no estoque.';
+              return $q.reject(error);
+            }
+
+            if (error.code === 3087) {
+              error.message = 'Esse cupom não está mais disponível para uso.';
               return $q.reject(error);
             }
 
@@ -258,6 +268,13 @@ angular.module('ingresseSDK')
 
             if (error.code === 6045) {
               error.message = 'Este ingresso já pertence a você e está na sua carteira.';
+              return $q.reject(error);
+            }
+
+            if (error.code === 6063) {
+              error.message = '<div class="aph loader__title">Ops</div>' +
+                'Este e-mail já está sendo utilizado. Caso não lembre sua ' +
+                'senha, inicie o processo de redefinição de senha.';
               return $q.reject(error);
             }
 
