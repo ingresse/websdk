@@ -271,6 +271,13 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 6063) {
+              error.message = '<div class="aph loader__title">Ops</div>' +
+                'Este e-mail já está sendo utilizado. Caso não lembre sua ' +
+                'senha, inicie o processo de redefinição de senha.';
+              return $q.reject(error);
+            }
+
             $log.error(error);
             error.message = 'Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código: ' + error.code;
             return $q.reject(error);
