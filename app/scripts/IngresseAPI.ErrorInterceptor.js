@@ -188,6 +188,11 @@ angular.module('ingresseSDK')
               return $q.reject(error);
             }
 
+            if (error.code === 2055) {
+              error.message = 'Aparentemente você não tem permissão para realizar esta tarefa.';
+              return $q.reject(error);
+            }
+
             if (error.code === 3002) {
               error.message = 'Desculpe, mas o evento solicitado não existe em nosso banco de dados.';
               return $q.reject(error);
