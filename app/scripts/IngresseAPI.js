@@ -793,147 +793,87 @@ angular.module('ingresseSDK')
 
     var postObject = {
       eventId: eventId,
-      userId: userId,
+      userId : userId,
       tickets: tickets,
-      discountCode: discountCode,
-      passkey: passkey
     };
+
+    if (passkey) {
+      postObject.passkey = passkey;
+    }
+
+    if (discountCode) {
+      postObject.discountCode = discountCode;
+    }
 
     angular.extend(postObject, extra);
 
     return API._post('shop', null, filters, postObject);
   };
 
-  API.createPagarmeCard = function (transaction) {
-    var field;
+    API.payReservation = function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments, passkey, postback) {
+        var deferred = $q.defer();
+        var self = this;
+        var url = (
+            ingresseApiPreferences.getHost() +
+            '/shop/' +
+            self._generateAuthKey() +
+            '&usertoken=' +
+            token
+        );
 
-    //Create hash for pagar.me
-    var creditCard = new PagarMe.creditCard();
-    creditCard.cardHolderName = transaction.creditcard.name.toString();
-    creditCard.cardExpirationMonth = transaction.creditcard.month.toString();
-    creditCard.cardExpirationYear = transaction.creditcard.year.toString();
-    creditCard.cardNumber = transaction.creditcard.number.toString();
-    creditCard.cardCVV = transaction.creditcard.cvv.toString();
+        var transaction = {
+            transactionId: transactionId,
+            paymentMethod: paymentMethod,
+            userId: userId,
+            eventId: eventId,
+            tickets: tickets,
+            passkey: passkey,
+        };
 
-    // pega os erros de validação nos campos do form
-    var fieldErrors = creditCard.fieldErrors();
+        // Bank Billet payment
+        if (paymentMethod === 'BoletoBancario') {
+            $http.post(url, transaction)
+            .success(function (response) {
+                if (!response.responseData.data) {
+                    deferred.reject('Desculpe, houve um erro ao tentar gerar o boleto. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.');
+                    return;
+                }
 
-    //Verifica se há erros
-    var hasErrors = false;
-    for (field in fieldErrors) {
-      if (fieldErrors.hasOwnProperty(field)) {
-        hasErrors = true;
-        break;
-      }
-    }
+                if (response.responseData.data.status === 'declined') {
+                    deferred.reject(response.responseData.data.message);
+                    return;
+                }
 
-    if (hasErrors) {
-      var cardErrors = '';
-      var key;
+                deferred.resolve(response.responseData.data);
+            })
+            .catch(function (error) {
+                deferred.reject(error);
+            });
 
-      for (key in fieldErrors) {
-        if (fieldErrors.hasOwnProperty(key)) {
-          cardErrors += ' ' + fieldErrors[key];
+            return deferred.promise;
         }
-      }
 
-      var error = new Error(cardErrors);
-      error.code = 1031;
+        // Credit Card payment
+        transaction.creditcard = creditCard;
 
-      throw error;
-    }
+        if (installments) {
+            transaction.installments = installments;
+        }
 
-    // se não há erros, retorna o cartão...
-    transaction.creditcard.pagarme = creditCard;
-    return transaction;
-  };
+        if (postback) {
+            transaction.postback = 1;
+        }
 
-  API.payReservation = function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments, passkey, postback) {
-
-    var deferred = $q.defer();
-    var transactionDTO = {};
-    var currentTransaction, url;
-    var self = this;
-
-    if (paymentMethod === 'BoletoBancario') {
-      currentTransaction = {
-        transactionId: transactionId,
-        userId: userId,
-        paymentMethod: paymentMethod,
-        eventId: eventId,
-        tickets: tickets,
-        passkey: passkey
-      };
-
-      url = ingresseApiPreferences.getHost() + '/shop/' + self._generateAuthKey() + '&usertoken=' + token;
-
-      $http.post(url, currentTransaction)
+        $http.post(url, payment.creditCardPayment(transaction))
         .success(function (response) {
-          if (!response.responseData.data) {
-            deferred.reject('Desculpe, houve um erro ao tentar gerar o boleto. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.');
-            return;
-          }
-
-          if (response.responseData.data.status === 'declined') {
-            deferred.reject(response.responseData.data.message);
-            return;
-          }
-
-          deferred.resolve(response.responseData.data);
+            deferred.resolve(response.responseData.data);
         })
         .catch(function (error) {
-          deferred.reject(error);
+            deferred.reject(error);
         });
 
-      return deferred.promise;
-    }
-
-    // Pagamento com Cartão de Crédito.
-    currentTransaction = {
-      transactionId: transactionId,
-      userId: userId,
-      paymentMethod: paymentMethod,
-      creditcard: creditCard,
-      eventId: eventId,
-      tickets: tickets,
-      passkey: passkey
+        return deferred.promise;
     };
-
-    if (installments) {
-      currentTransaction.installments = installments;
-    }
-
-    if (postback) {
-      currentTransaction.postback = 1;
-    }
-
-    try {
-      transactionDTO = this.createPagarmeCard(currentTransaction);
-    } catch (err) {
-      deferred.reject(err);
-      return deferred.promise;
-    }
-
-    transactionDTO.creditcard.pagarme.generateHash(function (hash) {
-      transactionDTO.creditcard = {
-        cardHash: hash,
-        cpf: transactionDTO.creditcard.cpf,
-        birthdate: transactionDTO.creditcard.birthdate
-      };
-
-      url = ingresseApiPreferences.getHost() + '/shop/' + self._generateAuthKey() + '&usertoken=' + token;
-
-      $http.post(url, transactionDTO)
-        .success(function (response) {
-          deferred.resolve(response.responseData.data);
-        })
-        .catch(function (error) {
-          deferred.reject(error);
-        });
-    });
-
-    return deferred.promise;
-  };
 
   /**
    * Pay for reserved tickets
@@ -956,8 +896,9 @@ angular.module('ingresseSDK')
 
     // Configure payment service
     payment
+      .setGateway()
       .setTransaction(transaction)
-      .setGateway();
+    ;
 
     // Execute payment
     payment.execute()
@@ -967,8 +908,6 @@ angular.module('ingresseSDK')
           .success(function (response) {
             deferred.resolve(response.responseData.data);
           })
-
-          // On error reject promise
           .catch(function (error) {
             deferred.reject(error);
           });
