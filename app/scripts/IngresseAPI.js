@@ -84,13 +84,14 @@ angular.module('ingresseSDK')
     $http.get(url)
       .then(function (response) {
         response = response.data;
+
         if (angular.isObject(response.responseData) && angular.isDefined(response.ResponseSessionStatus)) {
           response.responseData.sessionStatus = response.ResponseSessionStatus;
         }
 
         deferred.resolve(response.responseData);
-      })
-      .catch(function (error) {
+
+      }, function (error) {
         deferred.reject(error);
       });
 
@@ -113,9 +114,10 @@ angular.module('ingresseSDK')
     $http.post(url, postParameters)
       .then(function (response) {
         response = response.data;
+
         deferred.resolve(response.responseData);
-      })
-      .catch(function (error) {
+
+      }, function (error) {
         deferred.reject(error);
       });
 
@@ -138,9 +140,9 @@ angular.module('ingresseSDK')
     $http.delete(url)
       .then(function (response) {
         response = response.data;
+
         deferred.resolve(response.responseData);
-      })
-      .catch(function (error) {
+      }, function (error) {
         deferred.reject(error);
       });
 
@@ -833,7 +835,9 @@ angular.module('ingresseSDK')
         // Bank Billet payment
         if (paymentMethod === 'BoletoBancario') {
             $http.post(url, transaction)
-            .success(function (response) {
+            .then(function (response) {
+                response = response.data;
+
                 if (!response.responseData.data) {
                     deferred.reject('Desculpe, houve um erro ao tentar gerar o boleto. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.');
                     return;
@@ -865,8 +869,10 @@ angular.module('ingresseSDK')
         }
 
         $http.post(url, payment.creditCardPayment(transaction))
-        .success(function (response) {
-            deferred.resolve(response.responseData.data);
+        .then(function (response) {
+            response = response.data;
+
+            deferred.resolve(response.responseData);
         })
         .catch(function (error) {
             deferred.reject(error);
@@ -905,7 +911,9 @@ angular.module('ingresseSDK')
       .then(function (transaction) {
         // Send date to api
         $http.post(url, transaction)
-          .success(function (response) {
+          .then(function (response) {
+            response = response.data;
+
             deferred.resolve(response.responseData.data);
           })
           .catch(function (error) {
