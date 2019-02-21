@@ -35,7 +35,18 @@ angular.module('ingresseSDK')
      * @param {string}   expirationUnit - Cookie expires unit | Optional (default: days)
      */
     return function (cname, content, expires, expirationUnit) {
-        cname = _concat(cname);
+        cname     = _concat(cname);
+        var props = {
+            domain: (($location.host().indexOf(DOMAIN) < 0) ? $location.host() : DOMAIN),
+            path  : '/',
+        };
+
+        if (typeof expires === 'number') {
+            props = angular.extend({}, props, {
+                expires       : expires,
+                expirationUnit: (expirationUnit || 'days'),
+            });
+        }
 
         if (typeof content === 'undefined') {
             return ipCookie(cname);
@@ -44,14 +55,7 @@ angular.module('ingresseSDK')
         ipCookie(
             cname,
             (content || ''),
-            (typeof expires === 'number' ?
-                {
-                    domain        : (($location.host().indexOf(DOMAIN) < 0) ? $location.host() : DOMAIN),
-                    expires       : expires,
-                    expirationUnit: (expirationUnit || 'days'),
-                }
-                : null
-            )
+            props
         );
     };
 });

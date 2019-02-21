@@ -21,9 +21,6 @@ angular.module('ingresseSDK')
             ingresseApiCookies('userId', '', -1);
             ingresseApiCookies('token', '', -1);
             ingresseApiCookies('jwt', '', -1);
-            ingresseApiCookies('userId', '', -1);
-            ingresseApiCookies('token', '', -1);
-            ingresseApiCookies('jwt', '', -1);
 
             this.data               = null;
             this.credentials.userId = null;
@@ -33,6 +30,7 @@ angular.module('ingresseSDK')
         saveCredentials: function (token, userId, jwt) {
             this.credentials.userId = userId;
             this.credentials.token  = token;
+            this.credentials.jwt    = '';
 
             if (jwt) {
                 this.credentials.jwt = jwt;
