@@ -12,7 +12,7 @@ function receiveMessage (event) {
 window.addEventListener('message', receiveMessage, false);
 
 angular.module('ingresseSDK')
-.service('ingresseAPI', function ($http, $q, ingresseApiPreferences, Payment) {
+.service('ingresseAPI', function ($http, $q, ingresseApiPreferences, IngresseApiUserService, Payment, ingressePaymentType) {
   var API = {};
 
   API._urlencode = function (str) {
@@ -64,14 +64,39 @@ angular.module('ingresseSDK')
     return parameters;
   };
 
-  API._get = function (method, identifier, parameters) {
-    var deferred = $q.defer();
-    var url;
+  /**
+  * Get User Token to Requests
+  *
+  * @return {object}
+  */
+  API._getRequestToken = function () {
+    var credentials   = IngresseApiUserService.getCredentials();
+    var requestParams = {
+      usertoken: (credentials && credentials.token ? credentials.token : ''),
+    };
 
-    url = ingresseApiPreferences.getHost();
+    if (!requestParams.usertoken) {
+      return {};
+    }
+
+    return requestParams;
+  };
+
+  /**
+   * Get Endpoint URL with Query Parameters
+   *
+   * @param {string} method
+   * @param {string} identifier
+   * @param {object} parameters
+   *
+   * @return {string} url
+   */
+  API._getUrl = function (method, identifier, parameters) {
+    var userToken = ((parameters && parameters.usertoken) ? API._getRequestToken() : {});
+    var url       = ingresseApiPreferences.getHost() + '/';
 
     if (method) {
-      url += '/' + method;
+      url += method;
     }
 
     if (identifier) {
@@ -79,9 +104,16 @@ angular.module('ingresseSDK')
     }
 
     url += API._generateAuthKey();
-    url += API._getUrlParameters(parameters);
+    url += API._getUrlParameters(angular.extend({}, (parameters || {}), userToken));
 
-    $http.get(url)
+    return url;
+  };
+
+  API._get = function (method, identifier, parameters) {
+    var deferred    = $q.defer();
+    var endpointUrl = API._getUrl(method, identifier, parameters);
+
+    $http.get(endpointUrl)
       .then(function (response) {
         response = response.data;
 
@@ -99,19 +131,10 @@ angular.module('ingresseSDK')
   };
 
   API._post = function (method, identifier, parameters, postParameters) {
-    var deferred = $q.defer();
-    var url;
+    var deferred    = $q.defer();
+    var endpointUrl = API._getUrl(method, identifier, parameters);
 
-    url = ingresseApiPreferences.getHost() + '/' + method;
-
-    if (identifier) {
-      url += '/' + identifier;
-    }
-
-    url += API._generateAuthKey();
-    url += API._getUrlParameters(parameters);
-
-    $http.post(url, postParameters)
+    $http.post(endpointUrl, postParameters)
       .then(function (response) {
         response = response.data;
 
@@ -125,19 +148,10 @@ angular.module('ingresseSDK')
   };
 
   API._delete = function (method, identifier, parameters) {
-    var deferred = $q.defer();
-    var url;
+    var deferred    = $q.defer();
+    var endpointUrl = API._getUrl(method, identifier, parameters);
 
-    url = ingresseApiPreferences.getHost() + '/' + method;
-
-    if (identifier) {
-      url += '/' + identifier;
-    }
-
-    url += API._generateAuthKey();
-    url += API._getUrlParameters(parameters);
-
-    $http.delete(url)
+    $http.delete(endpointUrl)
       .then(function (response) {
         response = response.data;
 
@@ -833,50 +847,63 @@ angular.module('ingresseSDK')
         };
 
         // Bank Billet payment
-        if (paymentMethod === 'BoletoBancario') {
+        if (paymentMethod === ingressePaymentType.BANKSLIP) {
             $http.post(url, transaction)
+            .catch(deferred.reject)
             .then(function (response) {
                 response = response.data;
 
                 if (!response.responseData.data) {
-                    deferred.reject('Desculpe, houve um erro ao tentar gerar o boleto. Por favor entre em contato com a ingresse pelo número (11) 4264-0718.');
-                    return;
+                    return deferred.reject(
+                        'Desculpe, houve um erro ao tentar gerar o boleto. ' +
+                        'Por favor entre em contato com a Ingresse pelo número ' +
+                        '(11) 4264-0718.'
+                    );
                 }
 
                 if (response.responseData.data.status === 'declined') {
-                    deferred.reject(response.responseData.data.message);
-                    return;
+                    return deferred.reject(response.responseData.data.message);
                 }
 
                 deferred.resolve(response.responseData.data);
-            })
-            .catch(function (error) {
-                deferred.reject(error);
             });
 
             return deferred.promise;
         }
 
         // Credit Card payment
-        transaction.creditcard = creditCard;
+        if (paymentMethod === ingressePaymentType.CREDITCARD) {
+            transaction.creditcard = creditCard;
 
-        if (installments) {
-            transaction.installments = installments;
+            if (installments) {
+                transaction.installments = installments;
+            }
+
+            if (postback) {
+                transaction.postback = 1;
+            }
+
+            $http.post(url, payment.creditCardPayment(transaction))
+            .catch(deferred.reject)
+            .then(function (response) {
+                response = response.data;
+
+                deferred.resolve(response.responseData);
+            });
+
+            return deferred.promise;
         }
 
-        if (postback) {
-            transaction.postback = 1;
-        }
-
-        $http.post(url, payment.creditCardPayment(transaction))
+        // Generic payment
+        $http.post(url, payment.genericPayment(transaction))
+        .catch(deferred.reject)
         .then(function (response) {
             response = response.data;
 
             deferred.resolve(response.responseData);
-        })
-        .catch(function (error) {
-            deferred.reject(error);
         });
+
+        return deferred.promise;
 
         return deferred.promise;
     };
@@ -925,6 +952,40 @@ angular.module('ingresseSDK')
       });
 
     return deferred.promise;
+  };
+
+  /**
+   * Get PayPal Express Checkout Token
+   *
+   * @return {Promise}
+   */
+  API.getPayPalExpressCheckoutToken = function () {
+    var deferred = $q.defer();
+
+    API._post('paypal', 'express-checkout', { usertoken: true })
+    .catch(deferred.reject)
+    .then(function (response) {
+      deferred.resolve(response.token);
+    });
+
+    return deferred.promise;
+  };
+
+  /**
+   * Set PayPal Billing Agreement
+   *
+   * @param {object} billingData
+   * @param {object} billingData - token
+   *
+   * @return {Promise}
+   */
+  API.setPayPalBillingAgreement = function (billingData) {
+    return API._post(
+      'paypal',
+      'billing-agreement',
+      { usertoken: true },
+      billingData
+    );
   };
 
   return API;

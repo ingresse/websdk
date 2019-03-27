@@ -10,6 +10,19 @@ angular.module('ingresseSDK')
     };
 
     /**
+     * Generic Payment Strategy
+     *
+     * @param {object} transaction
+     */
+    var genericPayment = function (transaction) {
+        var deferred = $q.defer();
+
+        deferred.resolve(transaction);
+
+        return deferred.promise;
+    };
+
+    /**
      * Use base strategy prototype
      */
     IngresseStrategy.prototype = new BaseStrategy();
@@ -66,13 +79,14 @@ angular.module('ingresseSDK')
      *
      * @returns {promise}
      */
-    IngresseStrategy.prototype.bankSlipPayment = function (transaction) {
-        var deferred = $q.defer();
+    IngresseStrategy.prototype.bankSlipPayment = genericPayment;
 
-        deferred.resolve(transaction);
-
-        return deferred.promise;
-    };
+    /**
+     * Generic payment
+     *
+     * @returns {promise}
+     */
+    IngresseStrategy.prototype.genericPayment = genericPayment;
 
     return IngresseStrategy;
 });
