@@ -955,6 +955,19 @@ angular.module('ingresseSDK')
   };
 
   /**
+   * Get User Wallet (new)
+   */
+  API.getWallet = function () {
+    var deferred = $q.defer();
+
+    API._get('wallet', '', { usertoken: true })
+    .catch(deferred.reject)
+    .then(deferred.resolve);
+
+    return deferred.promise;
+  };
+
+  /**
    * Get PayPal Express Checkout Token
    *
    * @return {Promise}
