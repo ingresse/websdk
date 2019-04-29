@@ -50,11 +50,16 @@ angular.module('ingresseSDK')
     * @returns {promise}
     */
     Payment.prototype.execute = function () {
-        if (this.transaction.paymentMethod === ingressePaymentType.CREDITCARD) {
-            return this.strategy.creditCardPayment(this.transaction);
-        }
+        switch (this.transaction.paymentMethod) {
+            case ingressePaymentType.CREDITCARD:
+                return this.strategy.creditCardPayment(this.transaction);
 
-        return this.strategy.bankSlipPayment(this.transaction);
+            case ingressePaymentType.BANKSLIP:
+                return this.strategy.bankSlipPayment(this.transaction);
+
+            default:
+                return this.strategy.genericPayment(this.transaction);
+        }
     };
 
     return Payment;
