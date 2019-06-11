@@ -9,7 +9,7 @@ angular.module('ingresseEmulatorApp')
 
       $scope.loadCookies();
 
-      if (!$scope.publicKey || !$scope.privateKey) {
+      if (!$scope.publicKey && !$scope.privateKey) {
         $mdSidenav('left').toggle();
         $scope.showError('Para utilizar o emulador você precisa de chaves públicas e privadas. Entre em contato com a ingresse para solicitar a sua e preencha ao lado. As chaves ficarão salvas nos cookies para sua comodidade.');
       }

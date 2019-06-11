@@ -535,11 +535,32 @@ angular.module('ingresseSDK')
 
   API.user = {
     get: function (userid, filters, token) {
+      var deferred = $q.defer();
+
       if (token) {
         filters.usertoken = token;
       }
 
-      return API._get('user', userid, filters);
+      API._get('user', userid, filters)
+      .catch(deferred.reject)
+      .then(function (response) {
+        if (typeof response !== 'object') {
+          return deferred.reject();
+        }
+
+        var userData      = response;
+        userData.fullName = ((response.name || '') + (response.lastname || ''));
+
+        if (filters.fields && filters.fields.indexOf('picture')) {
+          userData.photo = (
+            response.pictures && response.pictures.medium ? response.pictures.medium : response.picture
+          );
+        }
+
+        deferred.resolve(userData);
+      });
+
+      return deferred.promise;
     },
 
     create: function (userObj) {
@@ -902,8 +923,6 @@ angular.module('ingresseSDK')
 
             deferred.resolve(response.responseData);
         });
-
-        return deferred.promise;
 
         return deferred.promise;
     };
