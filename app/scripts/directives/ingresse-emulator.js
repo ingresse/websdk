@@ -11,7 +11,7 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
   return {
     scope: {}, // {} = isolate, true = child, false/undefined = no change
     controller: function ($scope, ingresseApiCookies, ingresseAPI, ingresseApiPreferences, IngresseApiUserService, IngresseAPI_Freepass, VenusActivityIndicatorService) {
-      $scope.domain = ingresseApiCookies('host');
+      $scope.domain = ingresseApiCookies('env');
 
       if (!$scope.domain) {
         $scope.domain = ingresseApiPreferences._host;
@@ -36,9 +36,9 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
           return;
         }
 
-        ingresseApiCookies('host', host, 365);
+        ingresseApiCookies('env', host, 365);
         ingresseApiPreferences.setHost(host);
-        $scope.domain = ingresseApiPreferences._host;
+        $scope.domain = host;
       };
 
       $scope.setPrivateKey = function (key) {
@@ -477,6 +477,8 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
 
       $scope.logout = function () {
         IngresseApiUserService.logout();
+
+        $scope.user = null;
       };
 
       $scope.refund = function (form) {
@@ -572,8 +574,8 @@ angular.module('ingresse.emulator', ['ingresseSDK']).directive('ingresseEmulator
         ingresseApiPreferences.setPrivateKey(ingresseApiCookies('privatekey'));
       }
 
-      if (ingresseApiCookies('host') !== '') {
-        $scope.setHost(ingresseApiCookies('host'));
+      if (ingresseApiCookies('env') !== '') {
+        $scope.setHost(ingresseApiCookies('env'));
       }
 
       $scope.privateKey = ingresseApiPreferences.privatekey;

@@ -28,7 +28,7 @@ angular.module('ingresseEmulatorApp', [
       .primaryPalette('blue')
       .accentPalette('orange');
 
-    ingresseApiPreferencesProvider.setHost('https://apipre.ingresse.com');
+    ingresseApiPreferencesProvider.setHost('hmla');
   })
   .run(function ($rootScope) {
     $rootScope.$on('$viewContentLoaded', function () {

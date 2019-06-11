@@ -13,12 +13,14 @@ angular.module('ingresseEmulatorApp')
 
       if (!$scope.credentials) {
         document.location.href =
-            'https://hml-auth.ingresse.com/?returnUrl=' +
+            'https://auth.ingresse.com/?host=' +
+            ingresseApiPreferences.getEnv() +
+            '&returnUrl=' +
             encodeURIComponent($location.absUrl()) +
             '&companyId=' +
             ingresseApiPreferences.getCompanyId() +
-            '&publicKey=' +
-            ingresseApiPreferences.getPublicKey()
+            '&apiKey=' +
+            ingresseApiPreferences.getApiKey()
         ;
 
         return;
@@ -28,15 +30,21 @@ angular.module('ingresseEmulatorApp')
     };
 
     $scope.logout = function () {
+      $scope.user        = null;
       $scope.credentials = null;
+
+      $location.search('usertoken', null);
       IngresseApiUserService.clearCredentials();
     };
 
     $scope.$on('ingresseAPI.userHasLogged', function (event, obj) {
       if (!obj || !obj.token || !obj.userId) {
         IngresseApiUserService.clearCredentials();
+        $location.search('usertoken', null);
+
         $scope.credentials = null;
         $scope.user = null;
+
         $scope.$apply();
         return;
       }
@@ -47,10 +55,9 @@ angular.module('ingresseEmulatorApp')
     });
 
     $scope.loadUserData = function (credentials) {
-      ingresseAPI.user.get(credentials.userId, {fields: 'id,name,email,type'}, credentials.token)
+      ingresseAPI.user.get(credentials.userId, { fields: 'id,name,email,type,picture,pictures' }, credentials.token)
         .then(function (response) {
           if (response) {
-            response.photo = ingresseAPI.user.getPhotoUrl(credentials.userId);
             $scope.user = response;
           }
         })

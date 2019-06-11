@@ -6,7 +6,24 @@ angular.module('ingresseSDK', [])
   var prefHost = 'https://api.ingresse.com';
   PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
 
+  var envs = {
+    prod : 'https://api.ingresse.com',
+    stg  : 'https://stg-api.ingresse.com',
+    hmla : 'https://hmla-api.ingresse.com',
+    hmlb : 'https://hmlb-api.ingresse.com',
+    local: 'http://api.ingresse.dev',
+
+    /* Deprecated */
+    pre : 'https://apipre.ingresse.com',
+    test: 'https://test-api.ingresse.com',
+    hml : 'https://hml-api.ingresse.com',
+    hml2: 'https://hml-api-2.ingresse.com',
+  };
+
   return {
+    setApiKey: function(key){
+      apikey = key;
+    },
     setPublicKey: function(key){
       apikey = key;
     },
@@ -14,8 +31,10 @@ angular.module('ingresseSDK', [])
       privatekey = key;
     },
     setHost: function (host) {
-      prefHost = host;
+      var _host = ('' + (host || 'prod')).toLowerCase();
+      prefHost  = (envs.hasOwnProperty(_host) ? envs[_host] : _host);
 
+      /* Deprecated */
       if (prefHost === 'https://api.ingresse.com' || prefHost === 'https://apipre.ingresse.com') {
         PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
       }
@@ -28,49 +47,84 @@ angular.module('ingresseSDK', [])
         companyid = id;
     },
     $get: function($rootScope) {
-      return{
-        setPublicKey: function(key){
+      return {
+        /* Application Environments */
+        environments: envs,
+
+        /* Deprecated Methods */
+        setPublicKey : function(key) {
           this.apikey = key;
         },
-        setPrivateKey: function(key){
+        setPrivateKey: function (key){
           this.privatekey = key;
         },
-        setCompanyId: function(id) {
+
+        /**
+         * Set Application API Key
+         *
+         * @param {string} key
+         */
+        setApiKey   : function (key) {
+          this.apikey = key;
+        },
+
+        /**
+         * Get Application API Key
+         *
+         * @returns {string} key
+         */
+        getApiKey   : function () {
+          return this.apikey;
+        },
+
+        /**
+         * Set Application Company ID
+         *
+         * @param {string} id
+         */
+        setCompanyId: function (id) {
             this.companyid = id;
         },
-        apikey: apikey,
+
+        apikey    : apikey,
         privatekey: privatekey,
-        companyid: companyid,
-        _host: prefHost,
+        companyid : companyid,
+        _host     : prefHost,
 
         // PRIVATE
         loginReturnUrl: 'https://cdn.ingresse.com/websdk/v7/parse-response.html',
-        httpCalls: [],
+        httpCalls     : [],
 
         // PUBLIC
+        getEnv: function() {
+          return this._env;
+        },
         getHost: function() {
           return this._host;
         },
         setHost: function (host) {
-          this._host = host;
+          this._env  = ('' + (host || 'prod')).toLowerCase();
+          this._host = (envs.hasOwnProperty(this._env) ? envs[this._env] : this._env);
 
+          /* Deprecated */
           if (this._host === 'https://api.ingresse.com' || this._host === 'https://apipre.ingresse.com') {
             PagarMe.encryption_key = 'ek_live_lMsy9iABVbZrtgpd7Xpb9MMFgvjTYQ';
-          }
 
-          if (this._host === 'https://hml-api.ingresse.com' ||
-            this._host === 'https://hml-api-2.ingresse.com') {
+          } else {
             PagarMe.encryption_key = 'ek_test_lwfVXNqRg3tpN7IPPXtatdMYhQG96N';
           }
 
           $rootScope.$broadcast('preferences.hostChanged');
         },
         getCompanyId: function () {
-            return this.companyid || 1;
+            return (this.companyid || 1);
         },
         setAuth: function (signature, timestamp) {
           this._signature = signature;
           this._timestamp = timestamp;
+        },
+        getPublicKey: function () {
+          return this.apikey;
         },
         httpCallStarted: function (url) {
           var domain = url.split('?')[0];

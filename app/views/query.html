@@ -2,14 +2,14 @@
     <div layout-sm"column" layout-md="column" layout-gt-md="row">
         <md-input-container style="width: 400px;">
             <md-select
-                placeholder="domain"
-                ng-model="domain"
-                ng-change="setHost(domain)">
-                <md-option value="https://api.ingresse.com">https://api.ingresse.com</md-option>
-                <md-option value="https://hml-api.ingresse.com">https://hml-api.ingresse.com</md-option>
-                <md-option value="https://hml-api-2.ingresse.com">https:/hml-api-2.ingresse.com</md-option>
-                <md-option value="https://apipre.ingresse.com">https://apipre.ingresse.com</md-option>
-                <md-option value="https://private-c2c64-transfertickets.apiary-mock.com">https://private-c2c64-transfertickets.apiary-mock.com</md-option>
+                placeholder="API Environment"
+                data-ng-model="domain"
+                data-ng-change="setHost(domain)">
+                <md-option
+                    data-ng-repeat="(envKey, envURL) in envs"
+                    value="{{ envKey }}">
+                    {{ envURL }}
+                </md-option>
             </md-select>
         </md-input-container>
 

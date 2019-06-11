@@ -2,7 +2,7 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Ingresse AngularJS SDK</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
 
@@ -21,7 +21,6 @@
     <!-- build:css(.tmp) styles/websdk.css -->
     <link rel="stylesheet" href="styles/websdk.css" />
     <!-- endbuild -->
-
   </head>
   <body ng-app="ingresseEmulatorApp">
     <div class="loading-app" ng-hide="ready">Loading...</div>
@@ -41,7 +40,7 @@
                         <input type="number" ng-model="companyId" ng-blur="updateCompanyId(companyId)"/>
                     </md-input-container>
                     <md-input-container>
-                        <label>Public Key</label>
+                        <label>API Key</label>
                         <input type="text" ng-model="publicKey" ng-blur="updatePublicKey(publicKey)"/>
                     </md-input-container>
                     <md-input-container>
@@ -63,7 +62,13 @@
             <md-button class="md-button" ng-click="login()" ng-hide="credentials.userId">Login</md-button>
 
             <div class="user" ng-show="user.name">
-                <img ng-src="{{user.photo}}" class="md-avatar" alt="{{user.name}}" />
+                <img
+                    data-ng-show="user.photo"
+                    data-ng-src="{{ user.photo }}"
+                    class="md-avatar"
+                    alt="{{ user.name }}"
+                    loading="lazy"
+                />
                 <p class="name">{{user.name}} {{user.lastname}}</p>
                 <p class="type">
                     <span ng-show="user.type === '1'">Admin</span>

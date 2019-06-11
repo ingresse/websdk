@@ -11,5 +11,4 @@ typings
 .vscode
 test/coverage/
 ingresse-websdk.sublime-project
-package-lock.json
 yarn.lock
