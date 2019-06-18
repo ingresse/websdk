@@ -1,4 +1,4 @@
-# Ingresse WebSDK [![Circle CI](https://circleci.com/gh/ingresse/ingresse-websdk/tree/master.svg?style=svg)](https://circleci.com/gh/ingresse/ingresse-websdk/tree/master)
+# Ingresse WebSDK
 
 Para facilitar a vida de desenvolvedores que queiram criar web-apps integrados aos serviços da ingresse, nós criamos o ingresse-websdk.
 
