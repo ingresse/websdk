@@ -16,12 +16,16 @@ angular.module('ingresseSDK')
      */
     function _concat (cname) {
         var cookieName = '';
+        var companyId  = ingresseApiPreferences.getCompanyId();
+        var env        = ingresseApiPreferences.getEnv();
+        var envConcat  = (env !== 'prod' ? (env + '_') : '');
 
         return cookieName.concat(
             'ing',
             '_',
-            ingresseApiPreferences.getCompanyId(),
+            companyId,
             '_',
+            envConcat,
             (cname || '')
         );
     };
