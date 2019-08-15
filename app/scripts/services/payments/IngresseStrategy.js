@@ -64,12 +64,12 @@ angular.module('ingresseSDK')
             installments: (parseInt(installments) || 1),
         }, (transaction.wallet) ? {} : {
             creditcard: {
-                number        : (creditCard.number + ''),
-                expiracyMonth : ((creditCard.expiracyMonth || creditCard.month) + ''),
-                expiracyYear  : ((creditCard.expiracyYear || creditCard.year) + ''),
-                cvv           : (creditCard.cvv + ''),
-                holderName    : ((creditCard.holderName || creditCard.name) + ''),
-                save          : (creditCard.save || false),
+                number       : (creditCard.number + ''),
+                expiracyMonth: ((creditCard.expiracyMonth || creditCard.month) + ''),
+                expiracyYear : ((creditCard.expiracyYear || creditCard.year) + ''),
+                cvv          : (creditCard.cvv + ''),
+                holderName   : ((creditCard.holderName || creditCard.name) + ''),
+                save         : (creditCard.save || false),
             },
         });
 
