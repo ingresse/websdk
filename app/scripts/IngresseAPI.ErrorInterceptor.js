@@ -289,7 +289,7 @@ angular.module('ingresseSDK')
             }
 
             if (error.code === 6074) {
-              error.message = '<div class="aph loader__title">Cartão não-adicionado</div>' +
+              error.message = '<div class="aph loader__title">Cartão não adicionado</div>' +
                 'Aparentemente este cartão de crédito já está atrelado a sua conta.';
               return $q.reject(error);
             }
