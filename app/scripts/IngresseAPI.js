@@ -147,6 +147,23 @@ angular.module('ingresseSDK')
     return deferred.promise;
   };
 
+  API._put = function (method, identifier, parameters, postParameters) {
+    var deferred    = $q.defer();
+    var endpointUrl = API._getUrl(method, identifier, parameters);
+
+    $http.put(endpointUrl, postParameters)
+      .then(function (response) {
+        response = response.data;
+
+        deferred.resolve(response.responseData);
+
+      }, function (error) {
+        deferred.reject(error);
+      });
+
+    return deferred.promise;
+  };
+
   API._delete = function (method, identifier, parameters) {
     var deferred    = $q.defer();
     var endpointUrl = API._getUrl(method, identifier, parameters);
@@ -1017,6 +1034,54 @@ angular.module('ingresseSDK')
       'billing-agreement',
       { usertoken: true },
       billingData
+    );
+  };
+
+  /**
+   * Add Credit Card to user's wallet
+   *
+   * @param {object} cardData
+   *
+   * @return {Promise}
+   */
+  API.walletCardAdd = function (cardData) {
+    return API._post(
+      'wallet/creditcard',
+      '',
+      { usertoken: true },
+      cardData
+    );
+  };
+
+  /**
+   * Update a Credit Card in user's wallet
+   *
+   * @param {string} cardToken
+   * @param {object} cardData
+   *
+   * @return {Promise}
+   */
+  API.walletCardUpdate = function (cardToken, cardData) {
+    return API._put(
+      'wallet/creditcard',
+      cardToken,
+      { usertoken: true },
+      cardData
+    );
+  };
+
+  /**
+   * Remove Credit Card from user's wallet
+   *
+   * @param {string} cardToken
+   *
+   * @return {Promise}
+   */
+  API.walletCardRemove = function (cardToken) {
+    return API._delete(
+      '/wallet/creditcard',
+      cardToken,
+      { usertoken: true }
     );
   };
 

@@ -39,7 +39,7 @@ angular.module('ingresseSDK')
 
         if (!transaction ||
             !transaction.installments ||
-            !transaction.creditcard) {
+            (!transaction.creditcard && !transaction.wallet)) {
             deferred.reject({
                 message: 'Credit Card Payment data must have installments and, of course, the credit card information.',
                 example: {
@@ -58,14 +58,18 @@ angular.module('ingresseSDK')
             return deferred.promise;
         }
 
+        var creditCard        = transaction.creditcard;
+        var installments      = transaction.installments;
         var creditCardPayment = angular.merge({}, transaction, {
-            installments: (parseInt(transaction.installments) || 1),
-            creditcard  : {
-                number        : (transaction.creditcard.number + ''),
-                expiracyMonth : ((transaction.creditcard.expiracyMonth || transaction.creditcard.month) + ''),
-                expiracyYear  : ((transaction.creditcard.expiracyYear || transaction.creditcard.year) + ''),
-                cvv           : (transaction.creditcard.cvv + ''),
-                holderName    : ((transaction.creditcard.holderName || transaction.creditcard.name) + ''),
+            installments: (parseInt(installments) || 1),
+        }, (transaction.wallet) ? {} : {
+            creditcard: {
+                number       : (creditCard.number + ''),
+                expiracyMonth: ((creditCard.expiracyMonth || creditCard.month) + ''),
+                expiracyYear : ((creditCard.expiracyYear || creditCard.year) + ''),
+                cvv          : (creditCard.cvv + ''),
+                holderName   : ((creditCard.holderName || creditCard.name) + ''),
+                save         : (creditCard.save || false),
             },
         });
 
