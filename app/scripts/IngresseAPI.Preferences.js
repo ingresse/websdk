@@ -11,6 +11,9 @@ angular.module('ingresseSDK', [])
     stg        : 'https://stg-api.ingresse.com',
     hmla       : 'https://hmla-api.ingresse.com',
     hmlb       : 'https://hmlb-api.ingresse.com',
+    hmlc       : 'https://hmlc-api.ingresse.com',
+    hmld       : 'https://hmld-api.ingresse.com',
+    hmle       : 'https://hmle-api.ingresse.com',
     integration: 'https://integration-api.ingresse.com',
     local      : 'http://api.ingresse.dev',
 
