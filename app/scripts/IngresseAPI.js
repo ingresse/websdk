@@ -109,11 +109,11 @@ angular.module('ingresseSDK')
     return url;
   };
 
-  API._get = function (method, identifier, parameters) {
+  API._get = function (method, identifier, parameters, config) {
     var deferred    = $q.defer();
     var endpointUrl = API._getUrl(method, identifier, parameters);
 
-    $http.get(endpointUrl)
+    $http.get(endpointUrl, config)
       .then(function (response) {
         response = response.data;
 
@@ -130,11 +130,11 @@ angular.module('ingresseSDK')
     return deferred.promise;
   };
 
-  API._post = function (method, identifier, parameters, postParameters) {
+  API._post = function (method, identifier, parameters, postParameters, config) {
     var deferred    = $q.defer();
     var endpointUrl = API._getUrl(method, identifier, parameters);
 
-    $http.post(endpointUrl, postParameters)
+    $http.post(endpointUrl, postParameters, config)
       .then(function (response) {
         response = response.data;
 
@@ -147,11 +147,11 @@ angular.module('ingresseSDK')
     return deferred.promise;
   };
 
-  API._put = function (method, identifier, parameters, postParameters) {
+  API._put = function (method, identifier, parameters, postParameters, config) {
     var deferred    = $q.defer();
     var endpointUrl = API._getUrl(method, identifier, parameters);
 
-    $http.put(endpointUrl, postParameters)
+    $http.put(endpointUrl, postParameters, config)
       .then(function (response) {
         response = response.data;
 
@@ -164,11 +164,11 @@ angular.module('ingresseSDK')
     return deferred.promise;
   };
 
-  API._delete = function (method, identifier, parameters) {
+  API._delete = function (method, identifier, parameters, config) {
     var deferred    = $q.defer();
     var endpointUrl = API._getUrl(method, identifier, parameters);
 
-    $http.delete(endpointUrl)
+    $http.delete(endpointUrl, config)
       .then(function (response) {
         response = response.data;
 

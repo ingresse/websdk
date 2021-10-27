@@ -1,10 +1,16 @@
 {
   "name": "ingresse-websdk",
-  "version": "7.41.3",
+  "version": "7.41.4",
+  "engine": {
+    "npm": "6",
+    "node": "10"
+  },
   "dependencies": {},
   "devDependencies": {
+    "bower": "^1.8.12",
     "grunt": "^0.4.1",
     "grunt-autoprefixer": "^0.7.3",
+    "grunt-cli": "^1.4.3",
     "grunt-concurrent": "^0.5.0",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-compass": "^0.7.2",
@@ -37,10 +43,10 @@
     "phantomjs": "^1.9.19",
     "time-grunt": "^0.3.1"
   },
-  "engines": {
-    "node": ">=0.10.0"
-  },
   "scripts": {
-    "test": "grunt test --force"
+    "build": "grunt build --force",
+    "test": "grunt test --force",
+    "deps": "npm i",
+    "postinstall": "bower install"
   }
 }
