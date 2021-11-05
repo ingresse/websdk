@@ -1,6 +1,6 @@
 {
   "name": "ingresse-websdk",
-  "version": "7.41.4",
+  "version": "7.42.0",
   "engine": {
     "npm": "6",
     "node": "10"
