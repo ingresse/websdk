@@ -15,6 +15,7 @@ angular.module('ingresseSDK', [])
     hmld       : 'https://hmld-api.ingresse.com',
     hmle       : 'https://hmle-api.ingresse.com',
     integration: 'https://integration-api.ingresse.com',
+    sandbox    : 'https://sandbox-api.ingresse.com',
     local      : 'http://api.ingresse.local',
 
     /* Deprecated */
