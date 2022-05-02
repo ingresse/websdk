@@ -63,6 +63,13 @@ angular.module('ingresseSDK')
     message: 'Aparentemente o número de telefone informado é invalido.',
   },
   {
+    codes: [1216],
+    message: (
+      'Aparentemente essa não é uma Bandeira de Cartão válida para ' +
+      'pagamento neste evento.'
+    ),
+  },
+  {
     codes: [2004],
     message: 'Você já acessou a última página',
   },
