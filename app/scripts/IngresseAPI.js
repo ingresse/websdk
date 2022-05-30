@@ -840,7 +840,7 @@ angular.module('ingresseSDK')
     return url;
   };
 
-  API.ticketReservation = function (eventId, userId, token, tickets, discountCode, passkey, extra) {
+  API.ticketReservation = function (eventId, userId, token, tickets, discountCode, passkey, extra, config) {
     var filters = {
       usertoken: token
     };
@@ -861,7 +861,7 @@ angular.module('ingresseSDK')
 
     angular.extend(postObject, extra);
 
-    return API._post('shop', null, filters, postObject);
+    return API._post('shop', null, filters, postObject, config);
   };
 
     API.payReservation = function (eventId, userId, token, transactionId, tickets, paymentMethod, creditCard, installments, passkey, postback) {
@@ -957,8 +957,9 @@ angular.module('ingresseSDK')
    * @param {string}  [transaction.passkey] - The passkey used to buy the ticket
    * @param {boolean} [transaction.postback] - If it will use postback or not
    * @param {string}  token - The token of the user paying
+   * @param {object}  config - The config of the request
    */
-  API.pay = function (transaction, token) {
+  API.pay = function (transaction, token, config) {
     var payment  = new Payment(),
         url      = ingresseApiPreferences.getHost() + '/shop/' + this._generateAuthKey() + '&usertoken=' + token,
         deferred = $q.defer();
@@ -973,7 +974,7 @@ angular.module('ingresseSDK')
     payment.execute()
       .then(function (transaction) {
         // Send date to api
-        $http.post(url, transaction)
+        $http.post(url, transaction, config)
           .then(function (response) {
             response = response.data;
 
