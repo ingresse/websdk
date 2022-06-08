@@ -7,9 +7,9 @@ angular.module('ingresseSDK')
         data: {},
         credentials: {},
         getCredentials: function () {
-            this.credentials.userId         = ingresseApiCookies('userId');
-            this.credentials.token          = ingresseApiCookies('token');
-            this.credentials.jwt            = ingresseApiCookies('jwt');
+            this.credentials.userId = ingresseApiCookies('userId');
+            this.credentials.token  = ingresseApiCookies('token');
+            this.credentials.jwt    = ingresseApiCookies('jwt');
 
             if (this.credentials.userId || this.credentials.token || this.credentials.jwt) {
                 return this.credentials;
@@ -22,15 +22,15 @@ angular.module('ingresseSDK')
             ingresseApiCookies('token', '', -1);
             ingresseApiCookies('jwt', '', -1);
 
-            this.data                       = null;
-            this.credentials.userId         = null;
-            this.credentials.token          = null;
-            this.credentials.jwt            = null;
+            this.data               = null;
+            this.credentials.userId = null;
+            this.credentials.token  = null;
+            this.credentials.jwt    = null;
         },
         saveCredentials: function (token, userId, jwt) {
-            this.credentials.userId         = userId;
-            this.credentials.token          = token;
-            this.credentials.jwt            = '';
+            this.credentials.userId = userId;
+            this.credentials.token  = token;
+            this.credentials.jwt    = '';
 
             if (jwt) {
                 this.credentials.jwt = jwt;
