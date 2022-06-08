@@ -10,9 +10,8 @@ angular.module('ingresseSDK')
             this.credentials.userId         = ingresseApiCookies('userId');
             this.credentials.token          = ingresseApiCookies('token');
             this.credentials.jwt            = ingresseApiCookies('jwt');
-            this.credentials.deviceVerified = ingresseApiCookies('deviceVerified');
 
-            if (this.credentials.userId || this.credentials.token || this.credentials.jwt || this.credentials.deviceVerified) {
+            if (this.credentials.userId || this.credentials.token || this.credentials.jwt) {
                 return this.credentials;
             }
 
@@ -22,30 +21,21 @@ angular.module('ingresseSDK')
             ingresseApiCookies('userId', '', -1);
             ingresseApiCookies('token', '', -1);
             ingresseApiCookies('jwt', '', -1);
-            ingresseApiCookies('deviceVerified', '', -1);
 
             this.data                       = null;
             this.credentials.userId         = null;
             this.credentials.token          = null;
             this.credentials.jwt            = null;
-            this.credentials.deviceVerified = null;
         },
-        saveCredentials: function (token, userId, jwt, deviceVerified) {
+        saveCredentials: function (token, userId, jwt) {
             this.credentials.userId         = userId;
             this.credentials.token          = token;
             this.credentials.jwt            = '';
-            this.credentials.deviceVerified = '';
 
             if (jwt) {
                 this.credentials.jwt = jwt;
 
                 ingresseApiCookies('jwt', jwt, 24, 'hours');
-            }
-
-            if (deviceVerified) {
-                this.credentials.deviceVerified = deviceVerified;
-
-                ingresseApiCookies('deviceVerified', deviceVerified, 24, 'hours');
             }
 
             ingresseApiCookies('userId', userId, 7);
