@@ -174,7 +174,7 @@ angular.module('ingresseSDK')
     message: 'Houve um problema de comunicação com nosso gateway de pagamento. Por favor tente novamente.',
   },
   {
-    codes: [6014, 6027, 6044, 90],
+    codes: [6100, 6014, 6027, 6044, 90],
     message: 'Você excedeu o limite de ingressos disponíveis por conta. Para mais informações, verifique a descrição do evento.',
   },
   {
