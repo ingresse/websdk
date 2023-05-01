@@ -178,6 +178,10 @@ angular.module('ingresseSDK')
     message: 'Você excedeu o limite de ingressos disponíveis por conta. Para mais informações, verifique a descrição do evento.',
   },
   {
+    codes: [6101],
+    message: "Alguns dos ingressos selecionados possui um limite por conta e parece que você já possui esses ingressos na sua conta. Verifique suas compras e para mais informações consulte a descrição do evento.",
+  },
+  {
     codes: [6029],
     message: 'Para concluir sua compra, gostaríamos de confirmar algumas informações de segurança. Por favor, entre em contato conosco através do e-mail contato@ingresse.com.',
   },
