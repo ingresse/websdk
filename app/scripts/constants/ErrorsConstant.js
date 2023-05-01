@@ -179,7 +179,7 @@ angular.module('ingresseSDK')
   },
   {
     codes: [6101],
-    message: "Você já possui uma meia entrada, não vai rolar parça",
+    message: "Alguns dos ingressos selecionados possui um limite por conta e parece que você já possui esses ingressos na sua conta. Verifique suas compras e para mais informações consulte a descrição do evento.",
   },
   {
     codes: [6029],
