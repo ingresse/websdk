@@ -405,6 +405,25 @@ angular.module('ingresseSDK')
         }, identifier = transactionId + '/history';
 
       return API._post('ticketbooth', identifier, filters, postObject);
+    },
+    setLogPrintData: function(transactionId, postObject, token) {
+      var filters = {
+          usertoken: token
+      }, identifier = transactionId + '/history';
+      
+      return API._post('ticketbooth', identifier, filters, postObject);
+    },
+    validateTicketsByType: function (postObject, token) {
+      var filters = {
+        usertoken: token
+      };
+      return API._post('ticketbooth/validateTicketsByType', null, filters, postObject);
+    },
+    validateTicketsByEvent: function (postObject, token) {
+      var filters = {
+        usertoken: token
+      };
+      return API._post('ticketbooth/validateTicketsByEvent', null, filters, postObject);
     }
   };
 
