@@ -34,7 +34,7 @@
     "jasmine-core": "^2.3.4",
     "jshint": "^2.9.4",
     "jshint-stylish": "^0.2.0",
-    "karma": "^0.13.3",
+    "karma": "^6.4.2",
     "karma-coverage": "^0.5.3",
     "karma-jasmine": "^0.3.6",
     "karma-mocha-reporter": "^1.1.5",
