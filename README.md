@@ -100,7 +100,7 @@ $ sudo grunt serve:dist
 
 ### HOMOLOGAÇÃO
 
-Para gerear o build com os scripts voltados para desenvolvimento, ex: sandbox do pagSeguro, utilize o comando:
+Para gerar o build com os scripts voltados para desenvolvimento, ex: sandbox do pagSeguro, utilize o comando:
 
 ```
 $ sudo grunt buil:dev
