@@ -121,3 +121,11 @@ Para rodar os testes localmente execute o comando:
 $ npm test
 ```
 
+## Deploy em HML ou PROD
+- Rodar build do WebSDK no PC local, vai gerar uma pasta dist
+- Painel Web da AWS, S3, procurar pelo bucket cdn.ingresse.com
+- Nele, há uma subpasta “websdk”
+- Fazer upload de todos os arquivos que estão dentro da pasta dist local, pra essa subpasta no S3
+- Finalizado o upload, ainda no Painel da AWS S3, selecionar todos os arquivos e utilizar o menu de arquivos para “Tornar Público” todos esses arquivos
+- Por fim, ir até o Painel AWS CloudFront, procurar pelo cdn.ingresse.com e invalidar o
+cache
