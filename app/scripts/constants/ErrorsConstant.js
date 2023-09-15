@@ -7,6 +7,10 @@ angular.module('ingresseSDK')
     message: 'A senha atual não está correta.',
   },
   {
+    codes: [102],
+    message: 'Parece que você já realizou compras com esse cupom de desconto que está utilizando e atingiu o limite. Remova o cupom utilizado para prosseguir com a compra.',
+  },
+  {
     codes: [103],
     message: 'Parece que você já realizou compras com esse cupom de desconto e atingiu seu limite.Remova o cupom utilizado para prosseguir com a compra.'
   },
