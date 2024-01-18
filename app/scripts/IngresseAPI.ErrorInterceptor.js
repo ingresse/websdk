@@ -40,7 +40,7 @@ angular.module('ingresseSDK')
             error.message = '';
 
             if (error.code) {
-              var ERRORS = ingresseErrors.filter(error => error.locale === LOCALE)
+              var ERRORS = ingresseErrors.filter(function (error) { return error.locale === LOCALE })
 
               ERRORS.some(function (translated) {
                 if (translated.codes.indexOf(error.code) >= 0) {
