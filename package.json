@@ -34,19 +34,14 @@
     "jasmine-core": "^2.3.4",
     "jshint": "^2.9.4",
     "jshint-stylish": "^0.2.0",
-    "karma": "^0.13.3",
-    "karma-coverage": "^0.5.3",
-    "karma-jasmine": "^0.3.6",
-    "karma-mocha-reporter": "^1.1.5",
-    "karma-phantomjs-launcher": "^1.0.2",
     "load-grunt-tasks": "^0.4.0",
-    "phantomjs": "^1.9.19",
     "time-grunt": "^0.3.1"
   },
   "scripts": {
-    "build": "grunt build --force",
-    "test": "grunt test --force",
-    "deps": "npm i",
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "deps": "npm install && npm run postinstall",
+    "build": "npm run deps && grunt build --force",
+    "deploy:prod": "aws s3 sync dist s3://cdn.ingresse.com/websdk/ && npm run invalidate:prod",
+    "invalidate:prod": "aws cloudfront create-invalidation --distribution-id E1LK24V1YLOOJ8 --paths '/*'"
   }
 }
