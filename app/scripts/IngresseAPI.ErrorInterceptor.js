@@ -68,10 +68,18 @@ angular.module('ingresseSDK')
             }
 
             if (!error.message) {
-              error.message = LOCALE === 'pt-BR' ?
-                'Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código' :
-                'Hubo un error inesperado, comuníquese con Ingress e informe el código'
-            }
+              switch (LOCALE) {
+                  case 'es-ES':
+                      error.message = 'Hubo un error inesperado, comuníquese con Ingresse e informe el código:';
+                      break;
+                  case 'en-US':
+                      error.message = 'An unexpected error occurred, please contact Ingresse and provide the code:';
+                      break;
+                  default:
+                      error.message = 'Houve um erro inesperado, por favor entre em contato com a Ingresse e informe o código:';
+              }
+          }
+          
 
             error.message = (error.message + ' (#' + error.code + ')');
 
