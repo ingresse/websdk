@@ -73,14 +73,37 @@ Exemplo:
 
 ## Dependências
 
-Primeiro instale as dependências:
+Primeiro é preciso instalar as dependências para o funcionamento correto da aplicação:
 
-```
-$ bower install
-
-$ npm install
+``` bash
+npm run deps && npm run postinstall
 ```
 
+## Desenvolvendo
+
+A WebSDK não é uma aplicação executável, portanto para testar as implementações feitas nela é necessário gerar o build final para executar as modificações em ambiente de desenvolvimento. 
+
+Para isso é preciso seguir os seguintes passos:
+
+- Executar o build local da aplicação utilizando o comando: ```npm run build```;
+- Finalizado o processo de build copiar o arquivo ```websdk.js``` dentro do diretório ```.tmp``` localizado em: ```./websdk/.tmp/concat/scripts/websdk.js```;
+- Criar um diretório ```websdk``` na raíz do ```app``` do seu projeto;
+- Inserir o arquivo ```webdesk.js``` copiado, neste diretório;
+- Fazer o mesmo para o arquivo de CSS dentro do diretório ```/websdk/dist/v7/styles/main.css```. Copiar e colar no diretório ```websdk``` criado na aplicação a ser executada com a websdk;
+- Agora é preciso localizar e mudar o apontamento da index da aplicação para acessar os arquivos dentro da pasta criada (```websdk```), ao invés dos arquivos de produção (localizados no S3). 
+
+Script:
+
+``` html
+<!-- <script src="https://cdn.ingresse.com/i18n/v7/scripts/websdk.js"></script> -->
+<script src="../websdk/websdk.js"></script>
+```
+
+Link:
+``` html
+<!-- <link rel="stylesheet" href="https://cdn.ingresse.com/i18n/v7/styles/websdk.css?v=2-81-0"> -->
+<link rel="stylesheet" href="../websdk/dist/v7/styles/main.css">
+```
 
 ## Buid dev/prod
 
@@ -89,7 +112,7 @@ $ npm install
 Para gerar um build para produção utilize o comando:
 
 ```
-$ sudo grunt build
+$ npm run build
 ```
 
 Se quiser servir este build localmente execute o comando:
