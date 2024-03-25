@@ -1076,15 +1076,22 @@ angular
        * @param {string}  token - The token of the user paying
        * @param {object}  config - The config of the request
        */
-      API.pay = function (transaction, token, config) {
-        var payment = new Payment(),
-          url =
-            ingresseApiPreferences.getHost() +
-            "/shop/" +
-            this._generateAuthKey() +
-            "&usertoken=" +
-            token,
-          deferred = $q.defer();
+      API.pay = function (transaction, token, config, targetUrl) {
+
+        var newUrl =
+        targetUrl ? 
+        targetUrl :
+          ingresseApiPreferences.getHost() +
+          "/shop/";
+
+        newUrl = newUrl +
+          this._generateAuthKey() +
+          "&usertoken=" +
+          token;
+
+        var payment = new Payment();
+        var url = newUrl;
+        var deferred = $q.defer();
 
         // Configure payment service
         payment.setGateway().setTransaction(transaction);
