@@ -32,8 +32,22 @@ angular.module('ingresseSDK')
             }
 
             var error = new Error();
-            var LOCALE = localStorage.getItem('@ingresse:locale') || 'pt-BR'
-
+            var LOCALE = (function() {
+              var name = 'locale=';
+              var cookieValue = (document.cookie.split(';')
+                  .map(function(cookie) {
+                      return cookie.trim();
+                  })
+                  .find(function(cookie) {
+                      return cookie.startsWith(name);
+                  }) || '')
+                  .substring(name.length)
+                  .split('=')
+                  .pop();
+          
+              return cookieValue || 'pt-BR';
+          })();
+          
             error.code = response.data.responseError.code;
             error.fields = response.data.responseError.fields;
             error.raw = response.data.responseError.message;
@@ -54,10 +68,18 @@ angular.module('ingresseSDK')
             }
 
             if (!error.message) {
-              error.message = LOCALE === 'pt-BR' ?
-                'Houve um erro inesperado, por favor entre em contato com a ingresse e informe o código' :
-                'Hubo un error inesperado, comuníquese con Ingress e informe el código'
-            }
+              switch (LOCALE) {
+                  case 'es-ES':
+                      error.message = 'Hubo un error inesperado, comuníquese con Ingresse e informe el código:';
+                      break;
+                  case 'en-US':
+                      error.message = 'An unexpected error occurred, please contact Ingresse and provide the code:';
+                      break;
+                  default:
+                      error.message = 'Houve um erro inesperado, por favor entre em contato com a Ingresse e informe o código:';
+              }
+          }
+          
 
             error.message = (error.message + ' (#' + error.code + ')');
 
