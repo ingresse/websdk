@@ -779,14 +779,24 @@ angular
           return API._get("user", identifier, filters);
         },
 
-        getUserWallet: function (userId, filters, token) {
+        getUserWallet: function (userId, filters, token, jwt) {
           var identifier = userId + "/wallet";
+
+          var config = {}
 
           if (token) {
             filters.usertoken = token;
           }
 
-          return API._get("user", identifier, filters);
+          if (jwt) {
+            config = {
+              headers: {
+                Authorization: "Bearer " + jwt
+              }
+            }
+          } 
+
+          return API._get("user", identifier, filters, config);
         },
       };
 
