@@ -454,16 +454,16 @@ angular
         },
         setLogPrintData: function (transactionId, postObject, token) {
           var filters = {
-              usertoken: token,
-            },
+            usertoken: token,
+          },
             identifier = transactionId + "/history";
 
           return API._post("ticketbooth", identifier, filters, postObject);
         },
         setLogPrintData: function (transactionId, postObject, token) {
           var filters = {
-              usertoken: token,
-            },
+            usertoken: token,
+          },
             identifier = transactionId + "/history";
 
           return API._post("ticketbooth", identifier, filters, postObject);
@@ -492,8 +492,8 @@ angular
 
         updateTicketTransfer: function (ticketId, postObject, userToken) {
           var filters = {
-              usertoken: userToken,
-            },
+            usertoken: userToken,
+          },
             identifier = ticketId + "/transfer/" + postObject.transferId;
 
           return API._post("ticket", identifier, filters, postObject);
@@ -501,8 +501,8 @@ angular
 
         createTicketTransfer: function (ticketId, postObject, userToken) {
           var filters = {
-              usertoken: userToken,
-            },
+            usertoken: userToken,
+          },
             identifier = ticketId + "/transfer";
 
           return API._post("ticket", identifier, filters, postObject);
@@ -510,8 +510,8 @@ angular
 
         getTransferHistory: function (ticketId, userToken) {
           var filters = {
-              usertoken: userToken,
-            },
+            usertoken: userToken,
+          },
             identifier = ticketId + "/transfer";
 
           return API._get("ticket", identifier, filters);
@@ -519,8 +519,8 @@ angular
 
         getCheckinStatus: function (ticketCode, userToken) {
           var filters = {
-              usertoken: userToken,
-            },
+            usertoken: userToken,
+          },
             identifier = encodeURIComponent(ticketCode) + "/status";
 
           return API._get("ticket", identifier, filters);
@@ -794,7 +794,7 @@ angular
                 Authorization: "Bearer " + jwt
               }
             }
-          } 
+          }
 
           return API._get("user", identifier, filters, config);
         },
@@ -859,7 +859,7 @@ angular
                 Authorization: "Bearer " + jwt
               }
             }
-          } 
+          }
 
           return API._post("freepass", null, filters, postObject, config);
         },
@@ -1028,8 +1028,8 @@ angular
               if (!response.responseData.data) {
                 return deferred.reject(
                   "Desculpe, houve um erro ao tentar gerar o boleto. " +
-                    "Por favor entre em contato com a Ingresse pelo número " +
-                    "(11) 4264-0718."
+                  "Por favor entre em contato com a Ingresse pelo número " +
+                  "(11) 4264-0718."
                 );
               }
 
@@ -1098,10 +1098,10 @@ angular
       API.pay = function (transaction, token, config, targetUrl) {
 
         var newUrl =
-        targetUrl ? 
-        targetUrl :
-          ingresseApiPreferences.getHost() +
-          "/shop/";
+          targetUrl ?
+            targetUrl :
+            ingresseApiPreferences.getHost() +
+            "/shop/";
 
         newUrl = newUrl +
           this._generateAuthKey() +
@@ -1141,10 +1141,19 @@ angular
       /**
        * Get User Wallet (new)
        */
-      API.getWallet = function () {
+      API.getWallet = function (jwt) {
         var deferred = $q.defer();
 
-        API._get("wallet", "", { usertoken: true })
+        var config = {}
+        if (jwt) {
+          config = {
+            headers: {
+              Authorization: "Bearer " + jwt
+            }
+          }
+        }
+
+        API._get("wallet", "", { usertoken: true }, config)
           .catch(deferred.reject)
           .then(deferred.resolve);
 
