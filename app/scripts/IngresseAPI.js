@@ -849,14 +849,15 @@ angular
       };
 
       API.freepass = {
-        send: function (filters, postObject, token, jwt) {
+        send: function (filters, postObject, token, jwt, otpCode) {
           var config = {}
           filters.usertoken = token;
 
           if (jwt) {
             config = {
               headers: {
-                Authorization: "Bearer " + jwt
+                Authorization: "Bearer " + jwt,
+                "X-Ingresse-Otp": otpCode
               }
             }
           }
