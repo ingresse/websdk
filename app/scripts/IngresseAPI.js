@@ -444,7 +444,14 @@ angular
             usertoken: token,
           };
 
-          return API._post("ticketbooth", null, filters, postObject);
+          config = {
+            headers: {
+              Authorization: "Bearer " + jwt,
+              "X-Ingresse-Otp": postObject.otpCode,
+            },
+          };
+
+          return API._post("ticketbooth", null, filters, postObject, config);
         },
         getPrintData: function (transactionId, filters, token) {
           filters.method = "print";
@@ -454,16 +461,16 @@ angular
         },
         setLogPrintData: function (transactionId, postObject, token) {
           var filters = {
-            usertoken: token,
-          },
+              usertoken: token,
+            },
             identifier = transactionId + "/history";
 
           return API._post("ticketbooth", identifier, filters, postObject);
         },
         setLogPrintData: function (transactionId, postObject, token) {
           var filters = {
-            usertoken: token,
-          },
+              usertoken: token,
+            },
             identifier = transactionId + "/history";
 
           return API._post("ticketbooth", identifier, filters, postObject);
@@ -492,8 +499,8 @@ angular
 
         updateTicketTransfer: function (ticketId, postObject, userToken) {
           var filters = {
-            usertoken: userToken,
-          },
+              usertoken: userToken,
+            },
             identifier = ticketId + "/transfer/" + postObject.transferId;
 
           return API._post("ticket", identifier, filters, postObject);
@@ -501,8 +508,8 @@ angular
 
         createTicketTransfer: function (ticketId, postObject, userToken) {
           var filters = {
-            usertoken: userToken,
-          },
+              usertoken: userToken,
+            },
             identifier = ticketId + "/transfer";
 
           return API._post("ticket", identifier, filters, postObject);
@@ -510,8 +517,8 @@ angular
 
         getTransferHistory: function (ticketId, userToken) {
           var filters = {
-            usertoken: userToken,
-          },
+              usertoken: userToken,
+            },
             identifier = ticketId + "/transfer";
 
           return API._get("ticket", identifier, filters);
@@ -519,8 +526,8 @@ angular
 
         getCheckinStatus: function (ticketCode, userToken) {
           var filters = {
-            usertoken: userToken,
-          },
+              usertoken: userToken,
+            },
             identifier = encodeURIComponent(ticketCode) + "/status";
 
           return API._get("ticket", identifier, filters);
@@ -782,7 +789,7 @@ angular
         getUserWallet: function (userId, filters, token, jwt) {
           var identifier = userId + "/wallet";
 
-          var config = {}
+          var config = {};
 
           if (token) {
             filters.usertoken = token;
@@ -791,9 +798,9 @@ angular
           if (jwt) {
             config = {
               headers: {
-                Authorization: "Bearer " + jwt
-              }
-            }
+                Authorization: "Bearer " + jwt,
+              },
+            };
           }
 
           return API._get("user", identifier, filters, config);
@@ -850,16 +857,16 @@ angular
 
       API.freepass = {
         send: function (filters, postObject, token, jwt, otpCode) {
-          var config = {}
+          var config = {};
           filters.usertoken = token;
 
           if (jwt) {
             config = {
               headers: {
                 Authorization: "Bearer " + jwt,
-                "X-Ingresse-Otp": otpCode
-              }
-            }
+                "X-Ingresse-Otp": otpCode,
+              },
+            };
           }
 
           return API._post("freepass", null, filters, postObject, config);
@@ -1029,8 +1036,8 @@ angular
               if (!response.responseData.data) {
                 return deferred.reject(
                   "Desculpe, houve um erro ao tentar gerar o boleto. " +
-                  "Por favor entre em contato com a Ingresse pelo número " +
-                  "(11) 4264-0718."
+                    "Por favor entre em contato com a Ingresse pelo número " +
+                    "(11) 4264-0718."
                 );
               }
 
@@ -1097,17 +1104,11 @@ angular
        * @param {object}  config - The config of the request
        */
       API.pay = function (transaction, token, config, targetUrl) {
+        var newUrl = targetUrl
+          ? targetUrl
+          : ingresseApiPreferences.getHost() + "/shop/";
 
-        var newUrl =
-          targetUrl ?
-            targetUrl :
-            ingresseApiPreferences.getHost() +
-            "/shop/";
-
-        newUrl = newUrl +
-          this._generateAuthKey() +
-          "&usertoken=" +
-          token;
+        newUrl = newUrl + this._generateAuthKey() + "&usertoken=" + token;
 
         var payment = new Payment();
         var url = newUrl;
@@ -1145,13 +1146,13 @@ angular
       API.getWallet = function (jwt) {
         var deferred = $q.defer();
 
-        var config = {}
+        var config = {};
         if (jwt) {
           config = {
             headers: {
-              Authorization: "Bearer " + jwt
-            }
-          }
+              Authorization: "Bearer " + jwt,
+            },
+          };
         }
 
         API._get("wallet", "", { usertoken: true }, config)
