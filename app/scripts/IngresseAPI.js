@@ -446,7 +446,6 @@ angular
 
           config = {
             headers: {
-              Authorization: "Bearer " + jwt,
               "X-Ingresse-Otp": postObject.otpCode,
             },
           };
