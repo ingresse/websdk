@@ -621,14 +621,22 @@ angular
       };
 
       API.user = {
-        get: function (userid, filters, token) {
+        get: function (userid, filters, token, jwt) {
           var deferred = $q.defer();
 
           if (token) {
             filters.usertoken = token;
           }
 
-          API._get("user", userid, filters)
+          if (jwt) {
+            config = {
+              headers: {
+                Authorization: "Bearer " + jwt,
+              },
+            };
+          }
+
+          API._get("user", userid, filters, config)
             .catch(deferred.reject)
             .then(function (response) {
               if (typeof response !== "object") {
