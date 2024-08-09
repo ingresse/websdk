@@ -636,7 +636,28 @@ angular
             };
           }
 
-          API._get("user", userid, filters, config)
+          function transformResponse(oldResponse) {
+            return {
+              id: oldResponse.responseData.id,
+              name: oldResponse.responseData.name,
+              email: oldResponse.responseData.email,
+              type: String(oldResponse.responseData.type),
+              username: "deprecated",
+              schema_id: null,
+              nationality: oldResponse.responseData.nationality,
+              country: oldResponse.responseData.address.country || null,
+              onboarding_url: null,
+              token_rfc: "",
+              timestamp_rfc: null,
+              lastname: oldResponse.responseData.name.split(" ").slice(1).join(" ") || null,
+              lastName: oldResponse.responseData.name.split(" ").slice(1).join(" ") || null,
+              document: oldResponse.responseData.document.number || oldResponse.responseData.identity.id,
+              documentType: oldResponse.responseData.identity.type.name,
+              fullName: oldResponse.responseData.name
+            };
+          }
+
+          API._get("users", userid, filters, config)
             .catch(deferred.reject)
             .then(function (response) {
               if (typeof response !== "object") {
@@ -654,7 +675,9 @@ angular
                     : response.picture;
               }
 
-              deferred.resolve(userData);
+              userData.xablau = "xablau";
+
+              deferred.resolve(transformResponse(userData));
             });
 
           return deferred.promise;
