@@ -623,6 +623,7 @@ angular
       API.user = {
         get: function (userid, filters, token, jwt) {
           var deferred = $q.defer();
+		  var config = {};
 
           if (token) {
             filters.usertoken = token;
@@ -638,22 +639,22 @@ angular
 
           function transformResponse(oldResponse) {
             return {
-              id: oldResponse.responseData.id,
-              name: oldResponse.responseData.name,
-              email: oldResponse.responseData.email,
-              type: String(oldResponse.responseData.type),
+              id: oldResponse.id,
+              name: oldResponse.name,
+              email: oldResponse.email,
+              type: String(oldResponse.type),
               username: "deprecated",
               schema_id: null,
-              nationality: oldResponse.responseData.nationality,
-              country: oldResponse.responseData.address.country || null,
+              nationality: oldResponse.nationality,
+              country: oldResponse.address.country || null,
               onboarding_url: null,
               token_rfc: "",
               timestamp_rfc: null,
-              lastname: oldResponse.responseData.name.split(" ").slice(1).join(" ") || null,
-              lastName: oldResponse.responseData.name.split(" ").slice(1).join(" ") || null,
-              document: oldResponse.responseData.document.number || oldResponse.responseData.identity.id,
-              documentType: oldResponse.responseData.identity.type.name,
-              fullName: oldResponse.responseData.name
+              lastname: oldResponse.name.split(" ").slice(1).join(" ") || null,
+              lastName: oldResponse.name.split(" ").slice(1).join(" ") || null,
+              document: oldResponse.document.number || oldResponse.identity.id,
+              documentType: oldResponse.identity.type.name,
+              fullName: oldResponse.name
             };
           }
 
