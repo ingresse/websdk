@@ -43,6 +43,8 @@ angular.module('ingresseSDK')
         var props = {
             domain: (($location.host().indexOf(DOMAIN) < 0) ? $location.host() : DOMAIN),
             path  : '/',
+            secure : true,
+            samesite : 'Strict'
         };
 
         if (typeof expires === 'number') {

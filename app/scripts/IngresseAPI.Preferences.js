@@ -133,13 +133,18 @@ angular.module('ingresseSDK', [])
         },
         httpCallStarted: function (url) {
           var domain = url.split('?')[0];
-          var parameters = url.split('?')[1].split('&');
 
-          for (var i = parameters.length - 1; i >= 0; i--) {
-            if (i === 0) {
-              parameters[i] = '?' + parameters[i];
-            } else {
-              parameters[i] = '&' + parameters[i];
+          var parameters = url.split('?')[1];
+
+          if (parameters) {
+            parameters = parameters.split('&');
+  
+            for (var i = parameters.length - 1; i >= 0; i--) {
+              if (i === 0) {
+                parameters[i] = '?' + parameters[i];
+              } else {
+                parameters[i] = '&' + parameters[i];
+              }
             }
           }
 
