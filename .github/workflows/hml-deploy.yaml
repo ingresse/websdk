@@ -37,7 +37,7 @@ jobs:
       - name: Deploy
         uses: reggionick/s3-deploy@v4
         with:
-          folder: ./dist/v7
+          folder: ./dist/
           bucket: cdn-homolog.ingresse.com
           bucket-region: us-east-1
           dist-id: E10ODSGX1IG1V7
