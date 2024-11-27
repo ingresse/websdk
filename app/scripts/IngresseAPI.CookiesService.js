@@ -17,25 +17,15 @@ angular.module('ingresseSDK')
     function _concat (cname) {
         var cookieName = '';
         var companyId  = ingresseApiPreferences.getCompanyId();
-
-        function extractSubdomain() {
-            try {
-              const url = window.location.href;
-              const regex = /https:\/\/[^-]+-([^-]+)-[^.]+\.ingresse\.com/;
-              const match = url.match(regex);
-              return match ? match[1] : null;
-            } catch (error) {
-              return null;
-            }
-          }
-          const uatRef = extractSubdomain() ? 'uat-' + extractSubdomain() + '_' : '';
+        var env        = ingresseApiPreferences.getEnv();
+        var envConcat  = (env !== 'prod' ? (env + '_') : '');
 
         return cookieName.concat(
             'ing',
             '_',
             companyId,
             '_',
-            uatRef,
+            envConcat,
             (cname || '')
         );
     };
