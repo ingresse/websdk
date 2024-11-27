@@ -1,0 +1,48 @@
+name: Deploy to AWS S3 and Invalidate Azion CDN Cache
+on:
+  push:
+    branches:
+      - homolog
+  
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          
+      - name: Environment | NodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Project | PreBuild
+        run: |
+          npm run deps
+
+      - name: Project | Build
+        run: |
+          npm run build
+          
+      - name: Deploy
+        uses: reggionick/s3-deploy@v4
+        with:
+          folder: ./dist/v7
+          bucket: cdn-homolog.ingresse.com
+          bucket-region: us-east-1
+          dist-id: E10ODSGX1IG1V7
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
+          #files-to-include: '{.*/**,**,public/**,asset
