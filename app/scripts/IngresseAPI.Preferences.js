@@ -8,6 +8,7 @@ angular.module('ingresseSDK', [])
 
   var envs = {
     prod       : 'https://api.ingresse.com',
+    sbx        : 'https://sbx-api.ingresse.com',
     stg        : 'https://stg-api.ingresse.com',
     hmla       : 'https://hmla-api.ingresse.com',
     hmlb       : 'https://hmlb-api.ingresse.com',
