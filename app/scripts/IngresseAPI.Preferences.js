@@ -38,7 +38,7 @@ angular.module('ingresseSDK', [])
     },
     setHost: function (host) {
       var _host = ('' + (host || 'prod')).toLowerCase();
-      prefHost = (this._env.includes('uat')) ? 'https://' + this._env + '-api.ingresse.com' : (envs.hasOwnProperty(_host) ? envs[_host] : _host);
+      prefHost = (_host.includes('uat')) ? 'https://' + _host + '-api.ingresse.com' : (envs.hasOwnProperty(_host) ? envs[_host] : _host);
 
       /* Deprecated */
       if (prefHost === 'https://api.ingresse.com' || prefHost === 'https://apipre.ingresse.com') {
