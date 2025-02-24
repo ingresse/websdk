@@ -20,7 +20,8 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ${{ vars.DEFAULT_ACTIONS_IMAGE }}
-
+    environment: production
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
