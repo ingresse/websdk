@@ -8,6 +8,7 @@ angular.module('ingresseSDK', [])
 
   var envs = {
     prod       : 'https://api.ingresse.com',
+    sbx        : 'https://sbx-api.ingresse.com',
     stg        : 'https://stg-api.ingresse.com',
     hmla       : 'https://hmla-api.ingresse.com',
     hmlb       : 'https://hmlb-api.ingresse.com',
@@ -37,7 +38,7 @@ angular.module('ingresseSDK', [])
     },
     setHost: function (host) {
       var _host = ('' + (host || 'prod')).toLowerCase();
-      prefHost  = (envs.hasOwnProperty(_host) ? envs[_host] : _host);
+      prefHost = (_host.includes('uat')) ? 'https://' + _host + '-api.ingresse.com' : (envs.hasOwnProperty(_host) ? envs[_host] : _host);
 
       /* Deprecated */
       if (prefHost === 'https://api.ingresse.com' || prefHost === 'https://apipre.ingresse.com') {
@@ -109,7 +110,7 @@ angular.module('ingresseSDK', [])
         },
         setHost: function (host) {
           this._env  = ('' + (host || 'prod')).toLowerCase();
-          this._host = (envs.hasOwnProperty(this._env) ? envs[this._env] : this._env);
+          this._host = (this._env.includes('uat')) ? 'https://' + this._env + '-api.ingresse.com' : (envs.hasOwnProperty(this._env) ? envs[this._env] : this._env);
 
           /* Deprecated */
           if (this._host === 'https://api.ingresse.com' || this._host === 'https://apipre.ingresse.com') {
