@@ -31,7 +31,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ vars.AWS_REGION }}
           
       - name: Environment | NodeJS ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -65,7 +65,7 @@ jobs:
         with:
           folder: ./dist/websdk
           bucket: cdn.ingresse.com
-          bucket-region: us-east-1
+          bucket-region: ${{ vars.AWS_REGION }}
           dist-id: ${{ vars.CF_DISTRIBUTION_ID }}
           invalidation: /
           delete-removed: true
