@@ -19,7 +19,7 @@ on:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ${{ vars.DEFAULT_ACTIONS_IMAGE }}
+    runs-on: ubuntu-22.04
     environment: production
     
     steps:
@@ -89,6 +89,7 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
             echo "Dry-run: Would have synced ./dist/v7/ to s3://cdn.ingresse.com/websdk/v7"
+            aws s3 cp ./dist/v7/ s3://cdn.ingresse.com/websdk/v7 --recursive --dryrun
           else
             aws s3 cp ./dist/v7/ s3://cdn.ingresse.com/websdk/v7 --recursive
           fi
