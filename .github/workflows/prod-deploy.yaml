@@ -1,0 +1,98 @@
+name: Deploy to production
+
+on:
+  push:
+    branches:
+      - main
+  
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Enable dry-run mode?"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ${{ vars.DEFAULT_ACTIONS_IMAGE }}
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+          
+      - name: Environment | NodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Project | PreBuild
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            echo "Dry-run: Would have run 'npm run deps'"
+          else
+            npm run deps
+          fi
+
+      - name: Project | Build
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            echo "Dry-run: Would have run 'npm run build'"
+          else
+            npm run build
+          fi
+
+      - name: Prepare Upload Directory
+        run: |
+          mkdir -p ./dist/websdk/v7
+          mv ./dist/v7/* ./dist/websdk/v7/
+
+      - name: Deploy
+        if: github.event.inputs.dry_run != 'true'
+        uses: reggionick/s3-deploy@v4
+        with:
+          folder: ./dist/websdk
+          bucket: cdn.ingresse.com
+          bucket-region: ${{ vars.AWS_REGION }}
+          dist-id: ${{ vars.CF_DISTRIBUTION_ID }}
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
+
+      - name: Invalidate CloudFront Cache
+        env:
+          CFID: ${{ vars.CF_DISTRIBUTION_ID }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            echo "Dry-run: Would have invalidated CloudFront cache for distribution $CFID"
+          else
+            aws cloudfront create-invalidation --distribution-id $CFID --paths "/*"
+          fi
+
+      - name: Invalidate CloudFlare Cache
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            echo "Dry-run: Would have invalidated CloudFlare cache for host: cdn.ingresse.com"
+          else
+            curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.ZONE_ID_CLOUDFLARE }}/purge_cache" \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer ${{ secrets.TOKEN_CLOUDFLARE_CLEAN_CACHE }}" \
+              -d '{
+                "hosts": [
+                  "cdn.ingresse.com"
+                ]
+              }'
+          fi
