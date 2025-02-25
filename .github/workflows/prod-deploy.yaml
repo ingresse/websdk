@@ -80,11 +80,6 @@ jobs:
             npm run build
           fi
 
-      - name: Prepare Upload Directory
-        run: |
-          mkdir -p ./dist/websdk/v7
-          mv ./dist/v7/* ./dist/websdk/v7/
-
       - name: Sync Build to S3
         run: |
           if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
