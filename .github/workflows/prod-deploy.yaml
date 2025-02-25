@@ -26,6 +26,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Determine Slack Config
+        id: slack_config
+        run: |
+          if [ "true" == "true" ]; then
+            echo "slack_channel=${{ vars.SLACK_CH_TEST }}" >> $GITHUB_ENV
+            echo "slack_token=${{ secrets.SLACK_BOT_TOKEN_TEST }}" >> $GITHUB_ENV
+          else
+            echo "slack_channel=${{ vars.SLACK_CH_TECH_DEPLOY }}" >> $GITHUB_ENV
+            echo "slack_token=${{ secrets.SLACK_BOT_TOKEN }}" >> $GITHUB_ENV
+          fi     
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -37,6 +48,21 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10
+
+      - name: Notify start of Deployment in Slack
+        id: deployment_message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ env.slack_token }}
+          payload: |
+            channel: ${{ env.slack_channel }}
+            text: |
+                :rocket: *Deploy iniciado*
+                *Repo:* <${{ github.event.repository.html_url }}|${{ github.event.repository.name }}>
+                *Branch:* ${{ github.ref_name }}
+                *Commit:* ${{ github.event.head_commit.url }}
+                *Responsável:* ${{ github.actor }}    
 
       - name: Project | PreBuild
         run: |
@@ -91,3 +117,27 @@ jobs:
                 ]
               }'
           fi
+         
+      - name: Notify success of deployment in Slack
+        uses: slackapi/slack-github-action@v2.0.0
+        if: success()
+        with:
+          method: chat.postMessage
+          token: ${{ env.slack_token }}
+          payload: |
+            channel: ${{ env.slack_channel }}
+            thread_ts: "${{ steps.deployment_message.outputs.ts }}"
+            type: "in_thread"
+            text: ":white_check_mark: *Deploy concluído*\n*App:* Backoffice-Web\n*Ambiente:* Production"
+  
+      - name: Notify failure of deployment in Slack
+        uses: slackapi/slack-github-action@v2.0.0
+        if: failure()
+        with:
+          method: chat.postMessage
+          token: ${{ env.slack_token }}
+          payload: |
+            channel: ${{ env.slack_channel }}
+            thread_ts: "${{ steps.deployment_message.outputs.ts }}"
+            type: "in_thread"
+            text: ":x: *Deploy falhou*\n*App:* Backoffice-Web\n*Ambiente:* Production"    
