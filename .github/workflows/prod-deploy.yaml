@@ -66,19 +66,11 @@ jobs:
 
       - name: Project | PreBuild
         run: |
-          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
-            echo "Dry-run: Would have run 'npm run deps'"
-          else
-            npm run deps
-          fi
+          npm run deps
 
       - name: Project | Build
         run: |
-          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
-            echo "Dry-run: Would have run 'npm run build'"
-          else
-            npm run build
-          fi
+          npm run build
 
       - name: Sync Build to S3
         run: |
