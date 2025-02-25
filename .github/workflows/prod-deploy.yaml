@@ -59,18 +59,13 @@ jobs:
           mkdir -p ./dist/websdk/v7
           mv ./dist/v7/* ./dist/websdk/v7/
 
-      - name: Deploy
-        if: github.event.inputs.dry_run != 'true'
-        uses: reggionick/s3-deploy@v4
-        with:
-          folder: ./dist/websdk
-          bucket: cdn.ingresse.com
-          bucket-region: ${{ vars.AWS_REGION }}
-          dist-id: ${{ vars.CF_DISTRIBUTION_ID }}
-          invalidation: /
-          delete-removed: true
-          no-cache: true
-          private: true
+      - name: Sync Build to S3
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            echo "Dry-run: Would have synced ./dist/v7/ to s3://cdn.ingresse.com/websdk/v7"
+          else
+            aws s3 cp ./dist/v7/ s3://cdn.ingresse.com/websdk/v7 --recursive
+          fi
 
       - name: Invalidate CloudFront Cache
         env:
