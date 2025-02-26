@@ -29,7 +29,7 @@ jobs:
       - name: Determine Slack Config
         id: slack_config
         run: |
-          if [ "true" == "true" ]; then
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
             echo "slack_channel=${{ vars.SLACK_CH_TEST }}" >> $GITHUB_ENV
             echo "slack_token=${{ secrets.SLACK_BOT_TOKEN_TEST }}" >> $GITHUB_ENV
           else
