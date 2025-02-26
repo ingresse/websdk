@@ -116,7 +116,7 @@ jobs:
             channel: ${{ env.slack_channel }}
             thread_ts: "${{ steps.deployment_message.outputs.ts }}"
             type: "in_thread"
-            text: ":white_check_mark: *Deploy concluído*\n*App:* Backoffice-Web\n*Ambiente:* Production"
+            text: ":white_check_mark: *Deploy concluído* \n https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
   
       - name: Notify failure of deployment in Slack
         uses: slackapi/slack-github-action@v2.0.0
@@ -128,4 +128,4 @@ jobs:
             channel: ${{ env.slack_channel }}
             thread_ts: "${{ steps.deployment_message.outputs.ts }}"
             type: "in_thread"
-            text: ":x: *Deploy falhou*\n*App:* Backoffice-Web\n*Ambiente:* Production"    
+            text: ":x: *Deploy falhou* \n https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" 
