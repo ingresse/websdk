@@ -19,12 +19,23 @@ on:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ${{ vars.DEFAULT_ACTIONS_IMAGE }}
+    runs-on: ubuntu-22.04
     environment: production
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Determine Slack Config
+        id: slack_config
+        run: |
+          if [ "true" == "true" ]; then
+            echo "slack_channel=${{ vars.SLACK_CH_TEST }}" >> $GITHUB_ENV
+            echo "slack_token=${{ secrets.SLACK_BOT_TOKEN_TEST }}" >> $GITHUB_ENV
+          else
+            echo "slack_channel=${{ vars.SLACK_CH_TECH_DEPLOY }}" >> $GITHUB_ENV
+            echo "slack_token=${{ secrets.SLACK_BOT_TOKEN }}" >> $GITHUB_ENV
+          fi     
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -38,39 +49,37 @@ jobs:
         with:
           node-version: 10
 
+      - name: Notify start of Deployment in Slack
+        id: deployment_message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ env.slack_token }}
+          payload: |
+            channel: ${{ env.slack_channel }}
+            text: |
+                :rocket: *Deploy iniciado*
+                *Repo:* <${{ github.event.repository.html_url }}|${{ github.event.repository.name }}>
+                *Branch:* ${{ github.ref_name }}
+                *Commit:* ${{ github.event.head_commit.url }}
+                *Responsável:* ${{ github.actor }}    
+
       - name: Project | PreBuild
         run: |
-          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
-            echo "Dry-run: Would have run 'npm run deps'"
-          else
-            npm run deps
-          fi
+          npm run deps
 
       - name: Project | Build
         run: |
-          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
-            echo "Dry-run: Would have run 'npm run build'"
-          else
-            npm run build
-          fi
+          npm run build
 
-      - name: Prepare Upload Directory
+      - name: Sync Build to S3
         run: |
-          mkdir -p ./dist/websdk/v7
-          mv ./dist/v7/* ./dist/websdk/v7/
-
-      - name: Deploy
-        if: github.event.inputs.dry_run != 'true'
-        uses: reggionick/s3-deploy@v4
-        with:
-          folder: ./dist/websdk
-          bucket: cdn.ingresse.com
-          bucket-region: ${{ vars.AWS_REGION }}
-          dist-id: ${{ vars.CF_DISTRIBUTION_ID }}
-          invalidation: /
-          delete-removed: true
-          no-cache: true
-          private: true
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            echo "Dry-run: Would have synced ./dist/v7/ to s3://cdn.ingresse.com/websdk/v7"
+            aws s3 cp ./dist/v7/ s3://cdn.ingresse.com/websdk/v7 --recursive --dryrun
+          else
+            aws s3 cp ./dist/v7/ s3://cdn.ingresse.com/websdk/v7 --recursive
+          fi
 
       - name: Invalidate CloudFront Cache
         env:
@@ -96,3 +105,27 @@ jobs:
                 ]
               }'
           fi
+         
+      - name: Notify success of deployment in Slack
+        uses: slackapi/slack-github-action@v2.0.0
+        if: success()
+        with:
+          method: chat.postMessage
+          token: ${{ env.slack_token }}
+          payload: |
+            channel: ${{ env.slack_channel }}
+            thread_ts: "${{ steps.deployment_message.outputs.ts }}"
+            type: "in_thread"
+            text: ":white_check_mark: *Deploy concluído*\n*App:* Backoffice-Web\n*Ambiente:* Production"
+  
+      - name: Notify failure of deployment in Slack
+        uses: slackapi/slack-github-action@v2.0.0
+        if: failure()
+        with:
+          method: chat.postMessage
+          token: ${{ env.slack_token }}
+          payload: |
+            channel: ${{ env.slack_channel }}
+            thread_ts: "${{ steps.deployment_message.outputs.ts }}"
+            type: "in_thread"
+            text: ":x: *Deploy falhou*\n*App:* Backoffice-Web\n*Ambiente:* Production"    
