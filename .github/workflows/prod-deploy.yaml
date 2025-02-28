@@ -62,6 +62,7 @@ jobs:
                 *Repo:* <${{ github.event.repository.html_url }}|${{ github.event.repository.name }}>
                 *Branch:* ${{ github.ref_name }}
                 *Commit:* ${{ github.event.head_commit.url }}
+                *Action:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|#${{ github.run_id }}>
                 *Responsável:* ${{ github.actor }}    
 
       - name: Project | PreBuild
