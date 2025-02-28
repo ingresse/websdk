@@ -29,7 +29,7 @@ jobs:
       - name: Determine Slack Config
         id: slack_config
         run: |
-          if [ "true" == "true" ]; then
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
             echo "slack_channel=${{ vars.SLACK_CH_TEST }}" >> $GITHUB_ENV
             echo "slack_token=${{ secrets.SLACK_BOT_TOKEN_TEST }}" >> $GITHUB_ENV
           else
@@ -62,13 +62,16 @@ jobs:
                 *Repo:* <${{ github.event.repository.html_url }}|${{ github.event.repository.name }}>
                 *Branch:* ${{ github.ref_name }}
                 *Commit:* ${{ github.event.head_commit.url }}
-                *Responsável:* ${{ github.actor }}    
+                *Action:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|#${{ github.run_id }}>
+                *Responsável:* ${{ github.actor }}
 
       - name: Project | PreBuild
         run: |
           npm run deps
 
       - name: Project | Build
+        env:
+            CI: false
         run: |
           npm run build
 
@@ -116,7 +119,7 @@ jobs:
             channel: ${{ env.slack_channel }}
             thread_ts: "${{ steps.deployment_message.outputs.ts }}"
             type: "in_thread"
-            text: ":white_check_mark: *Deploy concluído*\n*App:* Backoffice-Web\n*Ambiente:* Production"
+            text: ":white_check_mark: *Deploy concluído*"
   
       - name: Notify failure of deployment in Slack
         uses: slackapi/slack-github-action@v2.0.0
@@ -128,4 +131,4 @@ jobs:
             channel: ${{ env.slack_channel }}
             thread_ts: "${{ steps.deployment_message.outputs.ts }}"
             type: "in_thread"
-            text: ":x: *Deploy falhou*\n*App:* Backoffice-Web\n*Ambiente:* Production"    
+            text: ":x: *Deploy falhou*"    
