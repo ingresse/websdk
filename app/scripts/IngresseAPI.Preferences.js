@@ -37,8 +37,10 @@ angular.module('ingresseSDK', [])
       privatekey = key;
     },
     setHost: function (host) {
-      var envPrefix = host + (host ? '-' : '');
-      prefHost = 'https://' + envPrefix + '-api.ingresse.com';
+      var _host = ('' + (host || 'prod')).toLowerCase();
+      var foundHost =  envs[_host];
+
+      prefHost = foundHost ? foundHost : 'https://' + host + '-api.ingresse.com';
 
       /* Deprecated */
       if (prefHost === 'https://api.ingresse.com' || prefHost === 'https://apipre.ingresse.com') {
@@ -111,8 +113,10 @@ angular.module('ingresseSDK', [])
         setHost: function (host) {
           this._env  = ('' + (host || 'prod')).toLowerCase();
           
-          var envPrefix = host + (host ? '-' : '');
-          this._host = 'https://' + envPrefix + 'api.ingresse.com';
+          this._host = envs[this._env];
+          if (!this._host) {
+            this._host = 'https://' + host + '-api.ingresse.com';
+          }
 
           /* Deprecated */
           if (this._host === 'https://api.ingresse.com' || this._host === 'https://apipre.ingresse.com') {
