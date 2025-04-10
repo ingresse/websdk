@@ -446,7 +446,7 @@ angular
 
           config = {
             headers: {
-              "X-Ingresse-Otp": postObject.otpCode,
+              "X-Ingresse-Otp": postObject.otpCode ?? "",
             },
           };
 
