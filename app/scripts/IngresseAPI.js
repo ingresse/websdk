@@ -621,14 +621,44 @@ angular
       };
 
       API.user = {
-        get: function (userid, filters, token) {
+        get: function (userid, filters, token, jwt) {
           var deferred = $q.defer();
+		  var config = {};
 
           if (token) {
             filters.usertoken = token;
           }
 
-          API._get("user", userid, filters)
+          if (jwt) {
+            config = {
+              headers: {
+                Authorization: "Bearer " + jwt,
+              },
+            };
+          }
+
+          function transformResponse(oldResponse) {
+            return {
+              id: oldResponse.id,
+              name: oldResponse.name,
+              email: oldResponse.email,
+              type: String(oldResponse.type),
+              username: "deprecated",
+              schema_id: null,
+              nationality: oldResponse.nationality,
+              country: oldResponse.address.country || null,
+              onboarding_url: null,
+              token_rfc: "",
+              timestamp_rfc: null,
+              lastname: oldResponse.name.split(" ").slice(1).join(" ") || null,
+              lastName: oldResponse.name.split(" ").slice(1).join(" ") || null,
+              document: oldResponse.document.number || oldResponse.identity.id,
+              documentType: oldResponse.identity.type.name,
+              fullName: oldResponse.name
+            };
+          }
+
+          API._get("users", userid, filters, config)
             .catch(deferred.reject)
             .then(function (response) {
               if (typeof response !== "object") {
@@ -646,7 +676,9 @@ angular
                     : response.picture;
               }
 
-              deferred.resolve(userData);
+              userData.xablau = "xablau";
+
+              deferred.resolve(transformResponse(userData));
             });
 
           return deferred.promise;
