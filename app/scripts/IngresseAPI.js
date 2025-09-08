@@ -222,13 +222,13 @@ angular
        */
       API.search = {
         getUserTransfer: function (filters, usertoken) {
-          var identifier = "transfer/user";
+          var identifier = "/search";
 
           if (usertoken) {
             filters.usertoken = usertoken;
           }
 
-          return API._get("search", identifier, filters);
+          return API._get("users", identifier, filters);
         },
       };
 
