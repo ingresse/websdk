@@ -232,6 +232,18 @@ angular
         },
       };
 
+      API.users = {
+        getUserList: function (filters, usertoken) {
+          var identifier = "/search";
+
+          if (usertoken) {
+            filters.usertoken = usertoken;
+          }
+
+          return API._get("users", identifier, filters);
+        },
+      }
+
       API.event = {
         get: function (eventId, filters) {
           var identifier;
